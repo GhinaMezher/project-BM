@@ -9,7 +9,7 @@ The GitHub project can be found on: https://github.com/GhinaMezher/project-BM.gi
 2 collaborators can be found on this public project. 
 
 We will use the data base from the World Bank and International Labor Organization that identifies the public spendings in education: https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart
-And for the data on unemployemnt rates depending on various caracteristics we will refer to the International Labor Organisation (ILO) database: https://ilostat.ilo.org/fr/topics/youth/#
+And for the data on youth unemployemnt rates depending on various caracteristics we will refer to the International Labor Organisation (ILO) database: https://ilostat.ilo.org/fr/topics/youth/#
 
 ```{r}
 #| echo: false
@@ -73,15 +73,17 @@ Then, the International Labour Organization (ILO) provides a wealth of data rela
 ## Variable description 
 
 "Ref area": String value giving us each country's code
-"Indicator" & "Source":
+"Indicator" & "Source": it includes information on the represented variables, the classifications used and the unit which is number (NB)
 "sex":string value giving us the sex, three categories: total, male & female 
-"classif1": string value giving us the youth range, three categories: 15-19, 15-29, 20-24, 25-29
-"classif2": 
+"classif1": string value giving us the youth range, three categories: 15-19, 20-24, 25-29, 15-29
+"classif2": string value giving us the status of students, three categories : "STU_EDU_TOTAL","Fréquentation scolaire: Total"
+"STU_EDU_NO","Fréquentation scolaire: Ne participe pas"
+"STU_EDU_X","Fréquentation scolaire: Non classé ailleurs"
 "time": string value giving us the date of the observation 
 "obs_value": observed value according to each category 
-"obs_status":
-"note_indicator":
-"note_source":
+"obs_status":the values status or flag on the values, such as breaks in series or provisional values
+"note_indicator": metadata related to the classifications used and specific classification categories 
+"note_source": metadata related to the data source, it's a resting place (repositoire in french) 
 
 # Data joining and cleaning 
 
