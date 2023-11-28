@@ -43,7 +43,7 @@ First, many of the datasets provided by the World Bank include time series data,
 ## A table summary of our WB database
 
 ```{r echo:false}
-#Our dep_pub_raw variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in teh first 4 lines that make R reading our dataset complicated.
+#Our dep_pub_raw variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
 
 name_col<-colnames(dep_pub_raw)
 dep_pub|>
@@ -68,6 +68,17 @@ Then, the International Labour Organization (ILO) provides a wealth of data rela
 
 ## A table summary of our ILO database
 ```{r}
+# Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
+
+name_col_2<-colnames(chomage_jeune)
+chomage_jeune|>
+  summarise("Origin"=name_col[1],
+            "Nb of rows"=n(),
+            "Nb of columns"=ncol(chomage_jeune),
+            "Nb of countries"= ncol(chomage_jeune)[1],
+            "Nb of countries"= ncol(chomage_jeune)[1],
+            )|>
+  knitr::kable()
 
 ```
 ## Variable description 
