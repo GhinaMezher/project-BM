@@ -19,8 +19,13 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(vroom)
+```
+
+Attrivuting our databases to variables 
+```{r}
 dep_pub<-vroom(here("dep-pub-raw.csv"))
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
 ```
+
 
 
