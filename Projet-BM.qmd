@@ -7,6 +7,9 @@ format: html
 The GitHub project can be found on: https://github.com/GhinaMezher/project-BM.git
 2 collaborators can be found on this public project. 
 
+We will use the data base from World Bank and International Labor Organization : https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart 
+https://ilostat.ilo.org/fr/topics/youth/#
+
 ```{r}
 #| echo: false
 #| message: false
@@ -19,4 +22,5 @@ library(vroom)
 dep_pub<-vroom(here("dep-pub-raw.csv"))
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
 ```
+
 
