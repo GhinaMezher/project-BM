@@ -8,6 +8,13 @@ The GitHub project can be found on: https://github.com/GhinaMezher/project-BM.gi
 2 collaborators can be found on this public project. 
 
 ```{r}
+#| echo: false
+#| message: false
+here::i_am("project-BM.Rproj")
+library(here)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
 library(vroom)
 ```
 
