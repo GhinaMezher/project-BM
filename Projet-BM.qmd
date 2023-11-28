@@ -23,7 +23,7 @@ library(vroom)
 
 Attributing our databases to variables 
 ```{r}
-dep_pub<-vroom(here("dep-pub-raw.csv"))
+dep_pub<-vroom(here("dep-pub-raw-f.csv"))
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
 ```
 
