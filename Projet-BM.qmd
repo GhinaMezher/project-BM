@@ -56,14 +56,42 @@ dep_pub|>
   knitr::kable()
   
 ```
+## Variable description 
 
-
+"Country Name"/"Country Code": String value giving us an indicator for each country to classify values
+"Indicator Name"/"Indicator code": String value giving us the indicator studied with is the government expenditure on education as % of GDP
+"Date": each column referring to a date for the % of GDP for government education spendings going from 1960 to 2022
 
 # Description of the International Labor Organisation database
 
 Then, the International Labour Organization (ILO) provides a wealth of data related to labor and employment. This site therefore corresponds perfectly to our project. ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range. Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education schooling on youth unemployment rate. Both sites making international comparisons, it’s therefore interesting for our subject of study. The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank). 
 
 ## A table summary of our ILO database
+```{r}
+
+```
+## Variable description 
+
+"Ref area": String value giving us each country's code
+"Indicator" & "Source":
+"sex":string value giving us the sex, three categories: total, male & female 
+"classif1": string value giving us the youth range, three categories: 15-19, 15-29, 20-24, 25-29
+"classif2": 
+"time": string value giving us the date of the observation 
+"obs_value": observed value according to each category 
+"obs_status":
+"note_indicator":
+"note_source":
+
+# Data joining and cleaning 
+
+## Cleaning the WB database
+```{r}
+dep_pub|> count(`Country Name`, `Country Code`)
+dep_pub_clean<-dep_pub|>select(-`Country Name`)
+```
+
+
 
 
 
