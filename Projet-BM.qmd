@@ -1,0 +1,9 @@
+---
+title: "Data Management & Programming Project"
+author: "Adrien BOUISSON & Ghina MEZHER"
+format: html
+---
+
+The GitHub project can be found on: https://github.com/GhinaMezher/project-BM.git
+2 collaborators can be found on this public project. 
+
