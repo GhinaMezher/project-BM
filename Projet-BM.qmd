@@ -3,12 +3,13 @@ title: "Data Management & Programming Project"
 author: "Adrien BOUISSON & Ghina MEZHER"
 format: html
 ---
+# Links and sources
 
 The GitHub project can be found on: https://github.com/GhinaMezher/project-BM.git
 2 collaborators can be found on this public project. 
 
-We will use the data base from World Bank and International Labor Organization : https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart 
-https://ilostat.ilo.org/fr/topics/youth/#
+We will use the data base from the World Bank and International Labor Organization that identifies the public spendings in education: https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart
+And for the data on unemployemnt rates depending on various caracteristics we will refer to the International Labor Organisation (ILO) database: https://ilostat.ilo.org/fr/topics/youth/#
 
 ```{r}
 #| echo: false
@@ -19,22 +20,50 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(vroom)
+library(knitr)
 ```
 
 # Attributing our databases to variables 
-```{r}
-dep_pub<-vroom(here("dep-pub-raw-f.csv"))
+```{r message=FALSE}
+dep_pub_raw<-vroom(here("dep-pub-raw.csv"),delim=",")
+dep_pub<-vroom(here("dep-pub-raw.csv"),skip=4)
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
 ```
 
 # A short description of the sources used 
 
-Our topic of study in this project is the impact of education spending on the youth unemployment rate. For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility. For example, World Bank compiles and makes available a wide range data on global economic development such as expenditures in school per country. We’re interested in every country in the world, which explain why we haven’t included OECD data, which is limited to 40 countries. 
+Our topic of study in this project tackles the impact of education spending on the youth unemployment rate. For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility. For example, World Bank compiles and makes available a wide range data on global economic development such as expenditures in school per country. We’re interested in every country in the world, which explain why we haven’t included OECD data, which is limited to 40 countries. 
 
-First, many of the datasets provided by the World Bank include time series data, allowing to analyze trends and changes over time. It could be essential for understanding the dynamics of variables. Then, the World Bank is known for maintaining high standards in datasets. There is data reliability, World Bank data is generally subject to rigorous standards and quality controls. As part of our project, the dataset from World Bank enable to make international comparisons by collecting data from many countries, allowing for international comparisons of school expenditure. Finally, by analyzing World Bank data on school expenditures, we can merge this dataset with the youth unemployment rate to study the correlation (or causality) of education spending on the unemployment rate. It means that we could observe that the higher education spending led to the lower youth unemployment rate, or that the high youth unemployment rate can be explained by higher spending on education. 
+Our databases are dense, which requires delimiting our subject such as the period on which we are going to be interested or the variables that we consider to be most relevant. 
+
+# Description of the World bank database
+
+First, many of the datasets provided by the World Bank include time series data, allowing to analyze trends and changes over time. It could be essential for understanding the dynamics of variables. Then, the World Bank is known for maintaining high standards in datasets. There is data reliability, World Bank data is generally subject to rigorous standards and quality controls. As part of our project, the dataset from World Bank enable to make international comparisons by collecting data from many countries, allowing for international comparisons of school expenditure. Finally, by analyzing World Bank data on school expenditures, we can merge this dataset with the youth unemployment rate to study the correlation (or causality) of education spending on the unemployment rate. It means that we could observe that the higher education spending led to the lower youth unemployment rate, or that the high youth unemployment rate can be explained by higher spending on education.
+
+## A table summary of our WB database
+
+```{r echo:false}
+#Our dep_pub_raw variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in teh first 4 lines that make R reading our dataset complicated.
+
+name_col<-colnames(dep_pub_raw)
+dep_pub|>
+  summarise("Origin"=name_col[2],"Last update"= dep_pub_raw[[1,2]],
+            "Nb of rows"=n(),
+            "Nb of columns"=ncol(dep_pub),
+            "First date"=colnames(dep_pub)[5],
+            "Last date"=colnames(dep_pub)[67],
+            )|>
+  knitr::kable()
+  
+```
+
+
+
+# Description of the International Labor Organisation database
 
 Then, the International Labour Organization (ILO) provides a wealth of data related to labor and employment. This site therefore corresponds perfectly to our project. ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range. Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education schooling on youth unemployment rate. Both sites making international comparisons, it’s therefore interesting for our subject of study. The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank). 
 
-Our databases are dense, which requires delimiting our subject such as the period on which we are going to be interested or the variables that we consider to be most relevant. 
+## A table summary of our ILO database
+
 
 
