@@ -76,7 +76,8 @@ chomage_jeune|>
             "Nb of rows"=n(),
             "Nb of columns"=ncol(chomage_jeune),
             "Nb of countries"= ncol(chomage_jeune)[1],
-            "Nb of countries"= ncol(chomage_jeune)[1],
+            "Nb of sex"= ncol(chomage_jeune)[1],
+            "Nb of "= ncol(chomage_jeune)[1]
             )|>
   knitr::kable()
 
@@ -104,7 +105,26 @@ dep_pub|> count(`Country Name`, `Country Code`)
 dep_pub_clean<-dep_pub|>select(-`Country Name`)
 ```
 
+## Cleaning the ILO database 
 
+```{r}
+chomage_jeune|> count(`obs_status`,`obs_value`)
+chomage_jeune_clean<-chomage_jeune|>select(`ref_area`)
+na.omit(chomage_jeune_clean)
+print(chomage_jeune_clean)
+```
+
+```{r}
+chomage_jeune_clean_1 <- chomage_jeune(
+  Date = as.Date(c("2011", "2012", "2013","2014"),
+  Value = c(10, 20, 30)
+)
+
+selected_rows <- chomage_jeune_clean_1 %>%
+  filter(Date == as.Date("2O11"))
+
+print(selected_rows)
+```
 
 
 
