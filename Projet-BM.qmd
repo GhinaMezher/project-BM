@@ -67,29 +67,32 @@ dep_pub|>
 
 Then, the International Labour Organization (ILO) provides a wealth of data related to labor and employment. This site therefore corresponds perfectly to our project. ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range. Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education schooling on youth unemployment rate. Both sites making international comparisons, it’s therefore interesting for our subject of study. The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank). 
 
+The difficulties of ILO database is the description of variables which need to be define as we did after. 
+
 ## A table summary of our ILO database
 ```{r}
 # Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
 
 name_col_2<-colnames(chomage_jeune)
 chomage_jeune|>
-  summarise("Origin"=name_col[1],
+  summarise("Origins"=name_col[1],
             "Nb of rows"=n(),
             "Nb of columns"=ncol(chomage_jeune),
-            "Nb of countries"= ncol(chomage_jeune)[1],
-            "Nb of sex"= nrow(chomage_jeune)[4],
-            "Nb of "= ncol(chomage_jeune)[1]
+            "Nb of countries"= length(unique((chomage_jeune$ref_area))),
+            "Nb of sex"= length(unique((chomage_jeune$sex))),
+            "Age groups "= length(unique((chomage_jeune$`Age groups`))),
+            "Time " = length(unique((chomage_jeune$time))) 
             )|>
   knitr::kable()
 
 ```
 
 ```{r}
-#We rename the culumn to better understand the variables
+#We rename the column to better understand the variables
 
 colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Countries"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
-colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Student situation"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
 ```
 
 ## Variable description 
@@ -147,26 +150,18 @@ Description needed:
 ## Cleaning the ILO database 
 
 ```{r}
-chomage_jeune|> count(`obs_status`,`obs_value`)
-chomage_jeune_clean<-chomage_jeune|>select(`ref_area`)
-na.omit(chomage_jeune_clean)
-print(chomage_jeune_clean)
-```
+# We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean
 
-```{r}
-# We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source"
-
-chomage_jeune_1 <- chomage_jeune %>% select(-"indicator", -"source", -"obs_status", -"note_source", -"note_indicator")
+chomage_jeune_clean <- chomage_jeune %>% select(-"indicator", -"source", -"obs_status", -"note_source", -"note_indicator")
 ```
 
 ### Data joining 
 
-```{r}
-dep_pub<- data.frame(ID = c(1, 2, 3), Nom = c("Country Code", "Indicator name", "2022"))
-chomage_jeune <- data.frame(ID = c(4, 5, 6, 7, 8), Nom = c("ref_areas", "Age groups", "Students situation", "time", "obs_value"))
 
-result <- bind_rows(dep_pub, chomage_jeune)
-```
+
+
+
+
 
 Proposition, but isn't enough
 ```{r}
