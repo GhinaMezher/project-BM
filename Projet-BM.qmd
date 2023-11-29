@@ -151,21 +151,6 @@ Description needed:
 ## Cleaning the ILO database 
 
 ```{r}
-# We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean
-
-chomage_jeune_clean <- chomage_jeune %>% select(-"indicator", -"source", -"obs_status", -"note_source", -"note_indicator")
-```
-
-### Data joining 
-
-
-
-
-
-
-
-Proposition, but isn't enough
-```{r}
 chomage_jeune_cleaning<-function(df){
   single_value<-function(my_var){
   (my_var|>unique()|>length())==1
@@ -173,10 +158,10 @@ chomage_jeune_cleaning<-function(df){
   df_clean<-df|>
     rename(Country=ref_area)|>
     select(!where(\(.x)all(is.na(.x))))|>
-    select(!where(single_value))
+    select(!where(single_value)) |>
+    select(-"source", -"obs_status", -"note_source", -"note_indicator")
 }
-
-chomage_jeune_c<-chomage_jeune_cleaning(chomage_jeune)
+chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
-Description needed: 
 
+We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean
