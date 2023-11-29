@@ -174,9 +174,10 @@ We remove some column which will not used for the projet like "Source", "Indicat
 ```{r}
 dep_chomage<-merge(dep_pub_clean,chomage_jeune_clean,by=c("Country","time"))
 ```
-We use merge to join our 2 databases in order to match them by country (variable "Countr") and date (variable "time").
+We use merge to join our 2 databases in order to match them by country (variable "Country") and date (variable "time"). 
 
 # Description of research question  A REVOIR
+
 Education is considered a fundamental element of human development, it is also a fundamental right as it is mentioned in the universal declaration of Humain rights of 1948. Economic research in education became a complete and independant field of study in the 50s along with the Theory of human capital we owe to the economists Schultz, Becker and Mincer.
 This theory presumes that human capital wich is constituted of education, health, social protection and access to information, can be invested in just like physical capital. The theory then unfolds to show that an additional year of schooling can lead to a higher revenue in employment. 
 But what happens when it comes to unemployment? Should gouvernment leaders expect their educational spendings to impact the unemployment rate? 
@@ -189,4 +190,10 @@ Therefore the project endeavors to decipher how these factors (public spendings 
 A higher unemployment rate could also prompt governments to allocate more funds to education as a strategic response to address workforce skills gaps and boost employability, we therefore see a potential double causality between educational spendings and unemployment.The potential reciprocal influence between educational investments and workforce participation unveils a complex interplay, emphasizing the need for nuanced analysis to comprehend the multi-faceted impact of education on labor markets. 
 
 Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development.
+
+# Graph analysis 
+
+```{r}
+ggplot 
+```
 
