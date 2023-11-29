@@ -92,7 +92,7 @@ chomage_jeune|>
 ```{r}
 #We rename the column to better understand the variables
 
-colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Countries"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Country"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
 ```
@@ -145,6 +145,7 @@ dep_pub_cleaning<-function(df){
 }
 
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
+dep_pub_long<-pivot_longer(dep_pub_clean, cols = -Country, names_to = "time", values_to = "Public Spending")
 ```
 
 Description needed: 
