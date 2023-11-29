@@ -207,4 +207,14 @@ A higher unemployment rate could also prompt governments to allocate more funds 
 Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development.
 
 #Graph analysis
+```{r}
+dep_chomage|>
+  filter(Country == 'FRA')|>
+  group_by(Country)|>
+  ggplot(aes(x = time, y = `Public Spending`,color=`Age groups`)) +
+  geom_point(width=7) +
+  facet_wrap(~sex)+
+  theme(axis.text.x=element_text(angle=50,hjust=1))+
+  labs(x = "Date", y = "Public Spending", title = "Public Spending for FRA")
+```
 
