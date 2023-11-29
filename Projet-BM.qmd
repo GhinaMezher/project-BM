@@ -82,7 +82,7 @@ chomage_jeune|>
             "Nb of columns"=ncol(chomage_jeune),
             "Nb of countries"= length(unique((chomage_jeune$ref_area))),
             "Nb of sex"= length(unique((chomage_jeune$sex))),
-            "Age groups "= length(unique((chomage_jeune$`Age groups`))),
+            "Age groups "= length(unique((chomage_jeune$classif1))),
             "Time " = length(unique((chomage_jeune$time))) 
             )|>
   knitr::kable()
