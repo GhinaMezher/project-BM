@@ -97,6 +97,17 @@ chomage_jeune|>
 colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Country"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
+chomage_jeune <- chomage_jeune |> 
+  mutate(`Age groups`=case_when(`Age groups`=="AGE_YTHBANDS_Y15-19" ~ "15-19",
+                                `Age groups`=="AGE_YTHBANDS_Y15-29" ~ "15-29",
+                                `Age groups`=="AGE_YTHBANDS_Y20-24" ~ "20-24",
+                                `Age groups`=="AGE_YTHBANDS_Y25-29" ~ "25-29",
+         TRUE ~`Age groups`))
+chomage_jeune<-chomage_jeune|>
+  mutate(`sex`=case_when(`sex`=="SEX_M"~"Male",
+                       `sex`=="SEX_F"~"Female",
+                       `sex`=="SEX_T"~"Total",
+                       TRUE~`sex`))
 ```
 
 ## Variable description 
@@ -215,6 +226,6 @@ dep_chomage|>
   geom_point(width=7) +
   facet_wrap(~sex)+
   theme(axis.text.x=element_text(angle=50,hjust=1))+
-  labs(x = "Date", y = "Public Spending", title = "Public Spending for FRA")
+  labs(x = "Date", y = "Public Spending", title = "Public Spending for France")
 ```
 
