@@ -39,7 +39,11 @@ Our databases are dense, which requires delimiting our subject such as the perio
 
 # Description of the World bank database
 
-First, many of the datasets provided by the World Bank include time series data, allowing to analyze trends and changes over time. It could be essential for understanding the dynamics of variables. Then, the World Bank is known for maintaining high standards in datasets. There is data reliability, World Bank data is generally subject to rigorous standards and quality controls. As part of our project, the dataset from World Bank enable to make international comparisons by collecting data from many countries, allowing for international comparisons of school expenditure. Finally, by analyzing World Bank data on school expenditures, we can merge this dataset with the youth unemployment rate to study the correlation (or causality) of education spending on the unemployment rate. It means that we could observe that the higher education spending led to the lower youth unemployment rate, or that the high youth unemployment rate can be explained by higher spending on education.
+First, many of the datasets provided by the World Bank include time series data, allowing to analyze trends and changes over time. It could be essential for understanding the dynamics of variables. Then, the World Bank is known for maintaining high standards in datasets. There is data reliability, World Bank data is generally subject to rigorous standards and quality controls. 
+
+As part of our project, the dataset from World Bank enable to make international comparisons by collecting data from many countries, allowing for international comparisons of school expenditure. 
+
+Finally, by analyzing World Bank data on school expenditures, we can merge this dataset with the youth unemployment rate to study the correlation (or causality) of education spending on the unemployment rate. It means that we could observe that the higher education spending led to the lower youth unemployment rate, or that the high youth unemployment rate can be explained by higher spending on education.
 
 ## A table summary of our WB database
 
@@ -60,12 +64,16 @@ dep_pub|>
 ## Variable description 
 
 "Country Name"/"Country Code": String value giving us an indicator for each country to classify values
+
 "Indicator Name"/"Indicator code": String value giving us the indicator studied with is the government expenditure on education as % of GDP
+
 "Date": each column referring to a date for the % of GDP for government education spendings going from 1960 to 2022
 
 # Description of the International Labor Organisation database
 
-Then, the International Labour Organization (ILO) provides a wealth of data related to labor and employment. This site therefore corresponds perfectly to our project. ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range. Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education schooling on youth unemployment rate. Both sites making international comparisons, it’s therefore interesting for our subject of study. The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank). 
+Then, the International Labour Organization (ILO) provides a wealth of data related to labor and employment. This site therefore corresponds perfectly to our project. ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). 
+
+Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range. Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education schooling on youth unemployment rate. Both sites making international comparisons, it’s therefore interesting for our subject of study. The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank). 
 
 The difficulties of ILO database is the description of variables which need to be define as we did after. 
 
@@ -165,3 +173,5 @@ chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
 
 We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean
+
+
