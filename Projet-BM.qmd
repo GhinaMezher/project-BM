@@ -141,14 +141,15 @@ dep_pub_cleaning<-function(df){
     select(-`Country Name`)|>
     rename(Country=`Country Code`)|>
     select(!where(\(.x)all(is.na(.x))))|>
-    select(!where(single_value))
+    select(!where(single_value))|>
+    pivot_longer(cols = -Country, names_to = "time", values_to = "Public Spending")
 }
 
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
-dep_pub_long<-pivot_longer(dep_pub_clean, cols = -Country, names_to = "time", values_to = "Public Spending")
 ```
 
-Description needed: 
+In order to clean our world bank database we must delete columns/variables who have a unique value and dates that only have NA values. 
+We rename our "Country Code" variable to "Country" and pivot our dataframe in order to have a "time" variable to match the ILO database. 
 
 
 ## Cleaning the ILO database 
@@ -170,10 +171,12 @@ chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean
 
 ## Data joining 
+```{r}
+dep_chomage<-merge(dep_pub_clean,chomage_jeune_clean,by=c("Country","time"))
+```
+We use merge to join our 2 databases in order to match them by country (variable "Countr") and date (variable "time").
 
-
-# Description of research question 
-Description of question : 
+# Description of research question  A REVOIR
 Education is considered a fundamental element of human development, it is also a fundamental right as it is mentioned in the universal declaration of Humain rights of 1948. Economic research in education became a complete and independant field of study in the 50s along with the Theory of human capital we owe to the economists Schultz, Becker and Mincer.
 This theory presumes that human capital wich is constituted of education, health, social protection and access to information, can be invested in just like physical capital. The theory then unfolds to show that an additional year of schooling can lead to a higher revenue in employment. 
 But what happens when it comes to unemployment? Should gouvernment leaders expect their educational spendings to impact the unemployment rate? 
