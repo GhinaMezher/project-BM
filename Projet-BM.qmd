@@ -98,7 +98,7 @@ chomage_jeune|>
 ```{r}
 #We rename the column to better understand the variables
 
-colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Countries"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Country"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
 ```
@@ -172,6 +172,7 @@ chomage_jeune_cleaning<-function(df){
 chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
 
-We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean
+We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean 
+
 
 
