@@ -77,25 +77,49 @@ chomage_jeune|>
             "Nb of rows"=n(),
             "Nb of columns"=ncol(chomage_jeune),
             "Nb of countries"= ncol(chomage_jeune)[1],
-            "Nb of sex"= ncol(chomage_jeune)[1],
+            "Nb of sex"= nrow(chomage_jeune)[4],
             "Nb of "= ncol(chomage_jeune)[1]
             )|>
   knitr::kable()
 
 ```
+
+```{r}
+#We rename the culumn to better understand the variables
+
+colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Countries"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Student situation"
+```
+
 ## Variable description 
 
-"Ref area": String value giving us each country's code
+### We have to look the dictionaries for the code used (i.e code list) from ILO
+
+"Ref area": String value giving us each country's code, for example "AFG" for Afghanistan
+
 "Indicator" & "Source": it includes information on the represented variables, the classifications used and the unit which is number (NB)
+
+"Source" : "BA:15715","EPA - Enquête sur la Population Active","AFG" ; "BB:6361","ERDM - Enquête sur les Conditions de Vie des Ménages","AFG"
+
 "sex":string value giving us the sex, three categories: total, male & female 
-"classif1": string value giving us the youth range, three categories: 15-19, 20-24, 25-29, 15-29
-"classif2": string value giving us the status of students, three categories : "STU_EDU_TOTAL","Fréquentation scolaire: Total"
-"STU_EDU_NO","Fréquentation scolaire: Ne participe pas"
-"STU_EDU_X","Fréquentation scolaire: Non classé ailleurs"
+
+"classif1": string value giving us the youth range, three categories: 15-19, 20-24, 25-29, 15-29, for example "AGE_YTHBANDS_Y15-29","Age (Tranches des jeunes): 15-29"
+
+"classif2": string value giving us the status of students, three categories : 
+
+- "STU_EDU_TOTAL","Fréquentation scolaire: Total"
+- "STU_EDU_NO","Fréquentation scolaire: Ne participe pas"
+- "STU_EDU_X","Fréquentation scolaire: Non classé ailleurs"
+
 "time": string value giving us the date of the observation 
+
 "obs_value": observed value according to each category 
-"obs_status":the values status or flag on the values, such as breaks in series or provisional values
+
+"obs_status":the values status or flag on the values, such as breaks in series or provisional values, "U" for not reliable and "B" for discontinued 
+
 "note_indicator": metadata related to the classifications used and specific classification categories 
+
 "note_source": metadata related to the data source, it's a resting place (repositoire in french) 
 
 # Data joining and cleaning 
