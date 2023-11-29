@@ -139,16 +139,18 @@ print(chomage_jeune_clean)
 ```
 
 ```{r}
-chomage_jeune_clean_1 <- chomage_jeune(
-  Date = as.Date(c("2011", "2012", "2013","2014"),
-  Value = c(10, 20, 30)
-)
+# We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source"
 
-selected_rows <- chomage_jeune_clean_1 %>%
-  filter(Date == as.Date("2O11"))
-
-print(selected_rows)
+chomage_jeune_1 <- chomage_jeune %>% select(-"indicator", -"source", -"obs_status", -"note_source", -"note_indicator")
 ```
 
+### Data joining 
+
+```{r}
+dep_pub<- data.frame(ID = c(1, 2, 3), Nom = c("Country Code", "Indicator name", "2022"))
+chomage_jeune <- data.frame(ID = c(4, 5, 6, 7, 8), Nom = c("ref_areas", "Age groups", "Students situation", "time", "obs_value"))
+
+result <- bind_rows(dep_pub, chomage_jeune)
+```
 
 
