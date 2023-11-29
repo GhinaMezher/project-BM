@@ -204,16 +204,23 @@ dep_chomage|>
 ```
 # Description of research question  A REVOIR
 
-Education is considered a fundamental element of human development, it is also a fundamental right as it is mentioned in the universal declaration of Humain rights of 1948. Economic research in education became a complete and independant field of study in the 50s along with the Theory of human capital we owe to the economists Schultz, Becker and Mincer.
-This theory presumes that human capital wich is constituted of education, health, social protection and access to information, can be invested in just like physical capital. The theory then unfolds to show that an additional year of schooling can lead to a higher revenue in employment. 
-But what happens when it comes to unemployment? Should gouvernment leaders expect their educational spendings to impact the unemployment rate? 
+Education is considered a fundamental element of human development, it is also a fundamental right as it is mentioned in the universal declaration of Human rights of 1948. 
+Economic research in education became a complete and independent field of study in the 50s along with the Theory of human capital we owe to the economists Schultz, Becker and Mincer.
+This theory enunciates that one can invest in human capital (that is constituted of education, health, social protection and access to information) just like investing in physical capital like machinery, it highlights a causality relationship between years of schooling and wages.
+The theory of human capital was frivolously studied and applied to empirical studies and many econometric models in order to test its veracity and limits. 
+In order to form the subject of our study we begun with the same idea as the theory of capital; how can altering the offer of education impacts individuals' status on the labor market. 
 
-Thanks to the richness of information in our ILO dataset we will be able to study the impact of public educational spending (from the WB database) on the educational aspect of human capital. This will lead us to understand the verity of the theory of capital and its macro validity. 
+However, in a will to understand the role the government must play when it comes to the offer in education we may ask ourselves: Should government leaders expect their educational spending to impact the unemployment rate? 
+
+Thanks to the richness of information in our ILO data base we will be able to study the impact of public educational spending (from the WB database) on the educational aspect of human capital. 
+With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level. 
+The micro impact can be observed by studying each country on its own and observing the variations throughout the years. This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries. 
+
 We would like to highlight the real and empirical impact of the augmentation of educational spending on school attendance thanks to the "classif2" variable now called "Attendance". Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment.
 The underlying assumption is that a positive correlation between increased educational spending and higher attendance rates could translate into a subsequent decline in unemployment figures over the ensuing years.
-Therefore the project endeavors to decipher how these factors (public spendings and attendance) interplay in the context of unemployment rates.
+Therefore the project endeavors to decipher how these factors (public spending and attendance) interplay in the context of unemployment rates.
 
-A higher unemployment rate could also prompt governments to allocate more funds to education as a strategic response to address workforce skills gaps and boost employability, we therefore see a potential double causality between educational spendings and unemployment.The potential reciprocal influence between educational investments and workforce participation unveils a complex interplay, emphasizing the need for nuanced analysis to comprehend the multi-faceted impact of education on labor markets. 
+A higher unemployment rate could also prompt governments to allocate more funds to education as a way to respond to the need for training to boost employability, we therefore see a potential double causality between educational spending and unemployment.The potential reciprocal influence between educational investments and workforce participation unveils a complex interplay, emphasizing the need for nuanced analysis to comprehend the multifaceted impact of education on labor markets. 
 
 Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development.
 
