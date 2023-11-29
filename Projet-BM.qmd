@@ -2,6 +2,9 @@
 title: "Data Management & Programming Project"
 author: "Adrien BOUISSON & Ghina MEZHER"
 format: html
+warning: false
+echo: false
+message: false
 ---
 # Links and sources
 
@@ -12,9 +15,7 @@ We will use the data base from the World Bank and International Labor Organizati
 And for the data on youth unemployemnt rates depending on various caracteristics we will refer to the International Labor Organisation (ILO) database: https://ilostat.ilo.org/fr/topics/youth/#
 
 ```{r}
-#| echo: false
 #| message: false
-#| warning: false
 here::i_am("project-BM.Rproj")
 library(here)
 library(dplyr)
@@ -26,6 +27,7 @@ library(knitr)
 
 # Attributing our databases to variables 
 ```{r message=FALSE}
+#| message: false
 dep_pub_raw<-vroom(here("dep-pub-raw.csv"),delim=",")
 dep_pub<-vroom(here("dep-pub-raw.csv"),skip=4)
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
@@ -82,7 +84,7 @@ chomage_jeune|>
             "Nb of columns"=ncol(chomage_jeune),
             "Nb of countries"= length(unique((chomage_jeune$ref_area))),
             "Nb of sex"= length(unique((chomage_jeune$sex))),
-            "Age groups "= length(unique((chomage_jeune$`Age groups`))),
+            "Age groups "= length(unique((chomage_jeune$classif1))),
             "Time " = length(unique((chomage_jeune$time))) 
             )|>
   knitr::kable()
@@ -131,7 +133,6 @@ colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
 
 ## Cleaning the WB database
 ```{r}
-
 dep_pub_cleaning<-function(df){
   single_value<-function(my_var){
   (my_var|>unique()|>length())==1
@@ -192,8 +193,4 @@ A higher unemployment rate could also prompt governments to allocate more funds 
 Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development.
 
 # Graph analysis 
-
-```{r}
-ggplot 
-```
 
