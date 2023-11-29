@@ -2,6 +2,9 @@
 title: "Data Management & Programming Project"
 author: "Adrien BOUISSON & Ghina MEZHER"
 format: html
+warning: false
+echo: false
+message: false
 ---
 # Links and sources
 
@@ -12,9 +15,7 @@ We will use the data base from the World Bank and International Labor Organizati
 And for the data on youth unemployemnt rates depending on various caracteristics we will refer to the International Labor Organisation (ILO) database: https://ilostat.ilo.org/fr/topics/youth/#
 
 ```{r}
-#| echo: false
 #| message: false
-#| warning: false
 here::i_am("project-BM.Rproj")
 library(here)
 library(dplyr)
@@ -26,6 +27,7 @@ library(knitr)
 
 # Attributing our databases to variables 
 ```{r message=FALSE}
+#| message: false
 dep_pub_raw<-vroom(here("dep-pub-raw.csv"),delim=",")
 dep_pub<-vroom(here("dep-pub-raw.csv"),skip=4)
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
@@ -131,7 +133,6 @@ colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
 
 ## Cleaning the WB database
 ```{r}
-
 dep_pub_cleaning<-function(df){
   single_value<-function(my_var){
   (my_var|>unique()|>length())==1
@@ -174,9 +175,25 @@ We remove some column which will not used for the projet like "Source", "Indicat
 ```{r}
 dep_chomage<-merge(dep_pub_clean,chomage_jeune_clean,by=c("Country","time"))
 ```
-We use merge to join our 2 databases in order to match them by country (variable "Countr") and date (variable "time").
+We use merge to join our 2 databases in order to match them by country (variable "Country") and date (variable "time"). 
 
+## A table summary of our new database
+
+```{r}
+name_col_3<-colnames(dep_chomage)
+dep_chomage|>
+  summarise("Country"=name_col[1],
+            "Nb of rows"=n(),
+            "Nb of columns"=ncol(dep_chomage),
+            "Nb of countries"= length(unique((dep_chomage$Country)),
+            "Nb of sex"= length(unique((dep_chomage$sex))),
+            "Age groups "= length(unique((dep_chomage$`Age groups`))),
+            "Time " = length(unique((dep_chomage$time))) 
+            )|>
+  knitr::kable()
+```
 # Description of research question  A REVOIR
+
 Education is considered a fundamental element of human development, it is also a fundamental right as it is mentioned in the universal declaration of Humain rights of 1948. Economic research in education became a complete and independant field of study in the 50s along with the Theory of human capital we owe to the economists Schultz, Becker and Mincer.
 This theory presumes that human capital wich is constituted of education, health, social protection and access to information, can be invested in just like physical capital. The theory then unfolds to show that an additional year of schooling can lead to a higher revenue in employment. 
 But what happens when it comes to unemployment? Should gouvernment leaders expect their educational spendings to impact the unemployment rate? 
@@ -190,5 +207,5 @@ A higher unemployment rate could also prompt governments to allocate more funds 
 
 Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development.
 
-test
+#Graph analysis
 
