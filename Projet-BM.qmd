@@ -180,17 +180,16 @@ We use merge to join our 2 databases in order to match them by country (variable
 ## A table summary of our new database
 
 ```{r}
-name_col_3<-colnames(dep_chomage)
 dep_chomage|>
-  summarise("Country"=name_col[1],
+  summarise("Title"="Public spendings and unemployment according to date and country",
             "Nb of rows"=n(),
             "Nb of columns"=ncol(dep_chomage),
-            "Nb of countries"= length(unique((dep_chomage$Country)),
-            "Nb of sex"= length(unique((dep_chomage$sex))),
-            "Age groups "= length(unique((dep_chomage$`Age groups`))),
-            "Time " = length(unique((dep_chomage$time))) 
-            )|>
+            "Nb of country"=length(unique(dep_chomage$Country)),
+            "Age groups"=length(unique(dep_chomage$`Age groups`)),
+            "Time frame"=paste(min(dep_chomage$time),"-",max(dep_chomage$time)))|>
   knitr::kable()
+            
+            #"Time " = length(unique((dep_chomage$time)))))|>
 ```
 # Description of research question  A REVOIR
 
