@@ -117,6 +117,8 @@ dep_pub_cleaning<-function(df){
 
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
 ```
+Description needed: 
+
 
 ## Cleaning the ILO database 
 
@@ -139,5 +141,20 @@ selected_rows <- chomage_jeune_clean_1 %>%
 print(selected_rows)
 ```
 
+Proposition, but isn't enough
+```{r}
+chomage_jeune_cleaning<-function(df){
+  single_value<-function(my_var){
+  (my_var|>unique()|>length())==1
+  }
+  df_clean<-df|>
+    rename(Country=ref_area)|>
+    select(!where(\(.x)all(is.na(.x))))|>
+    select(!where(single_value))
+}
+
+chomage_jeune_c<-chomage_jeune_cleaning(chomage_jeune)
+```
+Description needed: 
 
 
