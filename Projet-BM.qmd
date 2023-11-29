@@ -177,6 +177,21 @@ dep_chomage<-merge(dep_pub_clean,chomage_jeune_clean,by=c("Country","time"))
 ```
 We use merge to join our 2 databases in order to match them by country (variable "Country") and date (variable "time"). 
 
+## A table summary of our new database
+
+```{r}
+name_col_3<-colnames(dep_chomage)
+dep_chomage|>
+  summarise("Country"=name_col[1],
+            "Nb of rows"=n(),
+            "Nb of columns"=ncol(dep_chomage),
+            "Nb of countries"= length(unique((dep_chomage$Country)),
+            "Nb of sex"= length(unique((dep_chomage$sex))),
+            "Age groups "= length(unique((dep_chomage$`Age groups`))),
+            "Time " = length(unique((dep_chomage$time))) 
+            )|>
+  knitr::kable()
+```
 # Description of research question  A REVOIR
 
 Education is considered a fundamental element of human development, it is also a fundamental right as it is mentioned in the universal declaration of Humain rights of 1948. Economic research in education became a complete and independant field of study in the 50s along with the Theory of human capital we owe to the economists Schultz, Becker and Mincer.
