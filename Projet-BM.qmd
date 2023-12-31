@@ -230,7 +230,7 @@ dep_chomage|>
             "Nb of rows"=n(),
             "Nb of columns"=ncol(dep_chomage),
             "Nb of country"=length(unique(dep_chomage$Country)),
-            "Age groups"=length(unique(dep_chomage$`Age Groups`)),
+            "Age groups"=length(unique(dep_chomage$`Age groups`)),
             "Time frame"=paste(min(dep_chomage$time),"-",max(dep_chomage$time)))|>
   knitr::kable()
             
@@ -307,8 +307,20 @@ dep_chomage %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(x = "Date", y = "Public Spending", title = "Public Spending for France and Germany")
 ```
-$$S_{n}=\frac{\Sigma_{1}^{n}}{n}$$
-$$[S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-      = \frac{1}{n}\sum_{i}^{n} X_i]$$
-    
+
+
+
+## Regression linear OLS 
+
+Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable. 
+
+To deepen our analysis, we will use instrumental variables, which are variables used to solve the endogeneity problem in econometric models. Endogeneity can arise when the explanatory variable is correlated with model errors, which can bias estimation results. Instrumental variables are therefore used to isolate the uncorrelated variation of the explanatory variable and use it as a proxy for that variable. 
+
+For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending. 
+
+```{r}
+library(tidyverse)
+regression_model <- lm(`obs_value` ~ `Public Spending`, data = dep_chomage)
+summary(regression_model)
+```
 
