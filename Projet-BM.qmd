@@ -300,10 +300,15 @@ This graph shows the evolution of the unemployment rate over the period 2005-202
 
 ```{r}
 dep_chomage %>%
-  filter(Country %in% c('FRA', 'AFG')) %>%
+  filter(Country %in% c('GER','FRA')) %>%
   group_by(Country) %>%
   ggplot(aes(x = time, y = `Public Spending`, color = `Age groups`)) +
-  geom_point() +
+  geom_point(shape=16) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Date", y = "Public Spending", title = "Public Spending for France and Afghanistan")
+  labs(x = "Date", y = "Public Spending", title = "Public Spending for France and Germany")
 ```
+$$S_{n}=\frac{\Sigma_{1}^{n}}{n}$$
+$$[S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+      = \frac{1}{n}\sum_{i}^{n} X_i]$$
+    
+
