@@ -307,4 +307,3 @@ dep_chomage %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(x = "Date", y = "Public Spending", title = "Public Spending for France and Afghanistan")
 ```
-
