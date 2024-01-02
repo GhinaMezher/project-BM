@@ -323,4 +323,10 @@ library(tidyverse)
 regression_model <- lm(`obs_value` ~ `Public Spending`, data = dep_chomage)
 summary(regression_model)
 ```
+```{r}
+ggplot(dep_chomage, aes(x = `obs_value` , y = `Public Spending`)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Régression linéaire entre les dépenses d'éducation et le taux de chômage des jeunes")
+```
 
