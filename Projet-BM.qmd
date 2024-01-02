@@ -308,7 +308,26 @@ dep_chomage %>%
   labs(x = "Date", y = "Public Spending", title = "Public Spending for France and Germany")
 ```
 
+## Correlation test 
 
+To understand the relationship between public spending on education and the youth unemployment rate, we will perform a correlation analysis.
+
+```{r}
+correlation_result <- cor.test(dep_chomage$`Public Spending`, dep_chomage$`obs_value`)
+correlation_result
+```
+The correlation test provides valuable insights into the strength and direction of the linear relationship between public spending on education and the youth unemployment rate. The correlation coefficient and p-value help us assess the statistical significance of the observed correlation.
+
+```{r}
+ggplot(dep_chomage, aes(x = `Public Spending`, y = `obs_value`)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate")
+```
+
+The scatter plot with a fitted line visually represents the correlation between public spending and the youth unemployment rate. The blue line indicates the linear regression fit. 
+
+The correlation test and visualization help us understand if there is a significant correlation between public spending on education and the youth unemployment rate. The correlation coefficient close to 1 or -1 indicates a strong relationship, while a p-value less than 0.05 suggests statistical significance.
 
 ## Regression linear OLS 
 
@@ -329,4 +348,5 @@ ggplot(dep_chomage, aes(x = `obs_value` , y = `Public Spending`)) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Régression linéaire entre les dépenses d'éducation et le taux de chômage des jeunes")
 ```
+
 
