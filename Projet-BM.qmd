@@ -30,17 +30,20 @@ chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
 ```
 
 # Our research question 
-## I. The importance and history of research in
+## I. The importance and history of research in education
 
-It is undeniable education profoundly shapes societal progress. From allowing humans to make world changing discoveries to multiplying the efficiency and use of physical capital; education lets each individual make use of their production power. 
-Education is also considered a fundamental right, as it is stipulated in the universal declaration of Human Rights 1948, and a key element of development as seen in the 2000 MDGs (MDG n°2) and the 2015 SDGs (SDG n°4). 
+  It is undeniable education profoundly shapes societal progress. From allowing humans to make world changing discoveries to multiplying the efficiency and use of physical capital; education lets each individual make use of their production power. 
+Education is also considered a fundamental right, as it is stipulated in the universal declaration of Human Rights 1948, and a key element of development as seen in the 2000 MDGs (MDG n°2) and the 2015 SDGs (SDG n°4).
 
 Today, economic research in education is considered a greatly developed field, highlighting the importance of public spending in education and the necessity for targeted funding and strategic policies. We owe the establishment of the field to the theory of human capital by Schultz, Becker and Mincer established in the 50's .
 What started as a simple causality relationship between additional years of education and wage differences was frivolously applied to empirical studies, and econometric models. This allowed researchers to understand countries' particular attributes and situations but also if lack of education should be considered a demand or a supply problem. 
 
 Investing in human capital, here in its educational form, is considered fundamental to the reduction of inequalities. Take for example woman's fertility. Research has found that, in developing countries, one additional year of schooling reduces woman's fertility rate by 10%, enabling a much needed demographic transition. This causality relationship can be explained by the increase of revenue on the labor market through additional years of schooling, allowing women to take on better jobs and increasing the opportunity cost of having a child. 
 
+## II. The link between education and unemployment 
 
+  The polarization of the labor market has become a clear and urgent issue. The dreaded phenomenon represents, for the middle class, the end of social mobility or as some might call it "The American/Capitalistic Dream". 
+Polarization of the labor market defines the historical decline of the rate of jobs that lie in the middle of the distribution of qualification (France Stratégie 2020). The prosperity of machinery and innovation has led to the decrease of basic qualification demanding jobs in favor of highly qualified jobs or low qualified jobs. This phenomenon has revealed itself particularly challenging for under-qualified youth, whose unemployment rate has increased in the past few years. 
 
 
 
