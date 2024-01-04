@@ -279,18 +279,18 @@ dep_chomage <- dep_chomage %>%
   filter(!is.na(time), !is.na(`Public Spending`),
          time >= 2014 & time <= 2022)
 
-graph_spending <- ggplot(dep_chomage, aes(x = time, y = `Public Spending`)) +
+ggplot(dep_chomage, aes(x = time, y = `Public Spending`)) +
   geom_line(color = "blue") +  
   geom_point(color = "red") +  
   labs(title = "Public spending on education trends (2014-2022)",
        x = "Time",
        y = "Public spending") +  
   theme_minimal()  
-
-
-print(graph_spending)
 ```
 Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the years, and the lines represent the evolution. We can thus see that 2021 is the year in which education spending has increased the most, and 2020, following the pandemic, there is a reorientation of public spending towards the health sector.  
+
+### Public spending in developped countries 
+
 We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.  
 
 ```{r}
@@ -299,18 +299,58 @@ dep_by_country <- dep_chomage %>%
          time >= 2014 & time <= 2022,
          Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
 
-dep_by_country <- ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country)) +
+ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, group = Country, shape = Country)) +
   geom_line() +  
   geom_point() + 
   labs(title = "Public spending on education trends by country (2014-2022)",
        x = "Time",
        y = "Public spending",
        color = "Country") + 
-  theme_minimal()  
-
-print(dep_by_country)
+  theme_minimal() 
 ```
-Focusing solely on the G8 countries, we have assigned a color to each country, showing that the United States, France and Great Britain are the countries that spend the most on education. We can see that USA's public spending remains around 5,5 compared to Italy with 4,1. 
+
+Focusing solely on the G8 countries, we have assigned a color to each country, showing that the United States, France and Great Britain are the countries that spend the most on education. We can see that USA's public spending remains around 5,5 compared to Italy with 4,1. So, if we take the general trend into account, we can see that for the selected countries we have a drop in public spending on education. Moreover, we don't have any information about public spending on education in Russia.  
+
+### Public spending in developping countries 
+
+We'll be looking at public spending trends in developed countries such as the Afghanistan, Angola, Bangladesh, Bénin, Bhoutan, Burkina Faso, Burundi, Cambodge, Tchad, Comores, Djibouti, Erythrée, Ethiopie, Gambie, Guinée, Guinée-Bissau, Haiti, Iles Salomons, Kiribati, Lesotho, Libéria, Madagascar, Malawi, Mali, Mauritanie, Mozambique, Myanmar, Népal, Niger, Rwanda, Sao Tome et Principe, Sénégal, etc.. 
+
+```{r}
+dep_by_country <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`Public Spending`),
+         time >= 2014 & time <= 2022,
+         Country %in% c("AFG", "AGO", "ALG", "ANG", "ARG", "AZE", "TCH", "LES", "MAD", "GAM", "SEN", "NIG", "BUR", "MAU", "NEP", "CAM", "BRA"))
+
+ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, group = Country, shape = Country)) +
+  geom_line() +  
+  geom_point() + 
+  labs(title = "Public spending on education trends by country (2014-2022)",
+       x = "Time",
+       y = "Public spending",
+       color = "Country") + 
+  theme_minimal() 
+```
+## 2) Youth unemployement rate since 2014 in the world  
+
+In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. We therefore proceed in the same way as above, taking the most developed countries on the one hand, and developing countries on the other. Here, we analyze only the major trends.  
+
+### Unemployement rate in developped countries 
+
+```{r}
+dep_by_country <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`obs_value`),
+         time >= 2014 & time <= 2022,
+         Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
+
+ggplot(dep_by_country, aes(x = time, y = `obs_value`, color = Country, group = Country, shape = Country)) +
+  geom_line()+ 
+  labs(title = "Youth unemployement rate trends by country (2014-2022)",
+       x = "Time",
+       y = "Public spending",
+       color = "Country") + 
+  theme_minimal() 
+```
+
 
 
 
