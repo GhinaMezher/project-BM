@@ -313,13 +313,13 @@ Focusing solely on the G8 countries, we have assigned a color to each country, s
 
 ### Public spending in developping countries 
 
-We'll be looking at public spending trends in developed countries such as the Afghanistan, Angola, Bangladesh, Bénin, Bhoutan, Burkina Faso, Burundi, Cambodge, Tchad, Comores, Djibouti, Erythrée, Ethiopie, Gambie, Guinée, Guinée-Bissau, Haiti, Iles Salomons, Kiribati, Lesotho, Libéria, Madagascar, Malawi, Mali, Mauritanie, Mozambique, Myanmar, Népal, Niger, Rwanda, Sao Tome et Principe, Sénégal, etc.. 
+We'll be looking at public spending trends in developed countries such as : Africa Eastern and Southern (AFE), Afghanistan (AFG), Angola (AGO), Albania (ALB), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Singapore (SGP)
 
 ```{r}
 dep_by_country <- dep_chomage %>%
   filter(!is.na(time), !is.na(`Public Spending`),
          time >= 2014 & time <= 2022,
-         Country %in% c("AFG", "AGO", "ALG", "ANG", "ARG", "AZE", "TCH", "LES", "MAD", "GAM", "SEN", "NIG", "BUR", "MAU", "NEP", "CAM", "BRA"))
+         Country %in% c("AFG", "AGO", "AFE", "ALB", "ARG", "BFA", "BLZ", "CAF", "SGP"))
 
 ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, group = Country, shape = Country)) +
   geom_line() +  
@@ -340,35 +340,61 @@ In this section, we'll take a look at the evolution of the global youth unemploy
 dep_by_country <- dep_chomage %>%
   filter(!is.na(time), !is.na(`obs_value`),
          time >= 2014 & time <= 2022,
-         Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
+         Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR"))
 
 ggplot(dep_by_country, aes(x = time, y = `obs_value`, color = Country, group = Country, shape = Country)) +
   geom_line()+ 
   labs(title = "Youth unemployement rate trends by country (2014-2022)",
        x = "Time",
-       y = "Public spending",
+       y = "Youth unemployement",
        color = "Country") + 
   theme_minimal() 
 ```
+#### Unemployement rate in the United States since 2014 
 
+We'll compare the United States with a country with similar population, such as Brazil. 
 
+```{r}
+dep_by_country <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`obs_value`),
+         time >= 2014 & time <= 2022,
+         Country == "USA")
 
+ggplot(dep_by_country, aes(x = time, y = `obs_value`)) +
+  geom_line() + 
+  labs(title = "Youth Unemployment Rate Trends in the USA (2014-2022)",
+       x = "Time",
+       y = "Youth Unemployment Rate") + 
+  theme_minimal()
+```
+Geom_boxplot is better to understand the number of youth unemployed because is useful for comparing the distribution of a variable across different categories or groups. It provides more details. 
 
+```{r}
+dep_by_country <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`obs_value`),
+         time >= 2014 & time <= 2022,
+         Country == "USA")
 
+ggplot(dep_by_country, aes(x = factor(time), y = `obs_value`, fill = factor(`obs_value`))) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Youth Unemployment Rate Trends in the USA (2014-2022)",
+       x = "Time",
+       y = "Youth Unemployment") +
+  theme_minimal()
+```
+```{r}
+dep_by_country <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`obs_value`),
+         time >= 2014 & time <= 2022,
+         Country == "BRA")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+ggplot(dep_by_country, aes(x = factor(time), y = `obs_value`, fill = factor(`obs_value`))) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Youth Unemployment Rate Trends in the Brazil (2014-2022)",
+       x = "Time",
+       y = "Youth Unemployment") +
+  theme_minimal()
+```
 
 We'll produce two graphs to show the impact of education spending on the youth unemployment rate within a country, using France as an example, and between countries, comparing France with Germany. 
 
