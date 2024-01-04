@@ -455,6 +455,21 @@ ggplot(dep_chomage, aes(x = `obs_value` , y = `Public Spending`)) +
   labs(title = "Régression linéaire entre les dépenses d'éducation et le taux de chômage des jeunes")
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Annexe 
 
 ##Github repository
