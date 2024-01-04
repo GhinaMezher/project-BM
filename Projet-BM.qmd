@@ -10,13 +10,8 @@ editor:
     wrap: sentence
 ---
 
-# Links and sources
-
-The GitHub project can be found on: *https://github.com/GhinaMezher/project-BM*.git 2 collaborators can be found on this public project.
-
-We will use the data base from the World Bank and International Labor Organization that identifies the public spendings in education: *https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart* And for the data on youth unemployemnt rates depending on various caracteristics we will refer to the International Labor Organisation (ILO) database: *https://ilostat.ilo.org/fr/topics/youth/#*
-
 ```{r}
+#Calling all necessary libraries
 #| message: false
 here::i_am("project-BM.Rproj")
 library(here)
@@ -26,17 +21,58 @@ library(tidyr)
 library(vroom)
 library(knitr)
 ```
-
-# Attributing our databases to variables
-
 ```{r message=FALSE}
+# Attributing our databases to variables
 #| message: false
 dep_pub_raw<-vroom(here("dep-pub-raw.csv"),delim=",")
 dep_pub<-vroom(here("dep-pub-raw.csv"),skip=4)
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
 ```
 
-# A short description of the sources used
+# Our research question 
+## I. The importance and history of research in education
+
+  It is undeniable education profoundly shapes societal progress. From allowing humans to make world changing discoveries to multiplying the efficiency and use of physical capital; education lets each individual make use of their production power. 
+Education is also considered a fundamental right, as it is stipulated in the universal declaration of Human Rights 1948, and a key element of development as seen in the 2000 MDGs (MDG n°2) and the 2015 SDGs (SDG n°4).
+
+Today, economic research in education is considered a greatly developed field, highlighting the importance of public spending in education and the necessity for targeted funding and strategic policies. We owe the establishment of the field to the theory of human capital by Schultz, Becker and Mincer established in the 50's .
+What started as a simple causality relationship between additional years of education and wage differences was frivolously applied to empirical studies, and econometric models. This allowed researchers to understand countries' particular attributes and situations but also if lack of education should be considered a demand or a supply problem. 
+
+Investing in human capital, here in its educational form, is considered fundamental to the reduction of inequalities. Take for example woman's fertility. Research has found that, in developing countries, one additional year of schooling reduces woman's fertility rate by 10%, enabling a much needed demographic transition. This causality relationship can be explained by the increase of revenue on the labor market through additional years of schooling, allowing women to take on better jobs and increasing the opportunity cost of having a child. 
+
+## II. The link between education and unemployment 
+
+  The polarization of the labor market has become a clear and urgent issue. The dreaded phenomenon represents, for the middle class, the end of social mobility or as some might call it "The American/Capitalistic Dream". 
+Polarization of the labor market defines the historical decline of the rate of jobs that lie in the middle of the distribution of qualification (France Stratégie 2020). The prosperity of machinery and innovation has led to the decrease of basic qualification demanding jobs in favor of highly qualified jobs or low qualified jobs. This phenomenon has revealed itself particularly challenging for under-qualified youth, whose unemployment rate has increased in the past few years. 
+
+
+
+
+In order to form the subject of our study we begun with the same idea as the theory of capital : how can altering the offer of education impacts individuals' status on the labor market.
+
+However, in a will to understand the role the government must play when it comes to the offer in education we may ask ourselves : Should government leaders expect their educational spending to impact the unemployment rate ?
+
+A higher unemployment rate could also prompt governments to allocate more funds to education as a way to respond to the need for training to boost employability, we therefore see a potential double causality between educational spending and unemployment.
+The potential reciprocal influence between educational investments and workforce participation unveils a complex interplay, emphasizing the need for nuanced analysis to comprehend the multifaceted impact of education on labor markets.
+
+Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development. 
+
+All these elements lead us to ask the following question: How can public spending on education help reduce youth unemployment? 
+
+To answer our question, we will first look at the general trends in public spending and youth unemployment since 1970. We will then show that education spending is essential to reducing youth unemployment. Finally, we'll see that this is not enough, and that the reduction in the unemployment rate is made possible by other factors such as the country's development, rigidity on the labor market, etc. 
+
+# Data set description 
+
+Thanks to the richness of information in our ILO data base we will be able to study the impact of public educational spending (from the WB database) on the educational aspect of human capital.
+With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level.
+The micro impact can be observed by studying each country on its own and observing the variations throughout the years.
+This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries.
+We can therefore compare the effects of education spending on the youth unemployment rate within countries, i.e. between men and women, and between countries, i.e. the macroeconomic impact of education spending.
+
+We would like to highlight the real and empirical impact of the augmentation of educational spending on school attendance thanks to the "classif2" variable now called "Attendance".
+Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment.
+The underlying assumption is that a positive correlation between increased educational spending and higher attendance rates could translate into a subsequent decline in unemployment figures over the ensuing years.
+Therefore the project endeavors to decipher how these factors (public spending and attendance) interplay in the context of unemployment rates.
 
 Our topic of study in this project tackles the impact of education spending on the youth unemployment rate.
 For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility.
@@ -45,7 +81,7 @@ We're interested in every country in the world, which explain why we haven't inc
 
 Our databases are dense, which requires delimiting our subject such as the period on which we are going to be interested or the variables that we consider to be most relevant.
 
-# Description of the World bank database
+## Description of the World bank database
 
 First, many of the databases provided by the World Bank include time series data, allowing to analyze trends and changes over time.
 It could be essential for understanding the dynamics of variables.
@@ -59,7 +95,7 @@ It means that we could observe that the higher education spending led to the low
 
 We have described below the necessary informations of our database from the World Bank, which we have summarized in a table:
 
-## A table summary of our WB database
+### A table summary of our WB database
 
 ```{r echo:false}
 
@@ -76,7 +112,7 @@ dep_pub|>
   knitr::kable()
 ```
 
-## Variable description
+### Variable description
 
 -   "Country Name"/"Country Code": String value giving us an indicator for each country to classify values
 
@@ -84,7 +120,7 @@ dep_pub|>
 
 -   "Date": each column referring to a date for the % of GDP for government education spending going from 1960 to 2022
 
-# Description of the International Labor Organisation database
+## Description of the International Labor Organisation database
 
 Then, the International Labor Organization (ILO) provides a wealth of data related to labor and employment.
 The ILO sets international standards for labor and labor statistics.
@@ -100,7 +136,7 @@ The difficulties of ILO database is the description of variables that need to be
 To do this, we need to look up the code dictionary used by the ILO.
 As we did for the World Bank data base we have described below the necessary information of our database from the ILO, which we have summarized in a table:
 
-## A table summary of our ILO database
+### A table summary of our ILO database
 
 ```{r}
 # Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
@@ -117,8 +153,6 @@ chomage_jeune|>
             )|>
   knitr::kable()
 ```
-
-The names of the variables in the ILO database weren't clear enough for us, so we decided to rename them to make them easier to understand.
 
 ```{r}
 #We rename the column to better understand the variables
@@ -139,9 +173,9 @@ chomage_jeune<-chomage_jeune|>
                        TRUE~`sex`))
 ```
 
-## Variable description
+### Variable description
 
-### We have to look the dictionaries for the code used (i.e code list) from ILO
+We have to look the dictionaries for the code used (i.e code list) from ILO
 
 "Ref area": String value giving us each country's code, for example "AFG" for Afghanistan.
 It can refer to countries, geographic regions, groups of countries (by income level or others) or the world
@@ -172,14 +206,11 @@ The breakdown by sex and the items of this breakdown.
 
 "note_source": metadata related to the data source, it's a resting place (repositoire in french)
 
-# Data joining and cleaning
-
-## Cleaning the WB database
-
-In order to clean our world bank database we must delete columns/variables who have a unique value and dates that only have NA values.
-We rename our "Country Code" variable to "Country" and pivot our data frame in order to have a "time" variable to match the ILO database.
-
 ```{r}
+# Cleaning the WB database
+#In order to clean our world bank database we must delete columns/variables who have a unique value and dates that only have NA values.
+#We rename our "Country Code" variable to "Country" and pivot our data frame in order to have a "time" variable to match the ILO database.
+
 dep_pub_cleaning<-function(df){
   single_value<-function(my_var){
   (my_var|>unique()|>length())==1
@@ -196,11 +227,11 @@ dep_pub_cleaning<-function(df){
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
 ```
 
-## Cleaning the ILO database
 
-We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean.These are just codes used by the ILO to classify data.
 
 ```{r}
+# Cleaning the ILO database
+#We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean.These are just codes used by the ILO to classify data.
 chomage_jeune_cleaning<-function(df){
   single_value<-function(my_var){
   (my_var|>unique()|>length())==1
@@ -214,15 +245,14 @@ chomage_jeune_cleaning<-function(df){
 chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
 
-## Data joining
-
 ```{r}
+# Data joining
 dep_chomage<-merge(dep_pub_clean,chomage_jeune_clean,by=c("Country","time"))
 ```
 
-We use merge to join our 2 databases in order to match them by country (variable "Country") and date (variable "time").
-
 ## A table summary of our new database
+
+We've merged our 2 databases in order to match them by country (variable "Country") and date (variable "time").
 
 ```{r}
 dep_chomage|>
@@ -237,40 +267,10 @@ dep_chomage|>
             #"Time " = length(unique((dep_chomage$time)))))|>
 ```
 
-# Description of research question 
+# Data Analysis 
+## I. Public spending and youth unemployemnt since 2014' 
 
-Education is considered a fundamental element of human development, it is also a fundamental right as it is mentioned in the universal declaration of Human rights of 1948.
-Economic research in education became a complete and independent field of study in the 50s along with the Theory of human capital we owe to the economists Schultz, Becker and Mincer.
-
-This theory enunciates that one can invest in human capital (that is constituted of education, health, social protection and access to information) just like investing in physical capital like machinery, it highlights a causality relationship between years of schooling and wages.
-The theory of human capital was frivolously studied and applied to empirical studies and many econometric models in order to test its veracity and limits.
-In order to form the subject of our study we begun with the same idea as the theory of capital : how can altering the offer of education impacts individuals' status on the labor market.
-
-However, in a will to understand the role the government must play when it comes to the offer in education we may ask ourselves : Should government leaders expect their educational spending to impact the unemployment rate ?
-
-Thanks to the richness of information in our ILO data base we will be able to study the impact of public educational spending (from the WB database) on the educational aspect of human capital.
-With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level.
-The micro impact can be observed by studying each country on its own and observing the variations throughout the years.
-This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries.
-We can therefore compare the effects of education spending on the youth unemployment rate within countries, i.e. between men and women, and between countries, i.e. the macroeconomic impact of education spending.
-
-We would like to highlight the real and empirical impact of the augmentation of educational spending on school attendance thanks to the "classif2" variable now called "Attendance".
-Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment.
-The underlying assumption is that a positive correlation between increased educational spending and higher attendance rates could translate into a subsequent decline in unemployment figures over the ensuing years.
-Therefore the project endeavors to decipher how these factors (public spending and attendance) interplay in the context of unemployment rates.
-
-A higher unemployment rate could also prompt governments to allocate more funds to education as a way to respond to the need for training to boost employability, we therefore see a potential double causality between educational spending and unemployment.
-The potential reciprocal influence between educational investments and workforce participation unveils a complex interplay, emphasizing the need for nuanced analysis to comprehend the multifaceted impact of education on labor markets.
-
-Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development. 
-
-All these elements lead us to ask the following question: How can public spending on education help reduce youth unemployment? 
-
-To answer our question, we will first look at the general trends in public spending and youth unemployment since 1970. We will then show that education spending is essential to reducing youth unemployment. Finally, we'll see that this is not enough, and that the reduction in the unemployment rate is made possible by other factors such as the country's development, rigidity on the labor market, etc. 
-
-# I. Public spending and youth unemployemnt since 2014' 
-
-## 1) Public spending on educatution since 2014 in the world 
+### 1) Public spending on educatution since 2014 in the world 
 
 In this section, we'll be looking at how public spending on education has evolved around the world since 1960, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure. 
 
@@ -412,6 +412,8 @@ dep_chomage %>%
   labs(x = "Date", y = "Public Spending", title = "Public Spending for France and Germany")
 ```
 
+## The case of Africa: an inefficiency of educational spendings 
+
 ## Correlation test 
 
 To understand the relationship between public spending on education and the youth unemployment rate, we will perform a correlation analysis.
@@ -453,4 +455,10 @@ ggplot(dep_chomage, aes(x = `obs_value` , y = `Public Spending`)) +
   labs(title = "Régression linéaire entre les dépenses d'éducation et le taux de chômage des jeunes")
 ```
 
+# Annexe 
 
+##Github repository
+The GitHub project can be found on: *https://github.com/GhinaMezher/project-BM*.git 2 collaborators can be found on this public project.
+
+## Links and sources
+We used the data base from the World Bank and International Labor Organization that identifies the public spendings in education: *https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart* And for the data on youth unemployment rates depending on various caracteristics we referred to the International Labor Organisation (ILO) database: *https://ilostat.ilo.org/fr/topics/youth/#*
