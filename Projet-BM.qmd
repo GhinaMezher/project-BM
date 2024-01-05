@@ -113,14 +113,14 @@ dep_pub|>
   knitr::kable()
 ```
 
-#### Active Population in education database 
+#### Active population in education database 
 
 ```{r}
 #We have to do the same things previous, Our population_world variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
 
 table_dep<-colnames(population_world_raw)
 dep_pub|>
-  summarise("Origin"=table_dep[2],"Last update"= dep_pub_raw[[1,2]],
+  summarise("Origin"=table_dep[2],"Last update"= population_world_raw[[1,2]],
             "Nb of rows"=n(),
             "Nb of columns"=ncol(population_world),
             "First date"=colnames(population_world)[5],
