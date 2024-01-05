@@ -25,8 +25,10 @@ library(knitr)
 # Attributing our databases to variables
 #| message: false
 dep_pub_raw<-vroom(here("dep-pub-raw.csv"),delim=",")
-dep_pub<-vroom(here("dep-pub-raw.csv"),skip=4)
+dep_pub<-vroom(here("dep-pub-raw.csv"),skip= 4)
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
+population_world_raw <- vroom(here("pop-active.csv"), delim = ",")
+population_world <- vroom(here("pop-active.csv"), skip = 4)
 ```
 
 # Our research question 
@@ -44,9 +46,6 @@ Investing in human capital, here in its educational form, is considered fundamen
 
   The polarization of the labor market has become a clear and urgent issue. The dreaded phenomenon represents, for the middle class, the end of social mobility or as some might call it "The American/Capitalistic Dream". 
 Polarization of the labor market defines the historical decline of the rate of jobs that lie in the middle of the distribution of qualification (France Stratégie 2020). The prosperity of machinery and innovation has led to the decrease of basic qualification demanding jobs in favor of highly qualified jobs or low qualified jobs. This phenomenon has revealed itself particularly challenging for under-qualified youth, whose unemployment rate has increased in the past few years. 
-
-
-
 
 In order to form the subject of our study we begun with the same idea as the theory of capital : how can altering the offer of education impacts individuals' status on the labor market.
 
@@ -97,6 +96,8 @@ We have described below the necessary informations of our database from the Worl
 
 ### A table summary of our WB database
 
+#### Public spendings in education database 
+
 ```{r echo:false}
 
 #Our dep_pub_raw variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
@@ -112,6 +113,22 @@ dep_pub|>
   knitr::kable()
 ```
 
+#### Active Population in education database 
+
+```{r}
+#We have to do the same things previous, Our population_world variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
+
+table_dep<-colnames(population_world_raw)
+dep_pub|>
+  summarise("Origin"=table_dep[2],"Last update"= dep_pub_raw[[1,2]],
+            "Nb of rows"=n(),
+            "Nb of columns"=ncol(population_world),
+            "First date"=colnames(population_world)[5],
+            "Last date"=colnames(population_world)[67],
+            )|>
+  knitr::kable()
+
+```
 ### Variable description
 
 -   "Country Name"/"Country Code": String value giving us an indicator for each country to classify values
@@ -206,6 +223,8 @@ The breakdown by sex and the items of this breakdown.
 
 "note_source": metadata related to the data source, it's a resting place (repositoire in french)
 
+#### Public spending in education 
+
 ```{r}
 # Cleaning the WB database
 #In order to clean our world bank database we must delete columns/variables who have a unique value and dates that only have NA values.
@@ -227,7 +246,30 @@ dep_pub_cleaning<-function(df){
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
 ```
 
+#### Active population in the world
 
+```{r}
+# Cleaning the WB database
+#In order to clean our world bank database we must delete columns/variables who have a unique value and dates that only have NA values.
+#We rename our "Country Code" variable to "Country" and pivot our data frame in order to have a "time" variable to match the ILO database.
+
+pop_cleaning<-function(df){
+  single_value<-function(my_var){
+  (my_var|>unique()|>length())==1
+  }
+  country_codes<-df|>distinct(`Country Name`, `Country Code`)
+  df_clean<-df|>
+    select(-`Country Name`)|>
+    rename(Country=`Country Code`)|>
+    select(!where(\(.x)all(is.na(.x))))|>
+    select(!where(single_value))|>
+    pivot_longer(cols = -Country, names_to = "time", values_to = "Population")
+}
+
+pop_clean<-pop_cleaning(population_world)
+```
+
+#### Youth unemployement in the world  
 
 ```{r}
 # Cleaning the ILO database
@@ -247,7 +289,11 @@ chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 
 ```{r}
 # Data joining
-dep_chomage<-merge(dep_pub_clean,chomage_jeune_clean,by=c("Country","time"))
+# First merge dep_pub_clean and pop_clean
+dep_pop <- merge(dep_pub_clean, pop_clean, by = c("Country", "time"))
+
+# Then merge the result with chomage_jeune_clean
+dep_chomage_pop <- merge(dep_pop, chomage_jeune_clean, by = c("Country", "time"))
 ```
 
 ## A table summary of our new database
@@ -255,13 +301,13 @@ dep_chomage<-merge(dep_pub_clean,chomage_jeune_clean,by=c("Country","time"))
 We've merged our 2 databases in order to match them by country (variable "Country") and date (variable "time").
 
 ```{r}
-dep_chomage|>
-  summarise("Title"="Public spendings and unemployment according to date and country",
+dep_chomage_pop|>
+  summarise("Title"="Public spendings and unemployment according to date and country with population",
             "Nb of rows"=n(),
-            "Nb of columns"=ncol(dep_chomage),
-            "Nb of country"=length(unique(dep_chomage$Country)),
-            "Age groups"=length(unique(dep_chomage$`Age groups`)),
-            "Time frame"=paste(min(dep_chomage$time),"-",max(dep_chomage$time)))|>
+            "Nb of columns"=ncol(dep_chomage_pop),
+            "Nb of country"=length(unique(dep_chomage_pop$Country)),
+            "Age groups"=length(unique(dep_chomage_pop$`Age groups`)),
+            "Time frame"=paste(min(dep_chomage_pop$time),"-",max(dep_chomage_pop$time)))|>
   knitr::kable()
             
             #"Time " = length(unique((dep_chomage$time)))))|>
@@ -275,11 +321,11 @@ dep_chomage|>
 In this section, we'll be looking at how public spending on education has evolved around the world since 1960, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure. 
 
 ```{r}
-dep_chomage <- dep_chomage %>%
+dep_chomage_pop <- dep_chomage_pop %>%
   filter(!is.na(time), !is.na(`Public Spending`),
          time >= 2014 & time <= 2022)
 
-ggplot(dep_chomage, aes(x = time, y = `Public Spending`)) +
+ggplot(dep_chomage_pop, aes(x = time, y = `Public Spending`)) +
   geom_line(color = "blue") +  
   geom_point(color = "red") +  
   labs(title = "Public spending on education trends (2014-2022)",
@@ -294,7 +340,7 @@ Thanks to this graph, we have the evolution of public spending on education over
 We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.  
 
 ```{r}
-dep_by_country <- dep_chomage %>%
+dep_by_country <- dep_chomage_pop %>%
   filter(!is.na(time), !is.na(`Public Spending`),
          time >= 2014 & time <= 2022,
          Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
@@ -316,7 +362,7 @@ Focusing solely on the G8 countries, we have assigned a color to each country, s
 We'll be looking at public spending trends in developed countries such as : Africa Eastern and Southern (AFE), Afghanistan (AFG), Angola (AGO), Albania (ALB), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Singapore (SGP)
 
 ```{r}
-dep_by_country <- dep_chomage %>%
+dep_by_country <- dep_chomage_pop %>%
   filter(!is.na(time), !is.na(`Public Spending`),
          time >= 2014 & time <= 2022,
          Country %in% c("AFG", "AGO", "AFE", "ALB", "ARG", "BFA", "BLZ", "CAF", "SGP"))
@@ -337,7 +383,7 @@ In this section, we'll take a look at the evolution of the global youth unemploy
 ### Unemployement rate in developped countries 
 
 ```{r}
-dep_by_country <- dep_chomage %>%
+dep_by_country <- dep_chomage_pop %>%
   filter(!is.na(time), !is.na(`obs_value`),
          time >= 2014 & time <= 2022,
          Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR"))
@@ -355,7 +401,7 @@ ggplot(dep_by_country, aes(x = time, y = `obs_value`, color = Country, group = C
 We'll compare the United States with a country with similar population, such as Brazil. 
 
 ```{r}
-dep_by_country <- dep_chomage %>%
+dep_by_country <- dep_chomage_pop %>%
   filter(!is.na(time), !is.na(`obs_value`),
          time >= 2014 & time <= 2022,
          Country == "USA")
@@ -370,7 +416,7 @@ ggplot(dep_by_country, aes(x = time, y = `obs_value`)) +
 Geom_boxplot is better to understand the number of youth unemployed because is useful for comparing the distribution of a variable across different categories or groups. It provides more details. 
 
 ```{r}
-dep_by_country <- dep_chomage %>%
+dep_by_country <- dep_chomage_pop %>%
   filter(!is.na(time), !is.na(`obs_value`),
          time >= 2014 & time <= 2022,
          Country == "USA")
@@ -383,7 +429,7 @@ ggplot(dep_by_country, aes(x = factor(time), y = `obs_value`, fill = factor(`obs
   theme_minimal()
 ```
 ```{r}
-dep_by_country <- dep_chomage %>%
+dep_by_country <- dep_chomage_pop %>%
   filter(!is.na(time), !is.na(`obs_value`),
          time >= 2014 & time <= 2022,
          Country == "BRA")
@@ -402,7 +448,7 @@ We'll produce two graphs to show the impact of education spending on the youth u
 
 ### Comparisons between ages and sex
 ```{r}
-dep_chomage|>
+dep_chomage_pop|>
   filter(Country == 'FRA')|>
   group_by(Country)|>
   ggplot(aes(x = time, y = `Public Spending`,color=`Age groups`)) +
@@ -416,7 +462,7 @@ We can see that the unemployment rate for young people in general, taking both m
 ### Comparisons between ages 
 
 ```{r}
-dep_chomage %>%
+dep_chomage_pop %>%
   filter(Country == 'FRA') %>%
   group_by(Country) %>%
   ggplot(aes(x = time, y = `Public Spending`, color = `Age groups`)) +
@@ -429,7 +475,7 @@ This graph shows the evolution of the unemployment rate over the period 2005-202
 ## Comparison between country 
 
 ```{r}
-dep_chomage %>%
+dep_chomage_pop %>%
   filter(Country %in% c('GER','FRA')) %>%
   group_by(Country) %>%
   ggplot(aes(x = time, y = `Public Spending`, color = `Age groups`)) +
@@ -445,13 +491,13 @@ dep_chomage %>%
 To understand the relationship between public spending on education and the youth unemployment rate, we will perform a correlation analysis.
 
 ```{r}
-correlation_result <- cor.test(dep_chomage$`Public Spending`, dep_chomage$`obs_value`)
+correlation_result <- cor.test(dep_chomage_pop$`Public Spending`, dep_chomage_pop$`obs_value`)
 correlation_result
 ```
 The correlation test provides valuable insights into the strength and direction of the linear relationship between public spending on education and the youth unemployment rate. The correlation coefficient and p-value help us assess the statistical significance of the observed correlation.
 
 ```{r}
-ggplot(dep_chomage, aes(x = `Public Spending`, y = `obs_value`)) +
+ggplot(dep_chomage_pop, aes(x = `Public Spending`, y = `obs_value`)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate")
@@ -471,11 +517,11 @@ For the purposes of this project, we can therefore use the following instrumenta
 
 ```{r}
 library(tidyverse)
-regression_model <- lm(`obs_value` ~ `Public Spending`, data = dep_chomage)
+regression_model <- lm(`obs_value` ~ `Public Spending`, data = dep_chomage_pop)
 summary(regression_model)
 ```
 ```{r}
-ggplot(dep_chomage, aes(x = `obs_value` , y = `Public Spending`)) +
+ggplot(dep_chomage_pop, aes(x = `obs_value` , y = `Public Spending`)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Régression linéaire entre les dépenses d'éducation et le taux de chômage des jeunes")
