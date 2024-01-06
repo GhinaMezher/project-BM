@@ -76,7 +76,7 @@ Therefore the project endeavors to decipher how these factors (public spending a
 Our topic of study in this project tackles the impact of education spending on the youth unemployment rate.
 For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility.
 For example, World Bank compiles and makes available a wide range data on global economic development such as expenditures in school per country.
-We're interested in every country in the world, which explain why we haven't included OECD data, which is limited to 40 countries.
+We're interested in every country in the world, which explain why we haven't included OECD data, which is limited to 38 countries.
 
 Our databases are dense, which requires delimiting our subject such as the period on which we are going to be interested or the variables that we consider to be most relevant.
 
@@ -129,6 +129,7 @@ dep_pub|>
   knitr::kable()
 
 ```
+
 ### Variable description
 
 -   "Country Name"/"Country Code": String value giving us an indicator for each country to classify values
@@ -379,6 +380,20 @@ ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, gro
 ## 2) Youth unemployement rate since 2014 in the world  
 
 In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. We therefore proceed in the same way as above, taking the most developed countries on the one hand, and developing countries on the other. Here, we analyze only the major trends.  
+
+Employment is a means of accessing the wealth produced through work, but not all work is employment. It is a source of income. While work designates the activity. 
+
+Unemployment refers to the deprivation of a job. An unemployed person is not deprived of work, but of employment. For the person who holds it, employment is a source of income through participation in the economic distribution of the wealth produced.
+
+According to ILO, an unemployed person is a person aged 15 or over who simultaneously meets three conditions: being unemployed during a given week; being available to take up a job within two weeks; having actively looked for a job in the last four weeks or having found one starting in less than three months.
+
+In the wake of worsening youth unemployment in Europe, a debate has recently emerged about the instrument used at the ILO: should rates or ratios be used to express youth unemployment? 
+
+The difference lies in the denominator: only the young workforce - those working or looking for work - is taken into account in the case of the rate, as opposed to the entire 15-24 age group - including full-time students - in the case of the ratio. 
+
+So, if we look at 200 young people, 100 of whom are students and 50 employed, the unemployment rate is 50 percent, while the ratio is 25 percent.
+
+Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce.
 
 ### Unemployement rate in developped countries 
 
