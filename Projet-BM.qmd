@@ -27,8 +27,7 @@ library(knitr)
 dep_pub_raw<-vroom(here("dep-pub-raw.csv"),delim=",")
 dep_pub<-vroom(here("dep-pub-raw.csv"),skip= 4)
 chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
-population_world_raw <- vroom(here("pop-active.csv"), delim = ",")
-population_world <- vroom(here("pop-active.csv"), skip = 4)
+population_world<- vroom(here("pop.csv"))
 ```
 
 # Our research question 
@@ -113,23 +112,6 @@ dep_pub|>
   knitr::kable()
 ```
 
-#### Active population in education database 
-
-```{r}
-#We have to do the same things previous, Our population_world variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
-
-table_dep<-colnames(population_world_raw)
-dep_pub|>
-  summarise("Origin"=table_dep[2],"Last update"= population_world_raw[[1,2]],
-            "Nb of rows"=n(),
-            "Nb of columns"=ncol(population_world),
-            "First date"=colnames(population_world)[5],
-            "Last date"=colnames(population_world)[67],
-            )|>
-  knitr::kable()
-
-```
-
 ### Variable description
 
 -   "Country Name"/"Country Code": String value giving us an indicator for each country to classify values
@@ -154,7 +136,7 @@ The difficulties of ILO database is the description of variables that need to be
 To do this, we need to look up the code dictionary used by the ILO.
 As we did for the World Bank data base we have described below the necessary information of our database from the ILO, which we have summarized in a table:
 
-### A table summary of our ILO database
+### A table summary of our ILO database : unemployement 
 
 ```{r}
 # Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
@@ -183,6 +165,45 @@ chomage_jeune <- chomage_jeune |>
                                 `Age groups`=="AGE_YTHBANDS_Y15-29" ~ "15-29",
                                 `Age groups`=="AGE_YTHBANDS_Y20-24" ~ "20-24",
                                 `Age groups`=="AGE_YTHBANDS_Y25-29" ~ "25-29",
+         TRUE ~`Age groups`))
+chomage_jeune<-chomage_jeune|>
+  mutate(`sex`=case_when(`sex`=="SEX_M"~"Male",
+                       `sex`=="SEX_F"~"Female",
+                       `sex`=="SEX_T"~"Total",
+                       TRUE~`sex`))
+```
+
+### A table summary of our ILO database : young population 
+
+```{r}
+# Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
+
+table_pop<-colnames(population_world)
+population_world|>
+  summarise("Origins"=table_pop[1],
+            "Nb of rows"=n(),
+            "Nb of columns"=ncol(population_world),
+            "Nb of countries"= length(unique((population_world$ref_area.label))),
+            "Nb of sex"= length(unique((population_world$sex.label))),
+            "Age groups "= length(unique((population_world$classif1.label))),
+            "Time " = length(unique((population_world$time))) 
+            )|>
+  knitr::kable()
+```
+
+```{r}
+#We rename the column to better understand the variables
+
+colnames(population_world)[colnames(population_world) == "ref_area.label"] <- "Country"
+colnames(population_world)[colnames(population_world) == "sex.label"] <- "Sex"
+colnames(population_world)[colnames(population_world) == "classif1.label"] <- "Age groups"
+colnames(population_world)[colnames(population_world) == "classif2.label"] <- "Attendance"
+colnames(population_world)[colnames(population_world) == "obs_value"] <- "Young people of working age"
+population_world <- population_world |> 
+  mutate(`Age groups`=case_when(`Age groups`=="Age (Tranches des jeunes): 15-19" ~ "15-19",
+                                `Age groups`=="Age (Tranches des jeunes): 15-29" ~ "15-29",
+                                `Age groups`=="Age (Tranches des jeunes): 20-24" ~ "20-24",
+                                `Age groups`=="Age (Tranches des jeunes): 25-29" ~ "25-29",
          TRUE ~`Age groups`))
 chomage_jeune<-chomage_jeune|>
   mutate(`sex`=case_when(`sex`=="SEX_M"~"Male",
@@ -247,29 +268,6 @@ dep_pub_cleaning<-function(df){
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
 ```
 
-#### Active population in the world
-
-```{r}
-# Cleaning the WB database
-#In order to clean our world bank database we must delete columns/variables who have a unique value and dates that only have NA values.
-#We rename our "Country Code" variable to "Country" and pivot our data frame in order to have a "time" variable to match the ILO database.
-
-pop_cleaning<-function(df){
-  single_value<-function(my_var){
-  (my_var|>unique()|>length())==1
-  }
-  country_codes<-df|>distinct(`Country Name`, `Country Code`)
-  df_clean<-df|>
-    select(-`Country Name`)|>
-    rename(Country=`Country Code`)|>
-    select(!where(\(.x)all(is.na(.x))))|>
-    select(!where(single_value))|>
-    pivot_longer(cols = -Country, names_to = "time", values_to = "Population")
-}
-
-pop_clean<-pop_cleaning(population_world)
-```
-
 #### Youth unemployement in the world  
 
 ```{r}
@@ -288,14 +286,37 @@ chomage_jeune_cleaning<-function(df){
 chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
 
-```{r}
-# Data joining
-# First merge dep_pub_clean and pop_clean
-dep_pop <- merge(dep_pub_clean, pop_clean, by = c("Country", "time"))
+#### Young people of working age 
 
-# Then merge the result with chomage_jeune_clean
-dep_chomage_pop <- merge(dep_pop, chomage_jeune_clean, by = c("Country", "time"))
+```{r}
+# Cleaning the ILO database 
+#We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean.These are just codes used by the ILO to classify data.
+population_world_cleaning<-function(df){
+  single_value<-function(my_var){
+  (my_var|>unique()|>length())==1
+  }
+  df_clean<-df|>
+    select(!where(\(.x)all(is.na(.x))))|>
+    select(!where(single_value)) |>
+    select(-"source.label", -"obs_status.label", -"note_source.label", -"note_indicator.label", -"note_classif.label")
+}
+pop_clean<-population_world_cleaning(population_world)
 ```
+
+
+```{r}
+# Assuming 'Country' is the common column
+merged_data1 <- merge(dep_pub_clean, pop_clean, by = "Country", all = TRUE)
+
+# Assuming 'Country' is the common column
+merged_data2 <- merge(chomage_jeune_clean, pop_clean, by = "Country", all = TRUE)
+```
+
+```{r}
+# Assuming 'Country' is the common column
+merged_data <- merge(merge(dep_pub_clean, pop_clean, by = "Country", all = TRUE), chomage_jeune_clean, by = "Country", all = TRUE)
+```
+
 
 ## A table summary of our new database
 
