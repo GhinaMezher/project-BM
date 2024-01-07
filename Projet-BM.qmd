@@ -160,6 +160,7 @@ chomage_jeune|>
 colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Country"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "obs_value"] <- "Youth unemployement"
 chomage_jeune <- chomage_jeune |> 
   mutate(`Age groups`=case_when(`Age groups`=="AGE_YTHBANDS_Y15-19" ~ "15-19",
                                 `Age groups`=="AGE_YTHBANDS_Y15-29" ~ "15-29",
@@ -183,9 +184,9 @@ population_world|>
   summarise("Origins"=table_pop[1],
             "Nb of rows"=n(),
             "Nb of columns"=ncol(population_world),
-            "Nb of countries"= length(unique((population_world$ref_area.label))),
-            "Nb of sex"= length(unique((population_world$sex.label))),
-            "Age groups "= length(unique((population_world$classif1.label))),
+            "Nb of countries"= length(unique((population_world$ref_area))),
+            "Nb of sex"= length(unique((population_world$sex))),
+            "Age groups "= length(unique((population_world$classif1))),
             "Time " = length(unique((population_world$time))) 
             )|>
   knitr::kable()
@@ -194,18 +195,16 @@ population_world|>
 ```{r}
 #We rename the column to better understand the variables
 
-colnames(population_world)[colnames(population_world) == "ref_area.label"] <- "Country"
-colnames(population_world)[colnames(population_world) == "sex.label"] <- "Sex"
-colnames(population_world)[colnames(population_world) == "classif1.label"] <- "Age groups"
-colnames(population_world)[colnames(population_world) == "classif2.label"] <- "Attendance"
+colnames(population_world)[colnames(population_world) == "sex.label"] <- "sex"
+colnames(population_world)[colnames(population_world) == "classif1"] <- "Age groups"
 colnames(population_world)[colnames(population_world) == "obs_value"] <- "Young people of working age"
 population_world <- population_world |> 
-  mutate(`Age groups`=case_when(`Age groups`=="Age (Tranches des jeunes): 15-19" ~ "15-19",
-                                `Age groups`=="Age (Tranches des jeunes): 15-29" ~ "15-29",
-                                `Age groups`=="Age (Tranches des jeunes): 20-24" ~ "20-24",
-                                `Age groups`=="Age (Tranches des jeunes): 25-29" ~ "25-29",
+  mutate(`Age groups`=case_when(`Age groups`=="AGE_YTHBANDS_Y15-19" ~ "15-19",
+                                `Age groups`== "AGE_YTHBANDS_Y15-29" ~ "15-29",
+                                `Age groups`=="AGE_YTHBANDS_Y20-24" ~ "20-24",
+                                `Age groups`=="AGE_YTHBANDS_Y25-29" ~ "25-29",
          TRUE ~`Age groups`))
-chomage_jeune<-chomage_jeune|>
+population_world<-population_world|>
   mutate(`sex`=case_when(`sex`=="SEX_M"~"Male",
                        `sex`=="SEX_F"~"Female",
                        `sex`=="SEX_T"~"Total",
@@ -288,35 +287,33 @@ chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 
 #### Young people of working age 
 
+
 ```{r}
-# Cleaning the ILO database 
-#We remove some column which will not used for the projet like "Source", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called chomage_jeune_clean.These are just codes used by the ILO to classify data.
-population_world_cleaning<-function(df){
+# Cleaning the ILO database
+#We remove some column which will not used for the projet like "Source", "Attendance", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called pop_clean.These are just codes used by the ILO to classify data.
+pop_cleaning<-function(df){
   single_value<-function(my_var){
   (my_var|>unique()|>length())==1
   }
   df_clean<-df|>
+    rename(Country=ref_area)|>
     select(!where(\(.x)all(is.na(.x))))|>
     select(!where(single_value)) |>
-    select(-"source.label", -"obs_status.label", -"note_source.label", -"note_indicator.label", -"note_classif.label")
+    select(-"source", -"classif2", -"obs_status", -"note_source", -"note_indicator")
 }
-pop_clean<-population_world_cleaning(population_world)
+pop_clean<-pop_cleaning(population_world)
 ```
 
-
+### Merge our three database 
 ```{r}
-# Assuming 'Country' is the common column
-merged_data1 <- merge(dep_pub_clean, pop_clean, by = "Country", all = TRUE)
+# Merge chomage_jeune_clean and pop_clean to have only one database from ILO
+chomage_pop <- merge(chomage_jeune_clean, pop_clean, by = c("Country", "time", "sex", "Age groups"), all = TRUE)
 
-# Assuming 'Country' is the common column
-merged_data2 <- merge(chomage_jeune_clean, pop_clean, by = "Country", all = TRUE)
-```
+# Merge the new database from ILO with dep_pub_clean 
+dep_chomage_pop <- merge(chomage_pop, dep_pub_clean, by = c("Country", "time"), all = TRUE)
 
-```{r}
-# Assuming 'Country' is the common column
-merged_data <- merge(merge(dep_pub_clean, pop_clean, by = "Country", all = TRUE), chomage_jeune_clean, by = "Country", all = TRUE)
-```
-
+# We have a new database merging by three database. In the following we will maily use it. 
+``` 
 
 ## A table summary of our new database
 
@@ -418,20 +415,28 @@ Applying a ratio can be useful for comparing levels of youth unemployment betwee
 
 ### Unemployement rate in developped countries 
 
-```{r}
-dep_by_country <- dep_chomage_pop %>%
-  filter(!is.na(time), !is.na(`obs_value`),
-         time >= 2014 & time <= 2022,
-         Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR"))
+We'll add a new column called "unemployment rate", calculated as the ratio of unemployed young people to the total number of young people. 
 
-ggplot(dep_by_country, aes(x = time, y = `obs_value`, color = Country, group = Country, shape = Country)) +
-  geom_line()+ 
-  labs(title = "Youth unemployement rate trends by country (2014-2022)",
-       x = "Time",
-       y = "Youth unemployement",
-       color = "Country") + 
-  theme_minimal() 
+```{r}
+# We use mutate and we calculate the new column. 
+dep_chomage_pop_1 <- dep_chomage_pop %>%
+  mutate(`Young Unemployment Rate` = (`Youth unemployement` / `Young people of working age`)*100)
 ```
+
+```{r}
+France <- dep_chomage_pop_1 %>%
+  filter(Country == "FRA")
+
+ggplot(France, aes(x = time, y = `Young Unemployment Rate`)) +
+  geom_line() +
+  labs(title = "Évolution du taux de chômage des jeunes en Afghanistan (2014-2022)",
+       x = "Année",
+       y = "Taux de chômage des jeunes (%)") +
+  theme_minimal()
+```
+
+
+
 #### Unemployement rate in the United States since 2014 
 
 We'll compare the United States with a country with similar population, such as Brazil. 
