@@ -248,11 +248,18 @@ dep_chomage|>
 In this section, we'll be looking at how public spending on education has evolved around the world since 1960, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
 
 ```{r}
-dep_chomage <- dep_chomage %>%
+mean_by_date <- dep_chomage %>%
+  group_by(time) %>%
+  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = TRUE))
+print(mean_by_date)
+```
+
+```{r}
+mean_by_date <- dep_chomage %>%
   filter(!is.na(time), !is.na(`Public Spending (% of GDP)`),
          time >= 2014 & time <= 2022)
 
-ggplot(dep_chomage, aes(x = time, y = `Public Spending (% of GDP)`)) +
+ggplot(mean_by_date, aes(x = time, y = `Public Spending (% of GDP)`)) +
   geom_line(color = "blue") +  
   geom_point(color = "red") +  
   labs(title = "Public spending on education trends (2014-2022)",
@@ -260,7 +267,6 @@ ggplot(dep_chomage, aes(x = time, y = `Public Spending (% of GDP)`)) +
        y = "Public spending (% of GDP)") +  
   theme_minimal()  
 ```
-
 Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the years, and the lines represent the evolution. We can thus see that 2021 is the year in which education spending has increased the most, and 2020, following the pandemic, there is a reorientation of public spending towards the health sector.
 
 ### Public spending in developped countries
@@ -268,41 +274,63 @@ Thanks to this graph, we have the evolution of public spending on education over
 We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.
 
 ```{r}
-dep_by_country <- dep_chomage %>%
-  filter(!is.na(time), !is.na(`Public Spending (% of GDP)`),
-         time >= 2014 & time <= 2022,
-         Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
+# Filter for G8 countries
+dep_chomage_g8 <- dep_chomage %>%
+  filter(Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
 
-ggplot(dep_by_country, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
-  geom_line() +  
-  geom_point() + 
-  labs(title = "Public spending on education trends for G8 countries (2014-2022)",
+# Calculate the mean for each date
+mean_g8 <- dep_chomage_g8 %>%
+  group_by(time) %>%
+  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = TRUE))
+
+print(mean_g8)
+```
+
+```{r}
+dep_chomage_g8_filtered <- dep_chomage_g8 %>%
+  filter(time >= 2000 & time <= 2022)
+
+ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
+  geom_line(na.rm = FALSE) +  
+  geom_point(na.rm = FALSE) + 
+  labs(title = "Public spending on education trends for G8 countries (2000-2022)",
        x = "Time",
        y = "Public spending (% of GDP)",
        color = "Country") + 
-  theme_minimal() 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
 Focusing solely on the G8 countries, we have assigned a color to each country, showing that the United States (pink), France (yellow) and Great Britain (green) are the countries that spend the most on education. We can see that USA's public spending remains around 5,5% of the GDP compared to Italy with 4,1 of GDP. So, if we take the general trend into account, we can see that for the selected countries we have a drop in public spending on education. Moreover, we don't have any information about public spending on education in Russia for 2021 and 2022. 
 
 ### Public spending in developping countries - on the African continent
 
 We'll be looking at public spending trends in developed countries such as : Africa Eastern and Southern (AFE), Burundi (BDI), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Congo - Democratic Republic of Congo (COD). We've chosen some of the poorest countries in auric to make a comparison. 
 
-```{r}
-dep_by_country_africa <- dep_chomage%>%
-  filter(!is.na(time), !is.na(`Public Spending (% of GDP)`),
-         time >= 2014 & time <= 2022,
-         Country %in% c("AFE", "BDI", "BFA", "BLZ", "CAF", "COD"))
 
-ggplot(dep_by_country_africa, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
-  geom_line() +  
-  geom_point() + 
-  labs(title = "Public spending on education trends for African countries (2014-2022)",
+```{r}
+# Filter for African countries
+dep_chomage_afr <- dep_chomage %>%
+  filter(Country %in% c("AFE", "BDI", "BFA", "BLZ", "CAF", "COD"))
+
+# Calculate the mean for each date
+mean_africa <- dep_chomage_afr %>%
+  group_by(time) %>%
+  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = TRUE))
+
+print(mean_g8)
+```
+
+```{r}
+dep_chomage_afr_filtered <- dep_chomage_afr %>%
+  filter(time >= 2010 & time <= 2022)
+
+ggplot(dep_chomage_afr_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
+  geom_line(na.rm = FALSE) +  
+  geom_point(na.rm = FALSE) + 
+  labs(title = "Public spending on education trends for African countries (2010-2022)",
        x = "Time",
-       y = "Public spending",
+       y = "Public spending (% of GDP)",
        color = "Country") + 
-  theme_minimal() 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 We can see that public spending on education is very low in the Central African Republic (blue) and the Republique Démocratique du Congo (COD), where it is around 2% of GDP. We'll use this information to see if youth unemployment is higher in these countries. If so, we could already establish a syntesis according to which public spending on education can help reduce the youth unemployment rate. 
 
@@ -324,7 +352,7 @@ So, if we look at 200 young people, 100 of whom are students and 50 employed, th
 
 Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce. In the case of ILO database we have a unemployment rate which which already provides an overview of our research project. 
 
-### Unemployement rate in the developped countries 
+### Unemployement rate in the developped countries : the United States 
 
 ```{r}
 dep_by_country_USA <- dep_chomage %>%
@@ -374,6 +402,24 @@ ggplot(dep_by_country_BLZ, aes(x = factor(time), y = `Youth unemployment (%)`, f
 ```
 
 We decided to take the USA, which is one of the countries devoting the highest proportion of its GDP to education, and Belize, which is one of the countries devoting the lowest proportion of its GDP to education. As we can see, youth unemployment in the USA is lower than in the Belize (almost 15% against 8% for USA).  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
