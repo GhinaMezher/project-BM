@@ -388,20 +388,36 @@ Geom_boxplot is better to understand the number of youth unemployed because is u
 
 #### Youth unemployement rate trends in the USA by gender (2014-2022)
 
-```{r}
+```{r} 
+# By gender with Male and Female 
 dep_by_country_USA <- dep_chomage %>%
   filter(!is.na(time), !is.na(`Youth unemployment (%)`),
          time >= 2014 & time <= 2022,
-         Country %in% c("USA"))
+         Country %in% c("USA"),
+         sex != "Total")  # Exclude the "Total" category
 
-ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(`Young Unemployment Rate`), color = factor(sex))) +
-  geom_boxplot(position = position_dodge(width = 0.8), fill = "lightblue") +
+ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(sex))) +
+  geom_boxplot(position = position_dodge(width = 0.8), color = "darkblue") +
   labs(title = "Youth Unemployment rate trends in the USA by Gender (2014-2022)",
        x = "Time",
        y = "Youth Unemployment Rate") +
   theme_minimal()
 ```
+```{r}
+# Only with the total 
+dep_by_country_USA <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
+         time >= 2014 & time <= 2022,
+         Country %in% c("USA"),
+         !(sex %in% c("Male", "Female")))  # Exclude the "Male" and "Female" categories
 
+ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(sex))) +
+  geom_boxplot(position = position_dodge(width = 0.8), color = "darkblue") +
+  labs(title = "Youth Unemployment rate trends in the USA by Gender (2014-2022)",
+       x = "Time",
+       y = "Youth Unemployment Rate") +
+  theme_minimal()
+```
 ### Unemployement rate in the developping countries : African countries 
 
 ```{r}
