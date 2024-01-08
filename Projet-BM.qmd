@@ -26,76 +26,56 @@ library(knitr)
 #| message: false
 dep_pub_raw<-vroom(here("dep-pub-raw.csv"),delim=",")
 dep_pub<-vroom(here("dep-pub-raw.csv"),skip= 4)
-chomage_jeune<-vroom(here("chomage-jeune-S-A-ST-raw.csv"))
-population_world<- vroom(here("pop.csv"))
+chomage_jeune<-vroom(here("unemployment.csv"), delim = ",")
 ```
 
-# Our research question 
+# Our research question
+
 ## I. The importance and history of research in education
 
-  It is undeniable education profoundly shapes societal progress. From allowing humans to make world changing discoveries to multiplying the efficiency and use of physical capital; education lets each individual make use of their production power. 
-Education is also considered a fundamental right, as it is stipulated in the universal declaration of Human Rights 1948, and a key element of development as seen in the 2000 MDGs (MDG n°2) and the 2015 SDGs (SDG n°4).
+It is undeniable education profoundly shapes societal progress. From allowing humans to make world changing discoveries to multiplying the efficiency and use of physical capital; education lets each individual make use of their production power. Education is also considered a fundamental right, as it is stipulated in the universal declaration of Human Rights 1948, and a key element of development as seen in the 2000 MDGs (MDG n°2) and the 2015 SDGs (SDG n°4).
 
-Today, economic research in education is considered a greatly developed field, highlighting the importance of public spending in education and the necessity for targeted funding and strategic policies. We owe the establishment of the field to the theory of human capital by Schultz, Becker and Mincer established in the 50's .
-What started as a simple causality relationship between additional years of education and wage differences was frivolously applied to empirical studies, and econometric models. This allowed researchers to understand countries' particular attributes and situations but also if lack of education should be considered a demand or a supply problem. 
+Today, economic research in education is considered a greatly developed field, highlighting the importance of public spending in education and the necessity for targeted funding and strategic policies. We owe the establishment of the field to the theory of human capital by Schultz, Becker and Mincer established in the 50's . What started as a simple causality relationship between additional years of education and wage differences was frivolously applied to empirical studies, and econometric models. This allowed researchers to understand countries' particular attributes and situations but also if lack of education should be considered a demand or a supply problem.
 
-Investing in human capital, here in its educational form, is considered fundamental to the reduction of inequalities. Take for example woman's fertility. Research has found that, in developing countries, one additional year of schooling reduces woman's fertility rate by 10%, enabling a much needed demographic transition. This causality relationship can be explained by the increase of revenue on the labor market through additional years of schooling, allowing women to take on better jobs and increasing the opportunity cost of having a child. 
+Investing in human capital, here in its educational form, is considered fundamental to the reduction of inequalities. Take for example woman's fertility. Research has found that, in developing countries, one additional year of schooling reduces woman's fertility rate by 10%, enabling a much needed demographic transition. This causality relationship can be explained by the increase of revenue on the labor market through additional years of schooling, allowing women to take on better jobs and increasing the opportunity cost of having a child.
 
-## II. The link between education and unemployment 
+## II. The link between education and unemployment
 
-  The polarization of the labor market has become a clear and urgent issue. The dreaded phenomenon represents, for the middle class, the end of social mobility or as some might call it "The American/Capitalistic Dream". 
-Polarization of the labor market defines the historical decline of the rate of jobs that lie in the middle of the distribution of qualification (France Stratégie 2020). The prosperity of machinery and innovation has led to the decrease of basic qualification demanding jobs in favor of highly qualified jobs or low qualified jobs. This phenomenon has revealed itself particularly challenging for under-qualified youth, whose unemployment rate has increased in the past few years. 
+The polarization of the labor market has become a clear and urgent issue. The dreaded phenomenon represents, for the middle class, the end of social mobility or as some might call it "The American/Capitalistic Dream". Polarization of the labor market defines the historical decline of the rate of jobs that lie in the middle of the distribution of qualification (France Stratégie 2020). The prosperity of machinery and innovation has led to the decrease of basic qualification demanding jobs in favor of highly qualified jobs or low qualified jobs. This phenomenon has revealed itself particularly challenging for under-qualified youth, whose unemployment rate has increased in the past few years.
 
 In order to form the subject of our study we begun with the same idea as the theory of capital : how can altering the offer of education impacts individuals' status on the labor market.
 
 However, in a will to understand the role the government must play when it comes to the offer in education we may ask ourselves : Should government leaders expect their educational spending to impact the unemployment rate ?
 
-A higher unemployment rate could also prompt governments to allocate more funds to education as a way to respond to the need for training to boost employability, we therefore see a potential double causality between educational spending and unemployment.
-The potential reciprocal influence between educational investments and workforce participation unveils a complex interplay, emphasizing the need for nuanced analysis to comprehend the multifaceted impact of education on labor markets.
+A higher unemployment rate could also prompt governments to allocate more funds to education as a way to respond to the need for training to boost employability, we therefore see a potential double causality between educational spending and unemployment. The potential reciprocal influence between educational investments and workforce participation unveils a complex interplay, emphasizing the need for nuanced analysis to comprehend the multifaceted impact of education on labor markets.
 
-Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development. 
+Ultimately, this exploration aims to inform policy decisions, offering insights into the interwoven pathways that shape both educational outcomes and employment prospects, fostering more holistic approaches towards societal development.
 
-All these elements lead us to ask the following question: How can public spending on education help reduce youth unemployment? 
+All these elements lead us to ask the following question: How can public spending on education help reduce youth unemployment in the world?
 
-To answer our question, we will first look at the general trends in public spending and youth unemployment since 1970. We will then show that education spending is essential to reducing youth unemployment. Finally, we'll see that this is not enough, and that the reduction in the unemployment rate is made possible by other factors such as the country's development, rigidity on the labor market, etc. 
+To answer our question, we will first look at the general trends in public spending and youth unemployment since 1970. We will then show that education spending is essential to reducing youth unemployment. Finally, we'll see that this is not enough, and that the reduction in the unemployment rate is made possible by other factors such as the country's development, rigidity on the labor market, etc.
 
-# Data set description 
+# Data set description
 
-Thanks to the richness of information in our ILO data base we will be able to study the impact of public educational spending (from the WB database) on the educational aspect of human capital.
-With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level.
-The micro impact can be observed by studying each country on its own and observing the variations throughout the years.
-This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries.
-We can therefore compare the effects of education spending on the youth unemployment rate within countries, i.e. between men and women, and between countries, i.e. the macroeconomic impact of education spending.
+Thanks to the richness of information in our ILO data base we will be able to study the impact of public educational spending (from the WB database) on the educational aspect of human capital. With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level. The micro impact can be observed by studying each country on its own and observing the variations throughout the years. This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries. We can therefore compare the effects of education spending on the youth unemployment rate within countries, i.e. between men and women, and between countries, i.e. the macroeconomic impact of education spending.
 
-We would like to highlight the real and empirical impact of the augmentation of educational spending on school attendance thanks to the "classif2" variable now called "Attendance".
-Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment.
-The underlying assumption is that a positive correlation between increased educational spending and higher attendance rates could translate into a subsequent decline in unemployment figures over the ensuing years.
-Therefore the project endeavors to decipher how these factors (public spending and attendance) interplay in the context of unemployment rates.
+We would like to highlight the real and empirical impact of the augmentation of educational spending on school attendance thanks to the "classif2" variable now called "Attendance". Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment. The underlying assumption is that a positive correlation between increased educational spending and higher attendance rates could translate into a subsequent decline in unemployment figures over the ensuing years. Therefore the project endeavors to decipher how these factors (public spending and attendance) interplay in the context of unemployment rates.
 
-Our topic of study in this project tackles the impact of education spending on the youth unemployment rate.
-For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility.
-For example, World Bank compiles and makes available a wide range data on global economic development such as expenditures in school per country.
-We're interested in every country in the world, which explain why we haven't included OECD data, which is limited to 38 countries.
+Our topic of study in this project tackles the impact of education spending on the youth unemployment rate. For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility. For example, World Bank compiles and makes available a wide range data on global economic development such as expenditures in school per country. We're interested in every country in the world, which explain why we haven't included OECD data, which is limited to 38 countries.
 
 Our databases are dense, which requires delimiting our subject such as the period on which we are going to be interested or the variables that we consider to be most relevant.
 
 ## Description of the World bank database
 
-First, many of the databases provided by the World Bank include time series data, allowing to analyze trends and changes over time.
-It could be essential for understanding the dynamics of variables.
-Then, the World Bank is known for maintaining high standards in databases.
-There is data reliability, World Bank data is generally subject to rigorous standards and quality controls.
-As part of our project, the database from World Bank enable to make international comparisons by collecting data from many countries, allowing for international comparisons of school expenditure for example.
+First, many of the databases provided by the World Bank include time series data, allowing to analyze trends and changes over time. It could be essential for understanding the dynamics of variables. Then, the World Bank is known for maintaining high standards in databases. There is data reliability, World Bank data is generally subject to rigorous standards and quality controls. As part of our project, the database from World Bank enable to make international comparisons by collecting data from many countries, allowing for international comparisons of school expenditure for example.
 
 Finally, by analyzing World Bank data on school expenditures, we can merge this database with the youth unemployment rate to study the correlation (or causality) of education spending on the unemployment rate.
 
-It means that we could observe that the higher education spending led to the lower youth unemployment rate, or that the high youth unemployment rate can be explained by higher spending on education.
+It means that we could observe that the higher education spending led to the lower youth unemployment rate, or that the high youth unemployment rate can be explained by lower spending on education.
 
-We have described below the necessary informations of our database from the World Bank, which we have summarized in a table:
+We have described below the necessary information of our database from the World Bank, which we have summarized in a table:
 
 ### A table summary of our WB database
-
-#### Public spendings in education database 
 
 ```{r echo:false}
 
@@ -122,21 +102,13 @@ dep_pub|>
 
 ## Description of the International Labor Organisation database
 
-Then, the International Labor Organization (ILO) provides a wealth of data related to labor and employment.
-The ILO sets international standards for labor and labor statistics.
-These standards guarantee a consistent methodology for the collection and presentation of data on the labor market, including the unemployment rate.This site therefore corresponds perfectly to our project.
+Then, the International Labor Organization (ILO) provides a wealth of data related to labor and employment. The ILO sets international standards for labor and labor statistics. These standards guarantee a consistent methodology for the collection and presentation of data on the labor market, including the unemployment rate.This site therefore corresponds perfectly to our project.
 
-ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old).
-Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range.
-Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education spending on youth unemployment rate.
-Both sites making international comparisons, it's therefore interesting for our subject of study.
-The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank).
+ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range. Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education spending on youth unemployment rate. Both sites making international comparisons, it's therefore interesting for our subject of study. The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank).
 
-The difficulties of ILO database is the description of variables that need to be define.
-To do this, we need to look up the code dictionary used by the ILO.
-As we did for the World Bank data base we have described below the necessary information of our database from the ILO, which we have summarized in a table:
+The difficulties of ILO database is the description of variables that need to be define. To do this, we need to look up the code dictionary used by the ILO. As we did for the World Bank data base we have described below the necessary information of our database from the ILO, which we have summarized in a table:
 
-### A table summary of our ILO database : unemployement 
+### A table summary of our ILO database
 
 ```{r}
 # Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
@@ -160,7 +132,7 @@ chomage_jeune|>
 colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Country"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
-colnames(chomage_jeune)[colnames(chomage_jeune) == "obs_value"] <- "Youth unemployement"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "obs_value"] <- "Youth unemployment (%)"
 chomage_jeune <- chomage_jeune |> 
   mutate(`Age groups`=case_when(`Age groups`=="AGE_YTHBANDS_Y15-19" ~ "15-19",
                                 `Age groups`=="AGE_YTHBANDS_Y15-29" ~ "15-29",
@@ -174,57 +146,17 @@ chomage_jeune<-chomage_jeune|>
                        TRUE~`sex`))
 ```
 
-### A table summary of our ILO database : young population 
-
-```{r}
-# Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
-
-table_pop<-colnames(population_world)
-population_world|>
-  summarise("Origins"=table_pop[1],
-            "Nb of rows"=n(),
-            "Nb of columns"=ncol(population_world),
-            "Nb of countries"= length(unique((population_world$ref_area))),
-            "Nb of sex"= length(unique((population_world$sex))),
-            "Age groups "= length(unique((population_world$classif1))),
-            "Time " = length(unique((population_world$time))) 
-            )|>
-  knitr::kable()
-```
-
-```{r}
-#We rename the column to better understand the variables
-
-colnames(population_world)[colnames(population_world) == "sex.label"] <- "sex"
-colnames(population_world)[colnames(population_world) == "classif1"] <- "Age groups"
-colnames(population_world)[colnames(population_world) == "obs_value"] <- "Young people of working age"
-population_world <- population_world |> 
-  mutate(`Age groups`=case_when(`Age groups`=="AGE_YTHBANDS_Y15-19" ~ "15-19",
-                                `Age groups`== "AGE_YTHBANDS_Y15-29" ~ "15-29",
-                                `Age groups`=="AGE_YTHBANDS_Y20-24" ~ "20-24",
-                                `Age groups`=="AGE_YTHBANDS_Y25-29" ~ "25-29",
-         TRUE ~`Age groups`))
-population_world<-population_world|>
-  mutate(`sex`=case_when(`sex`=="SEX_M"~"Male",
-                       `sex`=="SEX_F"~"Female",
-                       `sex`=="SEX_T"~"Total",
-                       TRUE~`sex`))
-```
-
 ### Variable description
 
 We have to look the dictionaries for the code used (i.e code list) from ILO
 
-"Ref area": String value giving us each country's code, for example "AFG" for Afghanistan.
-It can refer to countries, geographic regions, groups of countries (by income level or others) or the world
+"Ref area": String value giving us each country's code, for example "AFG" for Afghanistan. It can refer to countries, geographic regions, groups of countries (by income level or others) or the world
 
 "Indicator" & "Source": it includes information on the represented variables, the classifications used and the unit which is number (NB)
 
-"Source" : "BA:15715","EPA - Enquête sur la Population Active","AFG" ; "BB:6361","ERDM - Enquête sur les Conditions de Vie des Ménages","AFG".
-The specific source of the data, including information on the country or region for which it is used and the main type of source (population census, labour force survey, administrative records, etc.) as well as the precise name of the source.
+"Source" : "BA:15715","EPA - Enquête sur la Population Active","AFG" ; "BB:6361","ERDM - Enquête sur les Conditions de Vie des Ménages","AFG". The specific source of the data, including information on the country or region for which it is used and the main type of source (population census, labour force survey, administrative records, etc.) as well as the precise name of the source.
 
-"sex": string value giving us the sex, three categories: total, male & female.
-The breakdown by sex and the items of this breakdown.
+"sex": string value giving us the sex, three categories: total, male & female. The breakdown by sex and the items of this breakdown.
 
 "classif1": string value giving us the youth range, three categories: 15-19, 20-24, 25-29, 15-29, for example "AGE_YTHBANDS_Y15-29","Age (Tranches des jeunes): 15-29"
 
@@ -244,7 +176,7 @@ The breakdown by sex and the items of this breakdown.
 
 "note_source": metadata related to the data source, it's a resting place (repositoire in french)
 
-#### Public spending in education 
+#### Cleaning the WB database
 
 ```{r}
 # Cleaning the WB database
@@ -261,13 +193,12 @@ dep_pub_cleaning<-function(df){
     rename(Country=`Country Code`)|>
     select(!where(\(.x)all(is.na(.x))))|>
     select(!where(single_value))|>
-    pivot_longer(cols = -Country, names_to = "time", values_to = "Public Spending")
+    pivot_longer(cols = -Country, names_to = "time", values_to = "Public Spending (% of GDP)")
 }
 
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
 ```
-
-#### Youth unemployement in the world  
+#### Cleaning the ILO database
 
 ```{r}
 # Cleaning the ILO database
@@ -284,87 +215,65 @@ chomage_jeune_cleaning<-function(df){
 }
 chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
-
-#### Young people of working age 
-
+### Merge our database
 
 ```{r}
-# Cleaning the ILO database
-#We remove some column which will not used for the projet like "Source", "Attendance", "Indicator", "obs_status", "note_indicator", "note_source", and we create a new database called pop_clean.These are just codes used by the ILO to classify data.
-pop_cleaning<-function(df){
-  single_value<-function(my_var){
-  (my_var|>unique()|>length())==1
-  }
-  df_clean<-df|>
-    rename(Country=ref_area)|>
-    select(!where(\(.x)all(is.na(.x))))|>
-    select(!where(single_value)) |>
-    select(-"source", -"classif2", -"obs_status", -"note_source", -"note_indicator")
-}
-pop_clean<-pop_cleaning(population_world)
+# We have a new database merging by both database. In the following we will maily use it. 
+dep_chomage <- merge(dep_pub_clean, chomage_jeune_clean, by = c("Country", "time"), all = TRUE)
 ```
-
-### Merge our three database 
-```{r}
-# Merge chomage_jeune_clean and pop_clean to have only one database from ILO
-chomage_pop <- merge(chomage_jeune_clean, pop_clean, by = c("Country", "time", "sex", "Age groups"), all = TRUE)
-
-# Merge the new database from ILO with dep_pub_clean 
-dep_chomage_pop <- merge(chomage_pop, dep_pub_clean, by = c("Country", "time"), all = TRUE)
-
-# We have a new database merging by three database. In the following we will maily use it. 
-``` 
 
 ## A table summary of our new database
 
 We've merged our 2 databases in order to match them by country (variable "Country") and date (variable "time").
 
 ```{r}
-dep_chomage_pop|>
-  summarise("Title"="Public spendings and unemployment according to date and country with population",
+dep_chomage|>
+  summarise("Title"="Public spendings and unemployment according to date and country",
             "Nb of rows"=n(),
-            "Nb of columns"=ncol(dep_chomage_pop),
-            "Nb of country"=length(unique(dep_chomage_pop$Country)),
-            "Age groups"=length(unique(dep_chomage_pop$`Age groups`)),
-            "Time frame"=paste(min(dep_chomage_pop$time),"-",max(dep_chomage_pop$time)))|>
+            "Nb of columns"=ncol(dep_chomage),
+            "Nb of country"=length(unique(dep_chomage$Country)),
+            "Age groups"=length(unique(dep_chomage$`Age groups`)),
+            "Time frame"=paste(min(dep_chomage$time),"-",max(dep_chomage$time)))|>
   knitr::kable()
             
             #"Time " = length(unique((dep_chomage$time)))))|>
 ```
 
-# Data Analysis 
-## I. Public spending and youth unemployemnt since 2014' 
+# Data Analysis
 
-### 1) Public spending on educatution since 2014 in the world 
+## I. Public spending and youth unemployment since 2014'
 
-In this section, we'll be looking at how public spending on education has evolved around the world since 1960, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure. 
+### 1) Public spending on education since 2014 in the world 
+
+In this section, we'll be looking at how public spending on education has evolved around the world since 1960, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
 
 ```{r}
-dep_chomage_pop <- dep_chomage_pop %>%
-  filter(!is.na(time), !is.na(`Public Spending`),
+dep_chomage <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`Public Spending (% of GDP)`),
          time >= 2014 & time <= 2022)
 
-ggplot(dep_chomage_pop, aes(x = time, y = `Public Spending`)) +
+ggplot(dep_chomage, aes(x = time, y = `Public Spending (% of GDP)`)) +
   geom_line(color = "blue") +  
   geom_point(color = "red") +  
   labs(title = "Public spending on education trends (2014-2022)",
        x = "Time",
-       y = "Public spending") +  
+       y = "Public spending (% of GDP)") +  
   theme_minimal()  
 ```
-Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the years, and the lines represent the evolution. We can thus see that 2021 is the year in which education spending has increased the most, and 2020, following the pandemic, there is a reorientation of public spending towards the health sector.  
 
-### Public spending in developped countries 
+Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the years, and the lines represent the evolution. We can thus see that 2021 is the year in which education spending has increased the most, and 2020, following the pandemic, there is a reorientation of public spending towards the health sector.
 
-We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.  
+### Public spending in developped countries
+
+We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.
 
 ```{r}
-dep_by_country <- dep_chomage_pop %>%
-  filter(!is.na(time), !is.na(`Public Spending`),
+dep_by_country <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`Public Spending (% of GDP)`),
          time >= 2014 & time <= 2022,
          Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
 
-ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, group = Country, shape = Country)) +
+ggplot(dep_by_country, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
   geom_line() +  
   geom_point() + 
   labs(title = "Public spending on education trends by country (2014-2022)",
@@ -374,19 +283,19 @@ ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, gro
   theme_minimal() 
 ```
 
-Focusing solely on the G8 countries, we have assigned a color to each country, showing that the United States, France and Great Britain are the countries that spend the most on education. We can see that USA's public spending remains around 5,5 compared to Italy with 4,1. So, if we take the general trend into account, we can see that for the selected countries we have a drop in public spending on education. Moreover, we don't have any information about public spending on education in Russia.  
+Focusing solely on the G8 countries, we have assigned a color to each country, showing that the United States (pink), France (yellow) and Great Britain (green) are the countries that spend the most on education. We can see that USA's public spending remains around 5,5% of the GDP compared to Italy with 4,1 of GDP. So, if we take the general trend into account, we can see that for the selected countries we have a drop in public spending on education. Moreover, we don't have any information about public spending on education in Russia for 2021 and 2022. 
 
-### Public spending in developping countries 
+### Public spending in developping countries - on the African continent
 
-We'll be looking at public spending trends in developed countries such as : Africa Eastern and Southern (AFE), Afghanistan (AFG), Angola (AGO), Albania (ALB), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Singapore (SGP)
+We'll be looking at public spending trends in developed countries such as : Africa Eastern and Southern (AFE), Burundi (BDI), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Congo - Democratic Republic of Congo (COD). We've chosen some of the poorest countries in auric to make a comparison. 
 
 ```{r}
-dep_by_country <- dep_chomage_pop %>%
-  filter(!is.na(time), !is.na(`Public Spending`),
+dep_by_country_africa <- dep_chomage%>%
+  filter(!is.na(time), !is.na(`Public Spending (% of GDP)`),
          time >= 2014 & time <= 2022,
-         Country %in% c("AFG", "AGO", "AFE", "ALB", "ARG", "BFA", "BLZ", "CAF", "SGP"))
+         Country %in% c("AFE", "BDI", "BFA", "BLZ", "CAF", "COD"))
 
-ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, group = Country, shape = Country)) +
+ggplot(dep_by_country_africa, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
   geom_line() +  
   geom_point() + 
   labs(title = "Public spending on education trends by country (2014-2022)",
@@ -395,198 +304,101 @@ ggplot(dep_by_country, aes(x = time, y = `Public Spending`, color = Country, gro
        color = "Country") + 
   theme_minimal() 
 ```
-## 2) Youth unemployement rate since 2014 in the world  
+We can see that public spending on education is very low in the Central African Republic (blue) and the Republique Démocratique du Congo (COD), where it is around 2% of GDP. We'll use this information to see if youth unemployment is higher in these countries. If so, we could already establish a syntesis according to which public spending on education can help reduce the youth unemployment rate. 
 
-In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. We therefore proceed in the same way as above, taking the most developed countries on the one hand, and developing countries on the other. Here, we analyze only the major trends.  
+## 2) Youth unemployement rate since 2014 in the world
 
-Employment is a means of accessing the wealth produced through work, but not all work is employment. It is a source of income. While work designates the activity. 
+In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. We therefore proceed in the same way as above, taking the most developed countries on the one hand, and developing countries on the other. Here, we analyze only the major trends.
+
+Employment is a means of accessing the wealth produced through work, but not all work is employment. It is a source of income. While work designates the activity.
 
 Unemployment refers to the deprivation of a job. An unemployed person is not deprived of work, but of employment. For the person who holds it, employment is a source of income through participation in the economic distribution of the wealth produced.
 
 According to ILO, an unemployed person is a person aged 15 or over who simultaneously meets three conditions: being unemployed during a given week; being available to take up a job within two weeks; having actively looked for a job in the last four weeks or having found one starting in less than three months.
 
-In the wake of worsening youth unemployment in Europe, a debate has recently emerged about the instrument used at the ILO: should rates or ratios be used to express youth unemployment? 
+In the wake of worsening youth unemployment in Europe, a debate has recently emerged about the instrument used at the ILO: should rates or ratios be used to express youth unemployment?
 
-The difference lies in the denominator: only the young workforce - those working or looking for work - is taken into account in the case of the rate, as opposed to the entire 15-24 age group - including full-time students - in the case of the ratio. 
+The difference lies in the denominator: only the young workforce - those working or looking for work - is taken into account in the case of the rate, as opposed to the entire 15-24 age group - including full-time students - in the case of the ratio.
 
 So, if we look at 200 young people, 100 of whom are students and 50 employed, the unemployment rate is 50 percent, while the ratio is 25 percent.
 
-Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce.
+Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce. In the case of ILO database we have a unemployment rate which which already provides an overview of our research project. 
 
-### Unemployement rate in developped countries 
-
-We'll add a new column called "unemployment rate", calculated as the ratio of unemployed young people to the total number of young people. 
+### Unemployement rate in the developped countries 
 
 ```{r}
-# We use mutate and we calculate the new column. 
-dep_chomage_pop_1 <- dep_chomage_pop %>%
-  mutate(`Young Unemployment Rate` = (`Youth unemployement` / `Young people of working age`)*100)
-```
-
-```{r}
-France <- dep_chomage_pop_1 %>%
-  filter(Country == "FRA")
-
-ggplot(France, aes(x = time, y = `Young Unemployment Rate`)) +
-  geom_line() +
-  labs(title = "Évolution du taux de chômage des jeunes en Afghanistan (2014-2022)",
-       x = "Année",
-       y = "Taux de chômage des jeunes (%)") +
-  theme_minimal()
-```
-
-
-
-#### Unemployement rate in the United States since 2014 
-
-We'll compare the United States with a country with similar population, such as Brazil. 
-
-```{r}
-dep_by_country <- dep_chomage_pop %>%
-  filter(!is.na(time), !is.na(`obs_value`),
+dep_by_country_USA <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
          time >= 2014 & time <= 2022,
-         Country == "USA")
+         Country %in% c("USA"))
 
-ggplot(dep_by_country, aes(x = time, y = `obs_value`)) +
-  geom_line() + 
-  labs(title = "Youth Unemployment Rate Trends in the USA (2014-2022)",
-       x = "Time",
-       y = "Youth Unemployment Rate") + 
-  theme_minimal()
-```
-Geom_boxplot is better to understand the number of youth unemployed because is useful for comparing the distribution of a variable across different categories or groups. It provides more details. 
-
-```{r}
-dep_by_country <- dep_chomage_pop %>%
-  filter(!is.na(time), !is.na(`obs_value`),
-         time >= 2014 & time <= 2022,
-         Country == "USA")
-
-ggplot(dep_by_country, aes(x = factor(time), y = `obs_value`, fill = factor(`obs_value`))) +
+ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(`Young Unemployment Rate`))) +
   geom_boxplot(fill = "lightblue") +
   labs(title = "Youth Unemployment Rate Trends in the USA (2014-2022)",
        x = "Time",
        y = "Youth Unemployment") +
   theme_minimal()
 ```
-```{r}
-dep_by_country <- dep_chomage_pop %>%
-  filter(!is.na(time), !is.na(`obs_value`),
-         time >= 2014 & time <= 2022,
-         Country == "BRA")
 
-ggplot(dep_by_country, aes(x = factor(time), y = `obs_value`, fill = factor(`obs_value`))) +
-  geom_boxplot(fill = "lightblue") +
-  labs(title = "Youth Unemployment Rate Trends in the Brazil (2014-2022)",
-       x = "Time",
-       y = "Youth Unemployment") +
-  theme_minimal()
-```
+Geom_boxplot is better to understand the number of youth unemployed because is useful for comparing the distribution of a variable across different categories or groups. It provides more details.
 
-We'll produce two graphs to show the impact of education spending on the youth unemployment rate within a country, using France as an example, and between countries, comparing France with Germany. 
 
-## Comparisons within country : the example of France 
 
-### Comparisons between ages and sex
-```{r}
-dep_chomage_pop|>
-  filter(Country == 'FRA')|>
-  group_by(Country)|>
-  ggplot(aes(x = time, y = `Public Spending`,color=`Age groups`)) +
-  geom_point() + 
-  facet_wrap(~sex)+
-  theme(axis.text.x=element_text(angle=45,hjust=1))+
-  labs(x = "Date", y = "Public Spending", title = "Public Spending for France")
-```
-We can see that the unemployment rate for young people in general, taking both men and women, has fallen from 2005 to 2020 for 15-29 year-olds. This graph shows the difference in unemployment rates between age groups.  
 
-### Comparisons between ages 
 
-```{r}
-dep_chomage_pop %>%
-  filter(Country == 'FRA') %>%
-  group_by(Country) %>%
-  ggplot(aes(x = time, y = `Public Spending`, color = `Age groups`)) +
-  geom_point(size = 3, position = position_dodge(width = 0.5)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Date", y = "Public Spending", title = "Public Spending for France")
-```
-This graph shows the evolution of the unemployment rate over the period 2005-2021, from which we can deduce the impact of public spending. Cyclical variations linked to a pandemic (e.g. COVID in 2020) or an economic/financial crisis (e.g. the subprime crisis in 2007/2008) can bias the effect of public spending on unemployment. 
 
-## Comparison between country 
 
-```{r}
-dep_chomage_pop %>%
-  filter(Country %in% c('GER','FRA')) %>%
-  group_by(Country) %>%
-  ggplot(aes(x = time, y = `Public Spending`, color = `Age groups`)) +
-  geom_point(shape=16) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Date", y = "Public Spending", title = "Public Spending for France and Germany")
-```
 
-## The case of Africa: an inefficiency of educational spendings 
 
-## Correlation test 
+
+
+## The case of Africa: an inefficiency of educational spendings
+
+## Correlation test
 
 To understand the relationship between public spending on education and the youth unemployment rate, we will perform a correlation analysis.
 
 ```{r}
-correlation_result <- cor.test(dep_chomage_pop$`Public Spending`, dep_chomage_pop$`obs_value`)
+correlation_result <- cor.test(dep_chomage$`Public Spending (% of GDP)`, dep_chomage$`Youth unemployment (%)`)
 correlation_result
 ```
+
 The correlation test provides valuable insights into the strength and direction of the linear relationship between public spending on education and the youth unemployment rate. The correlation coefficient and p-value help us assess the statistical significance of the observed correlation.
 
 ```{r}
-ggplot(dep_chomage_pop, aes(x = `Public Spending`, y = `obs_value`)) +
+ggplot(dep_chomage, aes(x = `Public Spending (% of GDP)`, y = dep_chomage$`Youth unemployment (%)`)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate")
 ```
 
-The scatter plot with a fitted line visually represents the correlation between public spending and the youth unemployment rate. The blue line indicates the linear regression fit. 
+The scatter plot with a fitted line visually represents the correlation between public spending and the youth unemployment rate. The blue line indicates the linear regression fit.
 
 The correlation test and visualization help us understand if there is a significant correlation between public spending on education and the youth unemployment rate. The correlation coefficient close to 1 or -1 indicates a strong relationship, while a p-value less than 0.05 suggests statistical significance.
 
-## Regression linear OLS 
+## Regression linear OLS
 
-Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable. 
+Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable.
 
-To deepen our analysis, we will use instrumental variables, which are variables used to solve the endogeneity problem in econometric models. Endogeneity can arise when the explanatory variable is correlated with model errors, which can bias estimation results. Instrumental variables are therefore used to isolate the uncorrelated variation of the explanatory variable and use it as a proxy for that variable. 
+To deepen our analysis, we will use instrumental variables, which are variables used to solve the endogeneity problem in econometric models. Endogeneity can arise when the explanatory variable is correlated with model errors, which can bias estimation results. Instrumental variables are therefore used to isolate the uncorrelated variation of the explanatory variable and use it as a proxy for that variable.
 
-For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending. 
+For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending.
 
 ```{r}
-library(tidyverse)
-regression_model <- lm(`obs_value` ~ `Public Spending`, data = dep_chomage_pop)
-summary(regression_model)
-```
-```{r}
-ggplot(dep_chomage_pop, aes(x = `obs_value` , y = `Public Spending`)) +
+ggplot(dep_chomage, aes(x = `Youth unemployment (%)` , y = `Public Spending (% of GDP)`)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Régression linéaire entre les dépenses d'éducation et le taux de chômage des jeunes")
 ```
 
+# Annexe
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Annexe 
-
-##Github repository
-The GitHub project can be found on: *https://github.com/GhinaMezher/project-BM*.git 2 collaborators can be found on this public project.
+##Github repository The GitHub project can be found on: *https://github.com/GhinaMezher/project-BM*.git 2 collaborators can be found on this public project.
 
 ## Links and sources
-We used the data base from the World Bank and International Labor Organization that identifies the public spendings in education: *https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart* And for the data on youth unemployment rates depending on various caracteristics we referred to the International Labor Organisation (ILO) database: *https://ilostat.ilo.org/fr/topics/youth/#*
+
+We used the data base from the World Bank and International Labor Organization that identifies the public spendings in education: *https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart* And for the data on youth unemployment rates depending on various caracteristics we referred to the International Labor Organisation (ILO) database: *https://ilostat.ilo.org/fr/topics/youth/#* & *https://www.ilo.org/shinyapps/bulkexplorer27/?lang=fr&id=POP_3WAP_SEX_AGE_EDU_NB_A*
+
+
+
+
