@@ -215,7 +215,7 @@ chomage_jeune_cleaning<-function(df){
 }
 chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
-### Merge our database
+#### Merge our database
 
 ```{r}
 # We have a new database merging by both database. In the following we will maily use it. 
@@ -276,9 +276,9 @@ dep_by_country <- dep_chomage %>%
 ggplot(dep_by_country, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
   geom_line() +  
   geom_point() + 
-  labs(title = "Public spending on education trends by country (2014-2022)",
+  labs(title = "Public spending on education trends for G8 countries (2014-2022)",
        x = "Time",
-       y = "Public spending",
+       y = "Public spending (% of GDP)",
        color = "Country") + 
   theme_minimal() 
 ```
@@ -298,7 +298,7 @@ dep_by_country_africa <- dep_chomage%>%
 ggplot(dep_by_country_africa, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
   geom_line() +  
   geom_point() + 
-  labs(title = "Public spending on education trends by country (2014-2022)",
+  labs(title = "Public spending on education trends for African countries (2014-2022)",
        x = "Time",
        y = "Public spending",
        color = "Country") + 
@@ -342,13 +342,38 @@ ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, f
 
 Geom_boxplot is better to understand the number of youth unemployed because is useful for comparing the distribution of a variable across different categories or groups. It provides more details.
 
+### Youth unemployement rate trends in the USA by gender (2014-2022)
 
+```{r}
+dep_by_country_USA <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
+         time >= 2014 & time <= 2022,
+         Country %in% c("USA"))
 
+ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(`Young Unemployment Rate`), color = factor(sex))) +
+  geom_boxplot(position = position_dodge(width = 0.8), fill = "lightblue") +
+  labs(title = "Youth Unemployment rate trends in the USA by Gender (2014-2022)",
+       x = "Time",
+       y = "Youth Unemployment Rate") +
+  theme_minimal()
+```
+### Youth unemployement rate trends in Belize (BLZ) by gender (2014-2022)
 
+```{r}
+dep_by_country_BLZ <- dep_chomage %>%
+  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
+         time >= 2014 & time <= 2022,
+         Country %in% c("BLZ"))
 
+ggplot(dep_by_country_BLZ, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(`Young Unemployment Rate`), color = factor(sex))) +
+  geom_boxplot(position = position_dodge(width = 0.8), fill = "lightblue") +
+  labs(title = "Youth Unemployment rate trends in the BLZ by Gender (2014-2022)",
+       x = "Time",
+       y = "Youth Unemployment Rate") +
+  theme_minimal()
+```
 
-
-
+We decided to take the USA, which is one of the countries devoting the highest proportion of its GDP to education, and Belize, which is one of the countries devoting the lowest proportion of its GDP to education. As we can see, youth unemployment in the USA is lower than in the Belize (almost 15% against 8% for USA).  
 
 
 
