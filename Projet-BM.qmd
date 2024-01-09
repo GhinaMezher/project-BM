@@ -596,6 +596,20 @@ ggplot(dep_chomage_africa_filtered, aes(x = `Public Spending (% of GDP)`, y = `Y
 ```
 When we take all African countries together, we can see a different correlation to the one previously calculated. In fact, it's positive, suggesting that the higher the public spending, the higher the youth unemployment rate. 
 
+```{r}
+dep_chomage_g8_filtered <- dep_chomage_g8_filtered %>%
+  mutate(quintile = ntile(`Public Spending (% of GDP)`, 5))
+
+print(dep_chomage_g8_filtered)
+```
+```{r}
+ggplot(dep_chomage_g8_filtered, aes(x = factor(quintile), y = `Youth unemployment (%)`)) +
+  geom_boxplot() +
+  labs(title = "Distribution of Youth Unemployment Across Quintiles of Public Spending",
+       x = "Quintiles of Public Spending",
+       y = "Youth Unemployment (%)") +
+  theme_minimal()
+```
 ## Regression linear OLS
 
 Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable.
@@ -613,10 +627,6 @@ summary(linear_model)
 ### Add instrumentales variables : stability of countries for example 
 
 We have to add new database to study the impact of stability of countries on public spending on education, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness. 
-
-
-
-
 
 
 # Annexe
