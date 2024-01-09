@@ -610,20 +610,9 @@ For the purposes of this project, we can therefore use the following instrumenta
 linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)` + `Attendance`, data = dep_chomage_g8_filtered)
 summary(linear_model) 
 ```
-
 ### Add instrumentales variables : stability of countries for example 
 
-We have to add new database to study the impact of stability of countries on public spending on eduaction, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness. 
-
-
-
-
-
-
-
-
-
-
+We have to add new database to study the impact of stability of countries on public spending on education, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness. 
 
 
 
