@@ -1,7 +1,7 @@
 ---
 title: "Data Management & Programming Project"
 author: "Adrien BOUISSON & Ghina MEZHER"
-format: pdf
+format: html
 warning: false
 echo: false
 message: false
@@ -382,7 +382,6 @@ ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, f
        y = "Youth Unemployment (%)") +
   theme_minimal()
 ```
-
 Geom_boxplot is better to understand the number of youth unemployed because is useful for comparing the distribution of a variable across different categories or groups. It provides more details.
 
 #### Youth unemployement rate trends in the USA by gender (2014-2022)
@@ -546,28 +545,52 @@ This is what we'll be looking at in the next section, highlighting regression, f
 
 ## The case of Africa: an inefficiency of educational spendings
 
-## Correlation test
+## Correlation test 
 
 To understand the relationship between public spending on education and the youth unemployment rate, we will perform a correlation analysis.
 
+### Correlation test - G8 countries 
+
 ```{r}
-correlation_result <- cor.test(dep_chomage$`Public Spending (% of GDP)`, dep_chomage$`Youth unemployment (%)`)
-correlation_result
+correlation_g8 <- cor.test(dep_chomage_g8_filtered$`Public Spending (% of GDP)`, dep_chomage_g8_filtered$`Youth unemployment (%)`)
+print(correlation_g8)
+```
+```{r}
+correlation_g8 <- cor.test(dep_chomage_g8_filtered$`Public Spending (% of GDP)`, dep_chomage_g8_filtered$`Youth unemployment (%)`)
+
+result_matrix <- matrix(c(correlation_g8$estimate, correlation_g8$p.value), nrow = 1, dimnames = list(NULL, c("Correlation Coefficient", "P-Value")))
+
+print(result_matrix)
 ```
 
-The correlation test provides valuable insights into the strength and direction of the linear relationship between public spending on education and the youth unemployment rate. The correlation coefficient and p-value help us assess the statistical significance of the observed correlation.
+The correlation test provides valuable insights into the strength and direction of the linear relationship between public spending on education and the youth unemployment rate. The correlation coefficient and p-value help us assess the statistical significance of the observed correlation. In this case, with a negative correlation coefficient between public spending (% of GDP) and youth unemployment (%), this suggests that there could be a trend where higher levels of public spending are associated with lower rates of youth unemployment, and vice versa. 
 
 ```{r}
-ggplot(dep_chomage, aes(x = `Public Spending (% of GDP)`, y = dep_chomage$`Youth unemployment (%)`)) +
+ggplot(dep_chomage_g8_filtered, aes(x = `Public Spending (% of GDP)`, y = `Youth unemployment (%)`)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "blue") +
-  labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate")
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate in G8 countries")
 ```
-
 The scatter plot with a fitted line visually represents the correlation between public spending and the youth unemployment rate. The blue line indicates the linear regression fit.
 
 The correlation test and visualization help us understand if there is a significant correlation between public spending on education and the youth unemployment rate. The correlation coefficient close to 1 or -1 indicates a strong relationship, while a p-value less than 0.05 suggests statistical significance.
 
+### Correlation test - African countries 
+
+```{r}
+correlation_afr <- cor.test(dep_chomage_afr_filtered$`Public Spending (% of GDP)`, dep_chomage_afr_filtered$`Youth unemployment (%)`)
+
+result_matrix <- matrix(c(correlation_afr$estimate, correlation_afr$p.value), nrow = 1, dimnames = list(NULL, c("Correlation Coefficient", "P-Value")))
+
+print(result_matrix)
+```
+
+```{r}
+ggplot(dep_chomage_afr_filtered, aes(x = `Public Spending (% of GDP)`, y = `Youth unemployment (%)`)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate in African countries")
+```
 ## Regression linear OLS
 
 Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable.
@@ -576,12 +599,9 @@ To deepen our analysis, we will use instrumental variables, which are variables 
 
 For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending.
 
-```{r}
-ggplot(dep_chomage, aes(x = `Youth unemployment (%)` , y = `Public Spending (% of GDP)`)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Régression linéaire entre les dépenses d'éducation et le taux de chômage des jeunes")
-```
+### Add instrumentales variables : stability of countries for example 
+
+We have to add new database to study the impact of stability of countries on public spending on eduaction, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness 
 
 
 
@@ -593,62 +613,6 @@ ggplot(dep_chomage, aes(x = `Youth unemployment (%)` , y = `Public Spending (% o
 
 
 
-
-
-
-
-
-```{r}
-# Chapter 5 - Identification 
-library(tidyverse); library(modelsummary)
-
-# Filter the data for G8 countries
-dep_chomage_g8 <- dep_chomage %>%
-  filter(Country %in% c("Canada", "France", "Germany", "Italy", "Japan", "Russia", "United Kingdom", "United States"))
-
-# Filter for the relevant years
-dep_chomage_g8_filtered <- dep_chomage_g8 %>%
-  filter(time >= 2000 & time <= 2022)
-
-# 1. Draw a scatterplot for Public Spending (% of GDP)
-ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
-  geom_line() +  
-  geom_point() + 
-  labs(title = "Public spending on education trends for G8 countries (2000-2022)",
-       x = "Time",
-       y = "Public spending (% of GDP)",
-       color = "Country") + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# 2. Get the conditional mean by country for Public Spending (% of GDP)
-dep_chomage_g8 %>%
-  group_by(Country) %>%
-  summarize(`Mean Public Spending (% of GDP)` = mean(`Public Spending (% of GDP)`, na.rm = TRUE))
-
-# 3. Draw the LOESS and linear regression curves for Public Spending (% of GDP)
-ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Public Spending (% of GDP)`)) +
-  geom_point() + 
-  geom_smooth(se = FALSE) + 
-  labs(title = "Public spending on education trends for G8 countries (2000-2022)",
-       x = "Time",
-       y = "Public spending (% of GDP)")
-
-# 4. Draw a scatterplot for Youth Unemployment (%)
-ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Youth unemployment (%)`, color = Country, group = Country, shape = Country)) +
-  geom_line() +  
-  geom_point() + 
-  labs(title = "Youth Unemployment trends for G8 countries (2000-2022)",
-       x = "Time",
-       y = "Youth Unemployment (%)",
-       color = "Country") + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# 5. Get the conditional mean by country for Youth Unemployment (%)
-dep_chomage_g8 %>%
-  filter(sex == "Total") %>%
-  group_by(Country) %>%
-  summarize(`Mean Youth Unemployment (%)` = mean(`Youth unemployment (%)`, na.rm = TRUE))
-```
 
 
 
