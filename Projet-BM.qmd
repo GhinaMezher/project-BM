@@ -558,9 +558,9 @@ print(correlation_g8)
 ```{r}
 correlation_g8 <- cor.test(dep_chomage_g8_filtered$`Public Spending (% of GDP)`, dep_chomage_g8_filtered$`Youth unemployment (%)`)
 
-result_matrix <- matrix(c(correlation_g8$estimate, correlation_g8$p.value), nrow = 1, dimnames = list(NULL, c("Correlation Coefficient", "P-Value")))
+matrix_g8 <- matrix(c(correlation_g8$estimate, correlation_g8$p.value), nrow = 1, dimnames = list(NULL, c("Correlation Coefficient", "P-Value")))
 
-print(result_matrix)
+print(matrix_g8)
 ```
 
 The correlation test provides valuable insights into the strength and direction of the linear relationship between public spending on education and the youth unemployment rate. The correlation coefficient and p-value help us assess the statistical significance of the observed correlation. In this case, with a negative correlation coefficient between public spending (% of GDP) and youth unemployment (%), this suggests that there could be a trend where higher levels of public spending are associated with lower rates of youth unemployment, and vice versa. 
@@ -578,19 +578,24 @@ The correlation test and visualization help us understand if there is a signific
 ### Correlation test - African countries 
 
 ```{r}
-correlation_afr <- cor.test(dep_chomage_afr_filtered$`Public Spending (% of GDP)`, dep_chomage_afr_filtered$`Youth unemployment (%)`)
+dep_chomage_africa_filtered <- dep_chomage_afr %>%
+  filter(time >= 2010 & time <= 2022, Country %in% c("MDG", "MLI", "NER", "MWI","RWA", "SSD", "ZMB","DJI","AFE", "BDI", "BFA", "BLZ", "CAF", "COD", "LBR", "SDN", "SEN", "DAZ", "BWA", "TCD", "EGY", "ERI", "ETH", "GMB", "KEN", "LBY", "MAR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "YEM", "ZWE"))
 
-result_matrix <- matrix(c(correlation_afr$estimate, correlation_afr$p.value), nrow = 1, dimnames = list(NULL, c("Correlation Coefficient", "P-Value")))
+correlation_afr <- cor.test(dep_chomage_africa_filtered$`Public Spending (% of GDP)`, dep_chomage_africa_filtered$`Youth unemployment (%)`)
 
-print(result_matrix)
+matrix_africa <- matrix(c(correlation_afr$estimate, correlation_afr$p.value), nrow = 1, dimnames = list(NULL, c("Correlation Coefficient", "P-Value")))
+
+print(matrix_africa)
 ```
 
 ```{r}
-ggplot(dep_chomage_afr_filtered, aes(x = `Public Spending (% of GDP)`, y = `Youth unemployment (%)`)) +
+ggplot(dep_chomage_africa_filtered, aes(x = `Public Spending (% of GDP)`, y = `Youth unemployment (%)`)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
   labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate in African countries")
 ```
+When we take all African countries together, we can see a different correlation to the one previously calculated. In fact, it's positive, suggesting that the higher the public spending, the higher the youth unemployment rate. 
+
 ## Regression linear OLS
 
 Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable.
@@ -599,9 +604,18 @@ To deepen our analysis, we will use instrumental variables, which are variables 
 
 For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending.
 
+### Linear regression for G8 countries 
+
+```{r}
+linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)` + `Attendance`, data = dep_chomage_g8_filtered)
+summary(linear_model) 
+```
+
 ### Add instrumentales variables : stability of countries for example 
 
-We have to add new database to study the impact of stability of countries on public spending on eduaction, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness 
+We have to add new database to study the impact of stability of countries on public spending on eduaction, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness. 
+
+
 
 
 
