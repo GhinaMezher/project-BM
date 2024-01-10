@@ -12,7 +12,8 @@ editor:
 
 ```{r}
 #Calling all necessary libraries
-#| message: false
+#| message: false 
+#| warning: false
 here::i_am("project-BM.Rproj")
 library(here)
 library(dplyr)
@@ -75,8 +76,6 @@ It means that we could observe that the higher education spending led to the low
 
 We have described below the necessary information of our database from the World Bank, which we have summarized in a table:
 
-### A table summary of our WB database
-
 ```{r echo:false}
 
 #Our dep_pub_raw variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
@@ -84,8 +83,8 @@ We have described below the necessary information of our database from the World
 table_dep<-colnames(dep_pub_raw)
 dep_pub|>
   summarise("Origin"=table_dep[2],"Last update"= dep_pub_raw[[1,2]],
-            "Nb of rows"=n(),
-            "Nb of columns"=ncol(dep_pub),
+            "Nb of countries observed"=n(),
+            "Indicator"=dep_pub[[1,3]],
             "First date"=colnames(dep_pub)[5],
             "Last date"=colnames(dep_pub)[67],
             )|>
@@ -96,7 +95,7 @@ dep_pub|>
 
 -   "Country Name"/"Country Code": String value giving us an indicator for each country to classify values
 
--   "Indicator Name"/"Indicator code": String value giving us the indicator studied with is the government expenditure on education as % of GDP
+-   "Indicator Name"/"Indicator code": String value giving us the indicator studied wich is the government expenditure on education as % of GDP
 
 -   "Date": each column referring to a date for the % of GDP for government education spending going from 1960 to 2022
 
@@ -104,9 +103,9 @@ dep_pub|>
 
 Then, the International Labor Organization (ILO) provides a wealth of data related to labor and employment. The ILO sets international standards for labor and labor statistics. These standards guarantee a consistent methodology for the collection and presentation of data on the labor market, including the unemployment rate.This site therefore corresponds perfectly to our project.
 
-ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Initially, we wanted to take a database on the youth unemployment rate from the World Bank but that of the ILO is more exhaustive and takes a larger age range. Then, like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range country, allowing for international comparisons which is perfect for our project because we can therefore study the impact of education spending on youth unemployment rate. Both sites making international comparisons, it's therefore interesting for our subject of study. The ILO has many databases on young people, which give us a free choice to use the one that interest us the most and is most relevant to our project (this is also the case with the World Bank).
+ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range of countries, allowing for international comparisons which is perfect for our project. Both sites making international comparisons, it allows for an interesting world level analysis of our subject of study.
 
-The difficulties of ILO database is the description of variables that need to be define. To do this, we need to look up the code dictionary used by the ILO. As we did for the World Bank data base we have described below the necessary information of our database from the ILO, which we have summarized in a table:
+We have described below the necessary information of our database from the ILO, which we have summarized in a table:
 
 ### A table summary of our ILO database
 
@@ -146,8 +145,6 @@ chomage_jeune<-chomage_jeune|>
 ```
 
 ### Variable description
-
-We have to look the dictionaries for the code used (i.e code list) from ILO
 
 "Ref area": String value giving us each country's code, for example "AFG" for Afghanistan. It can refer to countries, geographic regions, groups of countries (by income level or others) or the world
 
@@ -211,14 +208,14 @@ chomage_jeune_cleaning<-function(df){
 }
 chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```
-#### Merge our database
 
 ```{r}
+# Merging our databases
 # We have a new database merging by both database. In the following we will maily use it. 
 dep_chomage <- merge(dep_pub_clean, chomage_jeune_clean, by = c("Country", "time"), all = TRUE)
 ```
 
-## A table summary of our new database
+## A table summary of our database
 
 We've merged our 2 databases in order to match them by country (variable "Country") and date (variable "time").
 
