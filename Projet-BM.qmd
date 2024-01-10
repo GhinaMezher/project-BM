@@ -62,7 +62,7 @@ Our topic of study in this project tackles the impact of education spending on t
 
 Thanks to the richness of information in our panel ILO data base and panel World Bank database we will be able to study the impact of public educational spending on the educational aspect of human capital. With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level. The micro impact can be observed by studying each country on its own and observing the variations throughout the years. This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries. We can also compare the effects of education spending on the youth unemployment rate within countries, i.e. between men and women, and between countries, i.e. the macroeconomic impact of education spending.
 
-We would like to highlight the real and empirical impact of the augmentation of educational spending on school attendance thanks to the "classif2" variable now called "Attendance". Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment. The underlying assumption is that a positive correlation between increased educational spending and higher attendance rates could translate into a subsequent decline in unemployment figures over the ensuing years. Therefore the project endeavors to decipher how these factors (public spending and attendance) interplay in the context of unemployment rates.
+We would like to highlight the real and empirical impact of the augmentation of educational spending on level of education thanks to the "classif2" variable now called "Education". Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment. The underlying assumption is that a positive correlation between increased educational spending and higher education levels could translate into a subsequent decline in unemployment figures over the ensuing years. Therefore the project endeavors to decipher how these factors (public spending and education levels) interplay in the context of unemployment rates.
 
 Our databases are dense, which requires delimiting our subject such as the period on which we are going to be studying or the variables that we consider to be most relevant.
 
@@ -128,7 +128,7 @@ chomage_jeune|>
 #We rename the column to better understand the variables
 colnames(chomage_jeune)[colnames(chomage_jeune) == "ref_areas"] <- "Country"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "classif1"] <- "Age groups"
-colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Attendance"
+colnames(chomage_jeune)[colnames(chomage_jeune) == "classif2"] <- "Education"
 colnames(chomage_jeune)[colnames(chomage_jeune) == "obs_value"] <- "Youth unemployment (%)"
 chomage_jeune <- chomage_jeune |> 
   mutate(`Age groups`=case_when(`Age groups`=="AGE_YTHBANDS_Y15-19" ~ "15-19",
@@ -142,6 +142,15 @@ chomage_jeune<-chomage_jeune|>
                        `sex`=="SEX_O"~"Other",
                        `sex`=="SEX_T"~"Total",
                        TRUE~`sex`))
+
+chomage_jeune<-chomage_jeune|>
+  mutate(`Education`=case_when(`Education`=="EDU_AGGREGATE_TOTAL"~"Total",
+                       `Education`=="EDU_AGGREGATE_LTB"~"Less than basic",
+                       `Education`=="EDU_AGGREGATE_BAS"~"Basic",
+                       `Education`=="EDU_AGGREGATE_INT"~"Intermediate",
+                       `Education`=="EDU_AGGREGATE_ADV"~"Advanced",
+                       `Education`=="EDU_AGGREGATE_X"~"Level not stated",
+                       TRUE~`sex`))
 ```
 
 ### Main variables description
@@ -152,11 +161,7 @@ chomage_jeune<-chomage_jeune|>
 
 "classif1": string value giving us the youth range, three categories: 15-19, 20-24, 25-29, 15-29, for example "AGE_YTHBANDS_Y15-29","Age (Tranches des jeunes): 15-29"
 
-"classif2": string value giving us the status of students, three categories :
-
--   "STU_EDU_TOTAL","Fréquentation scolaire: Total"
--   "STU_EDU_NO","Fréquentation scolaire: Ne participe pas"
--   "STU_EDU_X","Fréquentation scolaire: Non classé ailleurs"
+"classif2": string value giving us the level of education of observed category, 6 categories are mentioned: Total (values for all categories), Less than basic, basic, intermediate, advanced and level not stated
 
 "time": string value giving us the date of the observation
 
@@ -212,13 +217,12 @@ We've merged our 2 databases in order to match them by country (variable "Countr
 ```{r}
 dep_chomage|>
   summarise("Title"="Public spendings and unemployment according to date and country",
-            "Nb of rows"=n(),
-            "Nb of columns"=ncol(dep_chomage),
+            "Nb of observations"=n(),
+            "Nb of variables"=ncol(dep_chomage),
             "Nb of countries"=length(unique(dep_chomage$Country)),
             "Age groups"=length(unique(dep_chomage$`Age groups`,na.rm=TRUE)),
             "Time frame"=paste(min(dep_chomage$time),"-",max(dep_chomage$time)))|>
   knitr::kable()
-            #"Time " = length(unique((dep_chomage$time)))))|>
 ```
 
 # Data Analysis
@@ -489,7 +493,7 @@ Having seen which countries devote the most or least of their GDP to education s
 ```{r}
 youth_unemployment_highest <- dep_chomage %>%
   group_by(time) %>%
-  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Attendance`== "STU_EDU_TOTAL", sex == "Total") %>%
+  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Education`== "Total", sex == "Total") %>%
   slice(which.max(`Youth unemployment (%)`)) %>%
   ungroup()
 
@@ -508,7 +512,7 @@ Countries with the highest youth unemployment rates are : Angola (AGO), Bosnia a
 ```{r}
 youth_unemployment_lowest <- dep_chomage %>%
   group_by(time) %>%
-  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Attendance`== "STU_EDU_TOTAL", sex == "Total") %>%
+  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Education`== "Total", sex == "Total") %>%
   slice(which.min(`Youth unemployment (%)`)) %>%
   ungroup()
 
@@ -604,7 +608,7 @@ For the purposes of this project, we can therefore use the following instrumenta
 ### Linear regression for G8 countries 
 
 ```{r}
-linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)` + `Attendance`, data = dep_chomage_g8_filtered)
+linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)` + `Education`, data = dep_chomage_g8_filtered)
 summary(linear_model) 
 ```
 ### Add instrumentales variables : stability of countries for example 
