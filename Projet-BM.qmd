@@ -79,8 +79,6 @@ We have described below the necessary information of our database from the World
 ```{r echo:false}
 
 #Our dep_pub_raw variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
-
-table_dep<-colnames(dep_pub_raw)
 dep_pub|>
   summarise("Origin"=table_dep[2],"Last update"= dep_pub_raw[[1,2]],
             "Nb of countries observed"=n(),
@@ -141,17 +139,16 @@ chomage_jeune <- chomage_jeune |>
 chomage_jeune<-chomage_jeune|>
   mutate(`sex`=case_when(`sex`=="SEX_M"~"Male",
                        `sex`=="SEX_F"~"Female",
+                       `sex`=="SEX_O"~"Other",
                        `sex`=="SEX_T"~"Total",
                        TRUE~`sex`))
 ```
 
-### Variable description
+### Main variables description
 
 "Ref area": String value giving us each country's code, for example "AFG" for Afghanistan. It can refer to countries, geographic regions, groups of countries (by income level or others) or the world
 
-"Indicator" & "Source": it includes information on the represented variables, the classifications used and the unit which is number (NB)
-
-"sex": string value giving us the sex, three categories: total, male & female. The breakdown by sex and the items of this breakdown.
+"sex": string value giving us the sex, three categories: total, male, female & other. The breakdown by sex and the items of this breakdown.
 
 "classif1": string value giving us the youth range, three categories: 15-19, 20-24, 25-29, 15-29, for example "AGE_YTHBANDS_Y15-29","Age (Tranches des jeunes): 15-29"
 
@@ -205,7 +202,7 @@ chomage_jeune_clean<-chomage_jeune_cleaning(chomage_jeune)
 ```{r}
 # Merging our databases
 # We have a new database merging by both database. In the following we will maily use it. 
-dep_chomage <- merge(dep_pub_clean, chomage_jeune_clean, by = c("Country", "time"), all = TRUE)
+dep_chomage <- merge(dep_pub_clean, chomage_jeune_clean, by = c("Country", "time"), all = FALSE)
 ```
 
 ## A table summary of our database
@@ -217,11 +214,10 @@ dep_chomage|>
   summarise("Title"="Public spendings and unemployment according to date and country",
             "Nb of rows"=n(),
             "Nb of columns"=ncol(dep_chomage),
-            "Nb of country"=length(unique(dep_chomage$Country)),
-            "Age groups"=length(unique(dep_chomage$`Age groups`)),
+            "Nb of countries"=length(unique(dep_chomage$Country)),
+            "Age groups"=length(unique(dep_chomage$`Age groups`,na.rm=TRUE)),
             "Time frame"=paste(min(dep_chomage$time),"-",max(dep_chomage$time)))|>
   knitr::kable()
-            
             #"Time " = length(unique((dep_chomage$time)))))|>
 ```
 
@@ -231,7 +227,7 @@ dep_chomage|>
 
 ### 1) Public spending on education since 2014 in the world 
 
-In this section, we'll be looking at how public spending on education has evolved around the world since 1960, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
+In this section, we'll be looking at how public spending on education has evolved around the world since 2014, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
 
 ```{r}
 mean_by_date <- dep_chomage %>%
