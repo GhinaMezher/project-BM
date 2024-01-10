@@ -242,11 +242,11 @@ print(mean_by_date)
 ggplot(mean_by_date,aes(x=time,y =mean_ps)) +
   geom_col() +
   ylim(0,7)+
-  labs(x = "Date", y = "Mean Public Spending (% of GDP)", title = "Mean Public Spending Over Time")+
+  labs(x = "Date", y = "World mean Public Spending (% of GDP)", title = "Mean Public Spending Over Time")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-Description needed 
+DESCRIPTION A FAIRE
 
 Now lets look at a more in depth analysis of the time frame 2014-2022:
 
@@ -264,6 +264,7 @@ ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
        x = "Time",
        y = "Public spending (% of GDP)")
 ```
+DESCRIPTION A REVOIR 
 Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the years, and the lines represent the evolution. We can thus see that 2021 is the year in which education spending has increased the most, and 2020, following the pandemic, there is a reorientation of public spending towards the health sector.
 
 ### Public spending in developped countries
