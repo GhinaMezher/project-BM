@@ -114,13 +114,14 @@ We have described below the necessary information of our database from the ILO, 
 
 table_chomage<-colnames(chomage_jeune)
 chomage_jeune|>
-  summarise("Origins"=table_chomage[1],
-            "Nb of rows"=n(),
-            "Nb of columns"=ncol(chomage_jeune),
+  summarise("Origin"="ILO",
+            "Nb of variables"=ncol(chomage_jeune),
             "Nb of countries"= length(unique((chomage_jeune$ref_area))),
-            "Nb of sex"= length(unique((chomage_jeune$sex))),
+            "Sex groups"= length(unique((chomage_jeune$sex))),
             "Age groups "= length(unique((chomage_jeune$classif1))),
-            "Time " = length(unique((chomage_jeune$time))) 
+            "Number of dates" = length(unique((chomage_jeune$time))), 
+            "First date"=min(chomage_jeune$time),
+            "Last date"=max(chomage_jeune$time)
             )|>
   knitr::kable()
 ```
@@ -150,8 +151,6 @@ chomage_jeune<-chomage_jeune|>
 
 "Indicator" & "Source": it includes information on the represented variables, the classifications used and the unit which is number (NB)
 
-"Source" : "BA:15715","EPA - Enquête sur la Population Active","AFG" ; "BB:6361","ERDM - Enquête sur les Conditions de Vie des Ménages","AFG". The specific source of the data, including information on the country or region for which it is used and the main type of source (population census, labour force survey, administrative records, etc.) as well as the precise name of the source.
-
 "sex": string value giving us the sex, three categories: total, male & female. The breakdown by sex and the items of this breakdown.
 
 "classif1": string value giving us the youth range, three categories: 15-19, 20-24, 25-29, 15-29, for example "AGE_YTHBANDS_Y15-29","Age (Tranches des jeunes): 15-29"
@@ -165,12 +164,6 @@ chomage_jeune<-chomage_jeune|>
 "time": string value giving us the date of the observation
 
 "obs_value": observed value according to each category
-
-"obs_status":the values status or flag on the values, such as breaks in series or provisional values, "U" for not reliable and "B" for discontinued
-
-"note_indicator": metadata related to the classifications used and specific classification categories
-
-"note_source": metadata related to the data source, it's a resting place (repositoire in french)
 
 ```{r}
 # Cleaning the WB database
@@ -307,7 +300,7 @@ dep_chomage_afr <- dep_chomage %>%
 # Calculate the mean for each date
 mean_africa <- dep_chomage_afr %>%
   group_by(time) %>%
-  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = TRUE))
+  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`,na.rm = TRUE))
 
 print(mean_africa)
 ```
