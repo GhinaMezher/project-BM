@@ -57,17 +57,17 @@ To answer our question, we will first look at the general trends in public spend
 
 # Data set description
 
-Thanks to the richness of information in our ILO data base we will be able to study the impact of public educational spending (from the WB database) on the educational aspect of human capital. With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level. The micro impact can be observed by studying each country on its own and observing the variations throughout the years. This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries. We can therefore compare the effects of education spending on the youth unemployment rate within countries, i.e. between men and women, and between countries, i.e. the macroeconomic impact of education spending.
+Our topic of study in this project tackles the impact of education spending on the youth unemployment rate. For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility. For example, World Bank compiles and makes available a wide range of data on global economic development such as expenditures in school per country. 
+
+Thanks to the richness of information in our panel ILO data base and panel World Bank database we will be able to study the impact of public educational spending on the educational aspect of human capital. With the detailed information from various countries and on a big date range, we are able to study the impact on a micro and macro level. The micro impact can be observed by studying each country on its own and observing the variations throughout the years. This also makes comparing countries possible; we could therefore observe the impact on developing countries and developed countries. We can also compare the effects of education spending on the youth unemployment rate within countries, i.e. between men and women, and between countries, i.e. the macroeconomic impact of education spending.
 
 We would like to highlight the real and empirical impact of the augmentation of educational spending on school attendance thanks to the "classif2" variable now called "Attendance". Through this potential correlation and causality we could understand the impact of a budgetary politic in education on unemployment. The underlying assumption is that a positive correlation between increased educational spending and higher attendance rates could translate into a subsequent decline in unemployment figures over the ensuing years. Therefore the project endeavors to decipher how these factors (public spending and attendance) interplay in the context of unemployment rates.
 
-Our topic of study in this project tackles the impact of education spending on the youth unemployment rate. For that, we have decided to take our databases from sites such as the World Bank and the International Labor Organization (ILO), as these are major global institutions known primarily for their availability and accessibility. For example, World Bank compiles and makes available a wide range data on global economic development such as expenditures in school per country. We're interested in every country in the world, which explain why we haven't included OECD data, which is limited to 38 countries.
-
-Our databases are dense, which requires delimiting our subject such as the period on which we are going to be interested or the variables that we consider to be most relevant.
+Our databases are dense, which requires delimiting our subject such as the period on which we are going to be studying or the variables that we consider to be most relevant.
 
 ## Description of the World bank database
 
-First, many of the databases provided by the World Bank include time series data, allowing to analyze trends and changes over time. It could be essential for understanding the dynamics of variables. Then, the World Bank is known for maintaining high standards in databases. There is data reliability, World Bank data is generally subject to rigorous standards and quality controls. As part of our project, the database from World Bank enable to make international comparisons by collecting data from many countries, allowing for international comparisons of school expenditure for example.
+First, many of the databases provided by the World Bank include time series data, allowing to analyze trends and changes over time. It could be essential for understanding the dynamics of variables. Then, the World Bank is known for maintaining high standards in databases. There is data reliability, World Bank data is generally subject to rigorous standards and quality controls. As part of our project, the database from the World Bank allows us to make international comparisons by collecting data from many countries, such as school expenditure for example.
 
 Finally, by analyzing World Bank data on school expenditures, we can merge this database with the youth unemployment rate to study the correlation (or causality) of education spending on the unemployment rate.
 
@@ -175,8 +175,6 @@ We have to look the dictionaries for the code used (i.e code list) from ILO
 
 "note_source": metadata related to the data source, it's a resting place (repositoire in french)
 
-#### Cleaning the WB database
-
 ```{r}
 # Cleaning the WB database
 #In order to clean our world bank database we must delete columns/variables who have a unique value and dates that only have NA values.
@@ -197,7 +195,6 @@ dep_pub_cleaning<-function(df){
 
 dep_pub_clean<-dep_pub_cleaning(dep_pub)
 ```
-#### Cleaning the ILO database
 
 ```{r}
 # Cleaning the ILO database
