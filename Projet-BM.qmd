@@ -231,27 +231,38 @@ dep_chomage|>
 
 ### 1) Public spending on education since 2014 in the world 
 
-In this section, we'll be looking at how public spending on education has evolved around the world since 2014, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
+To begin our analysis, we'll be looking at how public spending on education has evolved around the world, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
 
 ```{r}
 mean_by_date <- dep_chomage %>%
   group_by(time) %>%
-  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = TRUE))
+  summarise(mean_ps= mean(`Public Spending (% of GDP)`, na.rm = TRUE))
 print(mean_by_date)
+  
+ggplot(mean_by_date,aes(x=time,y =mean_ps)) +
+  geom_col() +
+  ylim(0,7)+
+  labs(x = "Date", y = "Mean Public Spending (% of GDP)", title = "Mean Public Spending Over Time")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-```{r}
-mean_by_date <- dep_chomage %>%
-  filter(!is.na(time), !is.na(`Public Spending (% of GDP)`),
-         time >= 2014 & time <= 2022)
+Description needed 
 
-ggplot(mean_by_date, aes(x = time, y = `Public Spending (% of GDP)`)) +
-  geom_line(color = "blue") +  
-  geom_point(color = "red") +  
+Now lets look at a more in depth analysis of the time frame 2014-2022:
+
+```{r}
+dep_pub_14_22<-dep_pub_clean%>% filter(time>=2014& time<=2022)
+print(dep_pub_14_22)
+  
+
+ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
+  geom_line(color="black") +  
+  geom_point(color="red") +
+  geom_text(data = dep_pub_14_22 %>% filter(`Public Spending (% of GDP)` > 10),
+            aes(label = Country), hjust = 0, vjust = 0, size = 3, color = "black")+
   labs(title = "Public spending on education trends (2014-2022)",
        x = "Time",
-       y = "Public spending (% of GDP)") +  
-  theme_minimal()  
+       y = "Public spending (% of GDP)")
 ```
 Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the years, and the lines represent the evolution. We can thus see that 2021 is the year in which education spending has increased the most, and 2020, following the pandemic, there is a reorientation of public spending towards the health sector.
 
