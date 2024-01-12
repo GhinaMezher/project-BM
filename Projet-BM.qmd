@@ -294,6 +294,7 @@ ggplot(mean_g8,aes(x=time,y=mean_public_spending))+
 
 ```{r}
 dep_chomage_g8_filtered <- dep_chomage_g8 %>%
+  filter(!is.na(`Public Spending (% of GDP)`))%>%
   filter(time >= 2000 & time <= 2022)
 
 ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
@@ -327,6 +328,7 @@ print(mean_africa)
 
 ```{r}
 dep_chomage_afr_filtered <- dep_chomage_afr %>%
+  filter(!is.na(`Public Spending (% of GDP)`))%>%
   filter(time >= 2010 & time <= 2022)
 
 ggplot(dep_chomage_afr_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
