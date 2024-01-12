@@ -265,19 +265,31 @@ Thanks to this graph, we have the evolution of public spending on education over
 
 ### Public spending in developped countries
 
+Counter-intuitively, developed countries do not allocate the highest % of GDP to public spending on education. 
+
 We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.
 
 ```{r}
+# Je ne trouve pas ça très utile perso
 # Filter for G8 countries
+dep_chomage$time<-as.numeric(dep_chomage$time)
+  
 dep_chomage_g8 <- dep_chomage %>%
+  filter(!is.na(`Public Spending (% of GDP)`))%>%
   filter(Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
 
 # Calculate the mean for each date
 mean_g8 <- dep_chomage_g8 %>%
   group_by(time) %>%
-  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = TRUE))
+  summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = FALSE))
 
-print(mean_g8)
+ggplot(mean_g8,aes(x=time,y=mean_public_spending))+
+  geom_point(na.rm = FALSE) +
+   geom_line(na.rm=FALSE)+
+    labs(title = "Public spending on education trends for developped",
+       x = "Time",
+       y = "Mean public spending (% of GDP)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ```{r}
@@ -326,7 +338,7 @@ ggplot(dep_chomage_afr_filtered, aes(x = time, y = `Public Spending (% of GDP)`,
        color = "Country") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-We can see that public spending on education is very low in the Central African Republic (blue) and the Republique Démocratique du Congo (COD), where it is around 2% of GDP. We'll use this information to see if youth unemployment is higher in these countries. If so, we could already establish a syntesis according to which public spending on education can help reduce the youth unemployment rate. 
+We can see that public spending on education is very low in the Central African Republic (blue) and the Republique Démocratique du Congo (COD), where it is around 2% of GDP. We'll use this information to see if youth unemployment is higher in these countries. If so, we could already establish a synthesis according to which public spending on education can help reduce the youth unemployment rate. 
 
 ## 2) Youth unemployement rate since 2014 in the world
 
