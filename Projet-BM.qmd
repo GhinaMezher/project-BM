@@ -638,5 +638,5 @@ We have to add new database to study the impact of stability of countries on pub
 We used the data base from the World Bank and International Labor Organization that identifies the public spendings in education: *https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart* And for the data on youth unemployment rates depending on various caracteristics we referred to the International Labor Organisation (ILO) database: *https://ilostat.ilo.org/fr/topics/youth/#* & *https://www.ilo.org/shinyapps/bulkexplorer27/?lang=fr&id=POP_3WAP_SEX_AGE_EDU_NB_A*
 
 
-
+Adrien
 
