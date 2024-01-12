@@ -237,7 +237,6 @@ To begin our analysis, we'll be looking at how public spending on education has 
 mean_by_date <- dep_chomage %>%
   group_by(time) %>%
   summarise(mean_ps= mean(`Public Spending (% of GDP)`, na.rm = TRUE))
-print(mean_by_date)
   
 ggplot(mean_by_date,aes(x=time,y =mean_ps)) +
   geom_col() +
@@ -246,9 +245,7 @@ ggplot(mean_by_date,aes(x=time,y =mean_ps)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-DESCRIPTION A FAIRE
-
-Now lets look at a more in depth analysis of the time frame 2014-2022:
+Therefore we can see public spending varies through time with a particular low in 1996 and 1997. Over the past few years, the average public spending on education has hovered around 4.8% of GDP with a decline starting 2021 we might imagine a reorientation of public spending to other sectors like health, security and energy following the pandemic and the war in Ukraine. It is therefore interesting to conduct a more in depth examination of public expenditure trends since 2014, in order to define which countries contribute to elevating this average and those that contribute to lowering it.
 
 ```{r}
 dep_pub_14_22<-dep_pub_clean%>% filter(time>=2014& time<=2022)
@@ -258,14 +255,13 @@ print(dep_pub_14_22)
 ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
   geom_line(color="black") +  
   geom_point(color="red") +
-  geom_text(data = dep_pub_14_22 %>% filter(`Public Spending (% of GDP)` > 10),
+  geom_text(data = dep_pub_14_22 %>% filter(`Public Spending (% of GDP)` > 9),
             aes(label = Country), hjust = 0, vjust = 0, size = 3, color = "black")+
   labs(title = "Public spending on education trends (2014-2022)",
        x = "Time",
        y = "Public spending (% of GDP)")
 ```
-DESCRIPTION A REVOIR 
-Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the years, and the lines represent the evolution. We can thus see that 2021 is the year in which education spending has increased the most, and 2020, following the pandemic, there is a reorientation of public spending towards the health sector.
+Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in this time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Oceania and Africa (for the case of Namibia) would be a compelling study.
 
 ### Public spending in developped countries
 
