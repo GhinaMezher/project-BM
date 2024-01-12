@@ -196,6 +196,7 @@ chomage_jeune_cleaning<-function(df){
   (my_var|>unique()|>length())==1
   }
   df_clean<-df|>
+    filter(sex != "Other")|>
     rename(Country=ref_area)|>
     select(!where(\(.x)all(is.na(.x))))|>
     select(!where(single_value)) |>
@@ -263,7 +264,37 @@ ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
 ```
 Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in this time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Oceania and Africa (for the case of Namibia) would be a compelling study.
 
-### Public spending in developped countries
+### 2) Youth unemployment in the world 
+
+### 3) dep vs unemployment 
+
+```{r}
+ggplot(dep_chomage, aes(x=`Youth unemployment (%)`,fill = Education)) +
+geom_bar() + 
+  facet_wrap(~sex)+ ylim(0,6)
+
+```
+
+
+```{r}
+dep_chomage$time<-as.numeric(dep_chomage$time)
+dep_chomage %>% filter(time==2014) %>%
+  ggplot(aes(y=`Public Spending (% of GDP)`,x=`Youth unemployment (%)`)) +
+  geom_hex()+
+  ylim(0,15)+
+  facet_grid(~Education)
+
+dep_chomage %>% filter(time==2014) %>%
+  ggplot(aes(x=`Public Spending (% of GDP)`,y=`Youth unemployment (%)`)) +
+  geom_hex()+
+  xlim(0,10)+
+  facet_grid(~sex)
+
+```
+
+
+
+## II. Public spending and youth unemployment in developed countries
 
 Counter-intuitively, developed countries do not allocate the highest % of GDP to public spending on education. 
 
@@ -637,6 +668,4 @@ We have to add new database to study the impact of stability of countries on pub
 
 We used the data base from the World Bank and International Labor Organization that identifies the public spendings in education: *https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2022&start=1970&view=chart* And for the data on youth unemployment rates depending on various caracteristics we referred to the International Labor Organisation (ILO) database: *https://ilostat.ilo.org/fr/topics/youth/#* & *https://www.ilo.org/shinyapps/bulkexplorer27/?lang=fr&id=POP_3WAP_SEX_AGE_EDU_NB_A*
 
-
-Adrien
 
