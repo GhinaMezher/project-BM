@@ -80,7 +80,7 @@ We have described below the necessary information of our database from the World
 
 #Our dep_pub_raw variable contains our dataset as it is wrongly read by R. We must keep it in order to retrieve information on the origin of the dataset and on its last update date as they are contained in the first 4 lines that make R reading our dataset complicated.
 dep_pub|>
-  summarise("Origin"="World bank","Last update"= dep_pub_raw[[1,2]],
+  summarise("Origin"="Table 1 : World bank","Last update"= dep_pub_raw[[1,2]],
             "Nb of countries observed"=n(),
             "Indicator"=dep_pub[[1,3]],
             "First date"=colnames(dep_pub)[5],
@@ -112,7 +112,7 @@ We have described below the necessary information of our database from the ILO, 
 
 table_chomage<-colnames(chomage_jeune)
 chomage_jeune|>
-  summarise("Origin"="ILO",
+  summarise("Origin"="Table 2 : ILO",
             "Nb of variables"=ncol(chomage_jeune),
             "Nb of countries"= length(unique((chomage_jeune$ref_area))),
             "Sex groups"= length(unique((chomage_jeune$sex))),
@@ -219,7 +219,7 @@ We've merged our 2 databases in order to match them by country (variable "Countr
 
 ```{r}
 dep_chomage|>
-  summarise("Title"="Public spendings and unemployment according to date and country",
+  summarise("Title"="Table 3 : Education spending and youth unemployment rate by country over time",
             "Nb of observations"=n(),
             "Nb of variables"=ncol(dep_chomage),
             "Nb of countries"=length(unique(dep_chomage$Country)),
@@ -244,7 +244,7 @@ mean_by_date <- dep_chomage |>
 ggplot(mean_by_date,aes(x=time,y =mean_ps)) +
   geom_col() +
   ylim(0,7)+
-  labs(x = "Date", y = "World mean Public Spending (% of GDP)", title = "Mean Public Spending Over Time")+
+  labs(x = "Date", y = "World mean Public Spending (% of GDP)", title = "Figure 1 : Mean Public Spending Over Time", caption = "Source: World Bank")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
@@ -253,19 +253,146 @@ Therefore we can see public spending varies through time with a particular low i
 ```{r}
 dep_pub_14_22<-dep_pub_clean|> filter(time>=2014& time<=2022)
   
-
 ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
   geom_line(color="black") +  
   geom_point(color="red") +
   geom_text(data = dep_pub_14_22 |> filter(`Public Spending (% of GDP)` > 9),
-            aes(label = Country), hjust = 0, vjust = 0, size = 3, color = "black")+
-  labs(title = "Public spending on education trends (2014-2022)",
+           aes(label = Country), hjust = 0, vjust = 0, size = 3, color = "black")+
+  labs(title = "Figure 2 : Public spending on education trends (2014-2022)",
        x = "Time",
-       y = "Public spending (% of GDP)")
+       y = "Public spending (% of GDP)", 
+       caption = "Source: World Bank")
 ```
 Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in this time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Oceania and Africa (for the case of Namibia) would be a compelling study.
 
+### The largest share of GDP for public spending in education 
+```{r}
+country_highest_spending <- dep_chomage |>
+  group_by(time) |>
+  slice(which.max(`Public Spending (% of GDP)`)) |>
+  ungroup()
+
+country_highest_spending_filter <- country_highest_spending |>
+  filter(time >= 2000 & time <= 2022)
+
+ggplot(country_highest_spending_filter, aes(x = time, y = `Public Spending (% of GDP)`, fill = Country)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Figure 3 :Countries with Highest Public Spending (% of GDP) by Year",
+       x = "Year",
+       y = "Public Spending (% of GDP)",
+       fill = "Country", 
+       caption = "Source: World Bank") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+Countries that devote a large share of their GDP to education spending are : Samoa américaines (ASM), Cuba (CUB), Micronésie, Etats fédérés (FSM), Kiribati (KIR), Lesotho (LS0), Marshall's Islands (MHL), Namibie (NAM). 
+
+### The smallest share of GDP for public spending 
+
+```{r}
+country_smallest_spending <- dep_chomage |>
+  group_by(time) |>
+  slice(which.min(`Public Spending (% of GDP)`)) |>
+  ungroup()
+
+country_smallest_spending_filter <- country_smallest_spending |>
+  filter(time >= 2000 & time <= 2022)
+
+ggplot(country_smallest_spending_filter, aes(x = time, y = `Public Spending (% of GDP)`, fill = Country)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Figure 4 :Countries with smallest Public Spending (% of GDP) by Year",
+       x = "Year",  y = "Public Spending (% of GDP)",
+       fill = "Country", 
+       caption = "Source: World Bank") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+Countries that devote a large share of their GDP to education spending are : Africa Eastern and Southern (AFE), Central African Republic (CAF), Zambia (ZMB), South Sudan (SSD), Sudan (SDN), Gambia (GMB), etc.. The majority of countries that spend the least on education are in Africa. 
+
 ### 2) Youth unemployment in the world 
+
+In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. We therefore proceed in the same way as above, taking the most developed countries on the one hand, and developing countries on the other. Here, we analyze only the major trends.
+
+Employment is a means of accessing the wealth produced through work, but not all work is employment. It is a source of income. While work designates the activity.
+
+Unemployment refers to the deprivation of a job. An unemployed person is not deprived of work, but of employment. For the person who holds it, employment is a source of income through participation in the economic distribution of the wealth produced.
+
+According to ILO, an unemployed person is a person aged 15 or over who simultaneously meets three conditions: being unemployed during a given week; being available to take up a job within two weeks; having actively looked for a job in the last four weeks or having found one starting in less than three months.
+
+In the wake of worsening youth unemployment in Europe, a debate has recently emerged about the instrument used at the ILO: should rates or ratios be used to express youth unemployment?
+
+The difference lies in the denominator: only the young workforce - those working or looking for work - is taken into account in the case of the rate, as opposed to the entire 15-24 age group - including full-time students - in the case of the ratio.
+
+So, if we look at 200 young people, 100 of whom are students and 50 employed, the unemployment rate is 50 percent, while the ratio is 25 percent.
+
+Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce. In the case of ILO database we have a unemployment rate which which already provides an overview of our research project. 
+
+```{r}
+mean_by_date_unemployment <- dep_chomage %>%
+  group_by(time) %>%
+  summarise(mean_unemployment = mean(`Youth unemployment (%)`, na.rm = TRUE))
+
+ggplot(mean_by_date_unemployment, aes(x = time, y = mean_unemployment)) +
+  geom_col() +
+  labs(x = "Date", y = "World mean Youth Unemployment (%)", title = "Figure 5 : Mean Youth Unemployment Over Time", caption = "Source: ILO") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+We can see that the global youth unemployment rate has been rising for several decades. At the same time, we have seen a decrease in the number of young people unemployed.  
+```{r}
+dep_chom_14_22 <- chomage_jeune_clean %>% 
+  filter(time >= 2014 & time <= 2022, `sex` == "Total")
+
+ggplot(dep_chom_14_22, aes(x = time, y = `Youth unemployment (%)`)) +
+  geom_point(color = "red") +
+  geom_text(data = dep_chom_14_22 %>% filter(`Youth unemployment (%)` > 75),
+            aes(label = Country), hjust = 0, vjust = 0, size = 3, color = "black") +
+  labs(title = "Figure 6 :Youth Unemployment Trends (2014-2022)",
+       x = "Time",
+       y = "Youth Unemployment (%)", 
+       caption = "Source: ILO")
+```
+Through this graph we can see countries with highest youth unemployment rate at the top of the line. 
+
+### The highest youth unemployment rate - 15-19 & 20-24 years old 
+
+Having seen which countries devote the most or least of their GDP to education spending, we're now going to look at which countries have the highest and lowest unemployment rates among young people, in this case 15-24 year-old. 
+
+```{r}
+youth_unemployment_highest <- dep_chomage %>%
+  group_by(time) %>%
+  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Education`== "Total", sex == "Total") %>%
+  slice(which.max(`Youth unemployment (%)`)) %>%
+  ungroup()
+
+ggplot(youth_unemployment_highest, aes(x = time, y = `Youth unemployment (%)`, fill = Country)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Figure 7 : Countries with Highest Youth Unemployment by Year",
+       x = "Year",
+       y = "Youth Unemployment (%)",
+       fill = "Country", 
+       caption = "Source: ILO") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+Countries with the highest youth unemployment rates are : Angola (AGO), Bosnia and Herzegovina (BIH), Djibouti (DJI), Spain (ESP), Saint Lucia (LCA), North Macedonia (MKD), South Africa (ZAF). 
+
+### The lowest youth unemployment rate - 15-19 & 20-24 years old 
+
+```{r}
+youth_unemployment_lowest <- dep_chomage %>%
+  group_by(time) %>%
+  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Education`== "Total", sex == "Total") %>%
+  slice(which.min(`Youth unemployment (%)`)) %>%ungroup()
+
+ggplot(youth_unemployment_lowest, aes(x = time, y = `Youth unemployment (%)`, fill = Country)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Figure 8: Countries with Lowest Youth Unemployment by Year",
+       x = "Year",
+       y = "Youth Unemployment (%)",
+       fill = "Country",
+       caption = "Source: ILO") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
+```
+Countries with the lowest youth unemployment rates are : Switzerland (CHE), Guatemala (GTM), Cambodia (KHM), Liberia (LBR), Moldova (MDA), Madagascar (MDG), Mali (MLI), Malawi (MWI), Niger (NER), Pakistan (PAK), Peru (PER), Rwanda (RWA). 
+
+We can see from this graph that the place where youth unemployment is highest is predominantly in Africa. Public spending can therefore have an impact on the youth unemployment rate. But we can also see that some African countries have the lowest unemployment rates, so education spending isn't the only explanatory variable. 
 
 ### 3) dep vs unemployment 
 
@@ -317,9 +444,6 @@ ggplot(dep_chomage, aes(x = mean_dep,y=`Youth unemployment (%)`,fill = Education
   geom_bar()
 ```
 
-
-
-
 ## II. Public spending and youth unemployment in developed countries
 
 Counter-intuitively, developed countries do not allocate the highest % of GDP to public spending on education. 
@@ -327,14 +451,12 @@ Counter-intuitively, developed countries do not allocate the highest % of GDP to
 We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.
 
 ```{r}
-# Filter for G8 countries
 dep_chomage$time<-as.numeric(dep_chomage$time)
   
 dep_chomage_g8 <- dep_chomage |>
   filter(!is.na(`Public Spending (% of GDP)`))|>
   filter(Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
 
-# Calculate the mean for each date
 mean_g8 <- dep_chomage_g8 |>
   group_by(time) |>
   summarise(mean_public_spending = mean(`Public Spending (% of GDP)`, na.rm = FALSE))
@@ -342,275 +464,239 @@ mean_g8 <- dep_chomage_g8 |>
 ggplot(mean_g8,aes(x=time,y=mean_public_spending))+
   geom_point(na.rm = FALSE) +
    geom_line(na.rm=FALSE)+
-    labs(title = "Public spending on education trends for developped",
+    labs(title = "Figure 9 :Public spending on education trends for developped countries",
        x = "Time",
-       y = "Mean public spending (% of GDP)") +
+       y = "Mean public spending (% of GDP)", 
+       caption = "Source: World Bank") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+Since the 1970s, there has been a general decline trend in education spending in the G8 countries. This decline can be explained by the aging of the population, leading to a reallocation of public spending to health. Another factor may be government priorities.
+The sudden increase in 1993 can be explained by the fall of the Berlin Wall and the end of the Cold War, which reduced trade between countries and hence GDP. As education spending remained unchanged, its share of GDP increased. In 2020, the decline in the share of education spending fell sharply as a result of the health crisis, which reduced both GDP and education spending. 
+
+Moreover, this graph plots the average for G8 countries without taking into account the disparities between them, as we shall see in the following graph. 
 
 ```{r}
 dep_chomage_g8_filtered <- dep_chomage_g8 |>
-  filter(!is.na(`Public Spending (% of GDP)`))|>
-  filter(time >= 2000 & time <= 2022)
-
+  filter(!is.na(`Public Spending (% of GDP)`)) |>
+  filter(time >= 2014 & time <= 2022)
 ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
   geom_line(na.rm = FALSE) +  
   geom_point(na.rm = FALSE) + 
-  labs(title = "Public spending on education trends for G8 countries (2000-2022)",
-       x = "Time",
+  labs(title = "Figure 10 :Public spending on education trends for G8 countries (2014-2022)",
+       x = "Year",
        y = "Public spending (% of GDP)",
-       color = "Country") + 
+       color = "Country", 
+       caption = "Source: World Bank") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 Focusing solely on the G8 countries, we have assigned a color to each country, showing that the United States (pink), France (yellow) and Great Britain (green) are the countries that spend the most on education. We can see that USA's public spending remains around 5,5% of the GDP compared to Italy with 4,1 of GDP. So, if we take the general trend into account, we can see that for the selected countries we have a drop in public spending on education. Moreover, we don't have any information about public spending on education in Russia for 2021 and 2022. 
 
-### Public spending in developping countries - on the African continent
-
-We'll be looking at public spending trends in developed countries such as : Africa Eastern and Southern (AFE), Burundi (BDI), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Congo - Democratic Republic of Congo (COD). We've chosen some of the poorest countries in auric to make a comparison. 
-
+### Unemployement rate in the developped countries : G8 countries
 
 ```{r}
-# Filter for African countries
-dep_chomage_afr <- dep_chomage |>
-  filter(!is.na(`Public Spending (% of GDP)`))|>
-  filter(Country %in% c("MDG", "MLI", "NER", "MWI","RWA", "SSD", "ZMB","DJI","AFE", "BDI", "BFA", "BLZ", "CAF", "COD", "LBR", "SDN", "SEN", "DAZ", "BWA", "TCD", "EGY", "ERI", "ETH", "GMB", "KEN", "LBY", "MAR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "YEM", "ZWE"))
+dep_chomage$time<-as.numeric(dep_chomage$time)
+  
+dep_chomage_g8 <- dep_chomage |>
+  filter(!is.na(`Youth unemployment (%)`))|>
+  filter(Country %in% c("USA", "FRA", "GER", "JAP", "CAN", "GBR", "RUS", "ITA"))
 
-dep_chomage_afr_filtered <- dep_chomage_afr |>
-  filter(!is.na(`Public Spending (% of GDP)`))|>
-  filter(time >= 2010 & time <= 2022)
+mean_g8_unemployment <- dep_chomage_g8 |>
+  group_by(time) |>
+  summarise(mean_youth_unemployment = mean(`Youth unemployment (%)`, na.rm = FALSE))
 
-ggplot(dep_chomage_afr_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
-  geom_line(na.rm = FALSE) +  
-  geom_text(aes(label = Country), hjust = 0, vjust = 0, size = 3, color = "black")+
-  labs(title = "Public spending on education trends for African countries (2010-2022)",
-       x = "Time",
-       y = "Public spending (% of GDP)",
-       color = "Country") + 
+ggplot(mean_g8_unemployment,aes(x=time,y=mean_youth_unemployment))+
+  geom_point(na.rm = FALSE) +
+   geom_line(na.rm=FALSE)+
+    labs(title = "Figure 11 : Youth unemployment in developped countries (G8)",
+       x = "Year",
+       y = "Mean youth unemployment rate (%)", 
+       caption = "Source: ILO") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-We can see that public spending on education is very low in the Central African Republic (blue) and the Republique Démocratique du Congo (COD), where it is around 2% of GDP. We'll use this information to see if youth unemployment is higher in these countries. If so, we could already establish a synthesis according to which public spending on education can help reduce the youth unemployment rate. 
-
-## 2) Youth unemployement rate since 2014 in the world
-
-In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. We therefore proceed in the same way as above, taking the most developed countries on the one hand, and developing countries on the other. Here, we analyze only the major trends.
-
-Employment is a means of accessing the wealth produced through work, but not all work is employment. It is a source of income. While work designates the activity.
-
-Unemployment refers to the deprivation of a job. An unemployed person is not deprived of work, but of employment. For the person who holds it, employment is a source of income through participation in the economic distribution of the wealth produced.
-
-According to ILO, an unemployed person is a person aged 15 or over who simultaneously meets three conditions: being unemployed during a given week; being available to take up a job within two weeks; having actively looked for a job in the last four weeks or having found one starting in less than three months.
-
-In the wake of worsening youth unemployment in Europe, a debate has recently emerged about the instrument used at the ILO: should rates or ratios be used to express youth unemployment?
-
-The difference lies in the denominator: only the young workforce - those working or looking for work - is taken into account in the case of the rate, as opposed to the entire 15-24 age group - including full-time students - in the case of the ratio.
-
-So, if we look at 200 young people, 100 of whom are students and 50 employed, the unemployment rate is 50 percent, while the ratio is 25 percent.
-
-Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce. In the case of ILO database we have a unemployment rate which which already provides an overview of our research project. 
-
-### Unemployement rate in the developped countries : G8 
-
 ```{r}
-dep_chomage_g8_unemployment <- dep_chomage_g8 |>
+dep_chomage_g8_filtered <- dep_chomage_g8 |>
+  filter(!is.na(`Youth unemployment (%)`)) |>
+  filter(time >= 2014 & time <= 2022)
+
+ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Youth unemployment (%)`, color = Country, group = Country, shape = Country)) +
+  facet_wrap(~Country) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Figure 12 : Youth Unemployment Rate Trends for G8 Countries (2014-2022)",
+       x = "Year",
+       y = "Youth Unemployment (%)",
+       color = "Country",
+       caption = "Source: ILO") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+```{r}
+dep_chomage_g8_unemployment <- dep_chomage_g8 %>%
   filter(time >= 2014 & time <= 2022, sex == "Total")
 
 ggplot(dep_chomage_g8_unemployment, aes(x = time, y = `Youth unemployment (%)`, color = Country, group = Country, shape = Country)) +
   geom_smooth(na.rm = FALSE) +  
   geom_point(na.rm = FALSE) + 
-  labs(title = "Youth unemployment trends for G8 countries (2000-2022)",
+  labs(title = "Figure 12 Bis : Youth unemployment Rate trends for G8 countries (2014-2022)",
        x = "Time",
        y = "Youth unemployment (%)",
-       color = "Country") + 
+       color = "Country", 
+       caption = "Source: ILO") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+### 3) dep vs unemployment for G8 countries 
 
-#### Unemployment rate in the United States 
 
-```{r}
-dep_by_country_USA <- dep_chomage |>
-  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
-         time >= 2014 & time <= 2022,
-         Country %in% c("USA"))
 
-ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(`Young Unemployment Rate`))) +
-  geom_boxplot(fill = "lightblue") +
-  labs(title = "Youth Unemployment Rate Trends in the USA (2014-2022)",
-       x = "Time",
-       y = "Youth Unemployment (%)") +
-  theme_minimal()
-```
-Geom_boxplot is better to understand the number of youth unemployed because is useful for comparing the distribution of a variable across different categories or groups. It provides more details.
 
-#### Youth unemployement rate trends in the USA by gender (2014-2022)
+### Public spending in developping countries - on the African continent
 
-```{r} 
-# By gender with Male and Female 
-dep_by_country_USA <- dep_chomage |>
-  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
-         time >= 2014 & time <= 2022,
-         Country %in% c("USA"),
-         sex != "Total")  # Exclude the "Total" category
-
-ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(sex))) +
-  geom_boxplot(position = position_dodge(width = 0.8), color = "darkblue") +
-  labs(title = "Youth Unemployment rate trends in the USA by Gender (2014-2022)",
-       x = "Time",
-       y = "Youth Unemployment (%)") +
-  theme_minimal()
-```
-```{r}
-# Only with the total 
-dep_by_country_USA <- dep_chomage |>
-  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
-         time >= 2014 & time <= 2022,
-         Country %in% c("USA"),
-         !(sex %in% c("Male", "Female")))  # Exclude the "Male" and "Female" categories
-
-ggplot(dep_by_country_USA, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(sex))) +
-  geom_boxplot(position = position_dodge(width = 0.8), color = "darkblue") +
-  labs(title = "Youth Unemployment rate trends in the USA by Gender (2014-2022)",
-       x = "Time",
-       y = "Youth Unemployment (%)") +
-  theme_minimal()
-```
-### Unemployement rate in the developping countries : African countries 
+We'll be looking at public spending trends in Africa such as : Africa Eastern and Southern (AFE), Burundi (BDI), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Congo - Democratic Republic of Congo (COD), etc..
 
 ```{r}
-dep_chomage_afr_unemployment <- dep_chomage_afr |>
-  filter(time >= 2014 & time <= 2022, sex == "Total")
+dep_chomage_afr <- dep_chomage %>%
+  filter(Country %in% c("AFE", "BDI", "BFA", "BLZ", "CAF", "COD", "MDG", "MLI", "NER", "MWI", "RWA", "SSD", "ZMB", "DJI", "COD", "LBR", "SDN", "SEN", "DAZ", "BWA", "TCD", "EGY", "ERI", "ETH", "GMB", "KEN", "LBY", "MAR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "YEM", "ZWE"))
 
-ggplot(dep_chomage_afr_unemployment, aes(x = time, y = `Youth unemployment (%)`, color = Country, group = Country, shape = Country)) +
+dep_chomage_africa_filtered <- dep_chomage_afr |>
+  filter(!is.na(`Public Spending (% of GDP)`)) |>
+  filter(time >= 2014 & time <= 2022)
+ggplot(dep_chomage_africa_filtered, aes(x = time, y = `Public Spending (% of GDP)`, color = Country, group = Country, shape = Country)) +
+  geom_line(na.rm = FALSE) +  
+  geom_point(na.rm = FALSE) + 
+  labs(title = "Figure 13 : Public spending on education trends for African countries (2014-2022)",
+       x = "Year",
+       y = "Public spending (% of GDP)",
+       color = "Country", 
+       caption = "Source: World Bank") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
+```
+In comparison with the graph showing the evolution of the share of public expenditure in GDP for the G8 countries (Figure 10), we could see disparities between countries but this disparity is even more pronounced for African countries going up to 'at 'nearly 8 percentage points difference (Namibia vs Madagascar). 
+### Unemployement rate in the developping countries : African countries
+
+```{r}
+# We keep African countries which have complete data 
+
+dep_chomage_afr_unemployment <- dep_chomage |>
+  filter(Country %in% c("BDI", "BFA", "BLZ", "COD", "MDG", "MLI", "NER", "MWI", "RWA", "ZMB", "COD", "LBR", "SEN", "BWA", "EGY", "ETH", "GMB", "KEN", "LBR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "YEM", "ZWE")) |>
+  filter(!is.na(`Youth unemployment (%)`)) |>
+  filter(time >= 2014 & time <= 2022)
+
+mean_afr_unemployment <- dep_chomage_afr_unemployment |>
+  group_by(time) |>
+  summarise(mean_youth_unemployment_afr = mean(`Youth unemployment (%)`, na.rm = FALSE))
+
+ggplot(mean_afr_unemployment,aes(x=time,y=mean_youth_unemployment_afr))+
+  geom_point(na.rm = FALSE) +
+   geom_line(na.rm=FALSE)+
+    labs(title = "Figure 14 : Youth unemployment in African countries (2014-2022)",
+       x = "Year",
+       y = "Mean youth unemployment rate (%)", 
+       caption = "Source: ILO") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+Youth unemployment in Africa is higher than in the rest of the world. But some African countries have a higher unemployment rate, so we will see the evolution of the youth unemployment rate by separating the countries. 
+```{r}
+dep_chomage_afr_unemployment_1 <- dep_chomage |>
+  filter(Country %in% c("BLZ", "MDG", "MLI", "MWI", "RWA", "LBR", "SEN", "EGY", "GMB", "KEN", "LBR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "YEM", "ZWE")) |>
+  filter(!is.na(`Youth unemployment (%)`)) |>
+  filter(time >= 2014 & time <= 2022)
+
+ggplot(dep_chomage_afr_unemployment_1, aes(x = time, y = `Youth unemployment (%)`, color = Country, group = Country, shape = Country)) +
   geom_smooth(na.rm = FALSE) +  
   geom_point(na.rm = FALSE) + 
-  labs(title = "Youth unemployment trends for African countries (2014-2022)",
-       x = "Year",
+  labs(title = "Figure 15 : Youth unemployment Rate trends for African countries (2014-2022)",
+       x = "Time",
        y = "Youth unemployment (%)",
-       color = "Country") + 
+       color = "Country", 
+       caption = "Source: ILO") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
-####  Youth unemployement rate trends in Belize (BLZ) by gender (2014-2022)
-
 ```{r}
-dep_by_country_BLZ <- dep_chomage |>
-  filter(!is.na(time), !is.na(`Youth unemployment (%)`),
-         time >= 2014 & time <= 2022,
-         Country %in% c("BLZ"), `Age groups` == "15-19")
+dep_chomage_afr_unemployment_1 <- dep_chomage |>
+  filter(Country %in% c("BLZ", "MLI", "MWI", "RWA", "LBR", "SEN", "EGY", "KEN", "LBR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "ZWE")) |>
+  filter(!is.na(`Youth unemployment (%)`)) |>
+  filter(time >= 2014 & time <= 2022)
 
-ggplot(dep_by_country_BLZ, aes(x = factor(time), y = `Youth unemployment (%)`, fill = factor(`Young Unemployment Rate`), color = factor(sex))) +
-  geom_boxplot(position = position_dodge(width = 0.8), fill = "lightblue") +
-  labs(title = "Youth Unemployment rate trends in the BLZ by Gender (2014-2022)",
-       x = "Year",
-       y = "Youth Unemployment (%)") +
-  theme_minimal()
-```
-We decided to take the USA, which is one of the countries devoting the highest proportion of its GDP to education, and Belize, which is one of the countries devoting the lowest proportion of its GDP to education. As we can see, youth unemployment in the USA is lower than in the Belize (almost 15% against 8% for USA). An additional feature of this graph is that the unemployment rate for women is higher than for men for the age groups 15-19.  
-
-### The largest share of GDP for public spending
-
-```{r}
-country_highest_spending <- dep_chomage |>
-  group_by(time) |>
-  slice(which.max(`Public Spending (% of GDP)`)) |>
-  ungroup()
-
-print(country_highest_spending) 
-```
-
-```{r}
-country_highest_spending_filter <- country_highest_spending |>
-  filter(time >= 2000 & time <= 2022)
-
-ggplot(country_highest_spending_filter, aes(x = time, y = `Public Spending (% of GDP)`, fill = Country)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Countries with Highest Public Spending (% of GDP) by Year",
-       x = "Year",
-       y = "Public Spending (% of GDP)",
-       fill = "Country") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-Countries that devote a large share of their GDP to education spending are : Samoa américaines (ASM), Cuba (CUB), Micronésie, Etats fédérés (FSM), Kiribati (KIR), Lesotho (LS0), Marshall's Islands (MHL), Namibie (NAM)
-
-### The smallest share of GDP for public spending 
-
-```{r}
-country_smallest_spending <- dep_chomage |>
-  group_by(time) |>
-  slice(which.min(`Public Spending (% of GDP)`)) |>
-  ungroup()
-
-print(country_smallest_spending) 
-```
-
-```{r}
-country_smallest_spending_filter <- country_smallest_spending |>
-  filter(time >= 2000 & time <= 2022)
-
-ggplot(country_smallest_spending_filter, aes(x = time, y = `Public Spending (% of GDP)`, fill = Country)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Countries with smallest Public Spending (% of GDP) by Year",
-       x = "Year",
-       y = "Public Spending (% of GDP)",
-       fill = "Country") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-Countries that devote a large share of their GDP to education spending are : Africa Eastern and Southern (AFE), Central African Republic (CAF), Zambia (ZMB), South Sudan (SSD), Sudan (SDN), Gambia (GMB), etc.. The majority of countries that spend the least on education are in Africa. 
-
-### The highest youth unemployment rate - 15-19 & 20-24 years old 
-
-Having seen which countries devote the most or least of their GDP to education spending, we're now going to look at which countries have the highest and lowest unemployment rates among young people, in this case 15-24 year-old. 
-
-```{r}
-youth_unemployment_highest <- dep_chomage |>
-  group_by(time) |>
-  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Education`== "Total", sex == "Total") |>
-  slice(which.max(`Youth unemployment (%)`)) |>
-  ungroup()
-
-ggplot(youth_unemployment_highest, aes(x = time, y = `Youth unemployment (%)`, fill = Country)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Countries with Highest Youth Unemployment by Year",
+ggplot(dep_chomage_afr_unemployment_1, aes(x = time, y = `Youth unemployment (%)`, color = Country, group = Country, shape = Country)) +
+  facet_wrap(~Country) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Figure 15 BIS : Youth Unemployment Rate Trends for African Countries (2014-2022)",
        x = "Year",
        y = "Youth Unemployment (%)",
-       fill = "Country") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+       color = "Country",
+       caption = "Source: ILO") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
 ```
-Countries with the highest youth unemployment rates are : Angola (AGO), Bosnia and Herzegovina (BIH), Djibouti (DJI), Spain (ESP), Saint Lucia (LCA), North Macedonia (MKD), South Africa (ZAF). 
 
-### The lowest youth unemployment rate - 15-19 & 20-24 years old 
+### 3) dep vs unemployment for G8 countries 
 
-```{r}
-youth_unemployment_lowest <- dep_chomage |>
-  group_by(time) |>
-  filter(time >= 2000 & time <= 2022, `Age groups` %in% c("15-19", "20-24"), `Education`== "Total", sex == "Total") |>
-  slice(which.min(`Youth unemployment (%)`)) |>
-  ungroup()
 
-ggplot(youth_unemployment_lowest, aes(x = time, y = `Youth unemployment (%)`, fill = Country)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Countries with Lowest Youth Unemployment by Year",
-       x = "Year",
-       y = "Youth Unemployment (%)",
-       fill = "Country") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-Countries with the lowest youth unemployment rates are : Switzerland (CHE), Guatemala (GTM), Cambodia (KHM), Liberia (LBR), Moldova (MDA), Madagascar (MDG), Mali (MLI), Malawi (MWI), Niger (NER), Pakistan (PAK), Peru (PER), Rwanda (RWA). 
+# Statistical test, linear regression, instrumental variables
 
-We can see from this graph that the place where youth unemployment is highest is predominantly in Africa. Public spending can therefore have an impact on the youth unemployment rate. But we can also see that some African countries have the lowest unemployment rates, so education spending isn't the only explanatory variable. 
+The second part being a more descriptive part highlighting the major trends in the world and in specific geographical areas, such as Africa in our case. In this last part of our project we will look carefully at the different links that education spending and the youth unemployment rate have between them. For this we will carry out statistical tests such as the chi-square law, linear regressions.
 
-This is what we'll be looking at in the next section, highlighting regression, fixed effects and instrumental variables. 
+Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable.
 
-## The case of Africa: an inefficiency of educational spendings
+To deepen our analysis, we will use instrumental variables, which are variables used to solve the endogeneity problem in econometric models. Endogeneity can arise when the explanatory variable is correlated with model errors, which can bias estimation results. Instrumental variables are therefore used to isolate the uncorrelated variation of the explanatory variable and use it as a proxy for that variable.
 
-## Correlation test 
+For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending.
+
+## Correlation test for the world 
 
 To understand the relationship between public spending on education and the youth unemployment rate, we will perform a correlation analysis.
 
-### Correlation test - G8 countries 
+### Correlation
+
+```{r}
+correlation_result <- cor.test(dep_chomage$`Public Spending (% of GDP)`, dep_chomage$`Youth unemployment (%)`)
+print(correlation_result) 
+```
+### Linear Regression 
+
+```{r}
+linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)`, data = dep_chomage)
+summary(linear_model)
+```
+``{r}
+## Graph representation 
+
+scatter_plot_world <- ggplot(dep_chomage, aes(x = `Public Spending (% of GDP)`, y = `Youth unemployment (%)`)) +
+  geom_point() +
+  labs(
+    title = "Figure 16 : Youth Unemployment vs Public Spending on Education",
+    x = "Public Spending (% of GDP)",
+    y = "Youth Unemployment (%)", 
+    caption = "Source : ILO/World Bank"
+  )
+
+regression_line_plot <- scatter_plot_world +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  theme_minimal()
+
+print(regression_line_plot)
+
+```
+### Chi deux test 
+
+```{r}
+chi_square_result <- chisq.test(table(dep_chomage$`Youth unemployment (%)`, dep_chomage$`sex`))
+print(chi_square_result) 
+```
+
+## Statistical test - G8 countries 
+
+### Correlation test
 
 ```{r}
 correlation_g8 <- cor.test(dep_chomage_g8_filtered$`Public Spending (% of GDP)`, dep_chomage_g8_filtered$`Youth unemployment (%)`)
 print(correlation_g8)
+``` 
+
+### Linear regression - G8 countries
+
+```{r}
+linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)`, data = dep_chomage_g8)
+summary(linear_model)
 ```
 ```{r}
 correlation_g8 <- cor.test(dep_chomage_g8_filtered$`Public Spending (% of GDP)`, dep_chomage_g8_filtered$`Youth unemployment (%)`)
@@ -619,23 +705,25 @@ matrix_g8 <- matrix(c(correlation_g8$estimate, correlation_g8$p.value), nrow = 1
 
 print(matrix_g8)
 ```
-
 The correlation test provides valuable insights into the strength and direction of the linear relationship between public spending on education and the youth unemployment rate. The correlation coefficient and p-value help us assess the statistical significance of the observed correlation. In this case, with a negative correlation coefficient between public spending (% of GDP) and youth unemployment (%), this suggests that there could be a trend where higher levels of public spending are associated with lower rates of youth unemployment, and vice versa. 
 
 ```{r}
 ggplot(dep_chomage_g8_filtered, aes(x = `Public Spending (% of GDP)`, y = `Youth unemployment (%)`)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate in G8 countries")
+  labs(title = "Figure 17 : Youth Unemployment vs Public Spending on Education in G8 countries",
+       caption = "Source : ILO/World Bank")
 ```
 The scatter plot with a fitted line visually represents the correlation between public spending and the youth unemployment rate. The blue line indicates the linear regression fit.
 
 The correlation test and visualization help us understand if there is a significant correlation between public spending on education and the youth unemployment rate. The correlation coefficient close to 1 or -1 indicates a strong relationship, while a p-value less than 0.05 suggests statistical significance.
 
-### Correlation test - African countries 
+## Statistical test - African countries 
+
+### Correlation test 
 
 ```{r}
-dep_chomage_africa_filtered <- dep_chomage_afr |>
+dep_chomage_africa_filtered <- dep_chomage_afr %>%
   filter(time >= 2010 & time <= 2022, Country %in% c("MDG", "MLI", "NER", "MWI","RWA", "SSD", "ZMB","DJI","AFE", "BDI", "BFA", "BLZ", "CAF", "COD", "LBR", "SDN", "SEN", "DAZ", "BWA", "TCD", "EGY", "ERI", "ETH", "GMB", "KEN", "LBY", "MAR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "YEM", "ZWE"))
 
 correlation_afr <- cor.test(dep_chomage_africa_filtered$`Public Spending (% of GDP)`, dep_chomage_africa_filtered$`Youth unemployment (%)`)
@@ -645,43 +733,17 @@ matrix_africa <- matrix(c(correlation_afr$estimate, correlation_afr$p.value), nr
 print(matrix_africa)
 ```
 
-```{r}
-ggplot(dep_chomage_africa_filtered, aes(x = `Public Spending (% of GDP)`, y = `Youth unemployment (%)`)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(title = "Correlation between Public Spending on Education and Youth Unemployment Rate in African countries")
-```
-When we take all African countries together, we can see a different correlation to the one previously calculated. In fact, it's positive, suggesting that the higher the public spending, the higher the youth unemployment rate. 
 
-```{r}
-dep_chomage_g8_filtered <- dep_chomage_g8_filtered |>
-  mutate(quintile = ntile(`Public Spending (% of GDP)`, 5))
 
-print(dep_chomage_g8_filtered)
-```
-```{r}
-ggplot(dep_chomage_g8_filtered, aes(x = factor(quintile), y = `Youth unemployment (%)`)) +
-  geom_boxplot() +
-  labs(title = "Distribution of Youth Unemployment Across Quintiles of Public Spending",
-       x = "Quintiles of Public Spending",
-       y = "Youth Unemployment (%)") +
-  theme_minimal()
-```
-## Regression linear OLS
 
-Instrumental variables are used to solve the endogeneity problem in econometric models. We want to run a linear regression looking at the impact of education spending on the youth unemployment rate. In our project, we will use education expenditure as the explanatory variable and the youth unemployment rate as the explained variable.
 
-To deepen our analysis, we will use instrumental variables, which are variables used to solve the endogeneity problem in econometric models. Endogeneity can arise when the explanatory variable is correlated with model errors, which can bias estimation results. Instrumental variables are therefore used to isolate the uncorrelated variation of the explanatory variable and use it as a proxy for that variable.
 
-For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending.
 
-### Linear regression for G8 countries 
 
-```{r}
-linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)` + `Education`, data = dep_chomage_g8_filtered)
-summary(linear_model) 
-```
-### Add instrumentales variables : stability of countries for example 
+
+# Conclusion 
+
+## Add instrumentales variables : stability of countries for example 
 
 We have to add new database to study the impact of stability of countries on public spending on education, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness. 
 
