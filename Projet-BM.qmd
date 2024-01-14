@@ -12,8 +12,8 @@ editor:
 
 ```{r}
 #Calling all necessary libraries
-#| message: false 
 #| warning: false
+#| message: false 
 here::i_am("project-BM.Rproj")
 library(here)
 library(dplyr)
@@ -263,7 +263,7 @@ ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
        y = "Public spending (% of GDP)", 
        caption = "Source: World Bank")
 ```
-Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in this time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Oceania and Africa (for the case of Namibia) would be a compelling study.
+Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in this time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Africa (for the case of Namibia) would be a compelling study taking into account that the MDGs and SDGs on education focused on development projects in the region.
 
 ### The largest share of GDP for public spending in education 
 ```{r}
@@ -349,7 +349,7 @@ ggplot(dep_chom_14_22, aes(x = time, y = `Youth unemployment (%)`)) +
        y = "Youth Unemployment (%)", 
        caption = "Source: ILO")
 ```
-Through this graph we can see countries with highest youth unemployment rate at the top of the line. 
+Through this graph we can see countries with highest youth unemployment rate at the top of the line. They are Kosovo, South Africa, Uruguay,Tuvalu and Greece. They do not appear as countries who spend the lowest % of GDP on education, it is therefore interesting to conduct a study on African countries in order to understand the potential causality or non-causality between public expenditure and youth unemployment.
 
 ### The highest youth unemployment rate - 15-19 & 20-24 years old 
 
@@ -394,11 +394,12 @@ Countries with the lowest youth unemployment rates are : Switzerland (CHE), Guat
 
 We can see from this graph that the place where youth unemployment is highest is predominantly in Africa. Public spending can therefore have an impact on the youth unemployment rate. But we can also see that some African countries have the lowest unemployment rates, so education spending isn't the only explanatory variable. 
 
-### 3) dep vs unemployment 
+### 3) General observation of public spending in education and youth unemployment 
 
 In order to have a more in depth analysis of general trends and understand the different impact of public expenditure on sexes, age groups and level of education we must select one  year to study out of our panel data. The code becomes quite simple to alter in order to study another date by replacing the year 2021 that we have chosen with whichever year is of interest to the researcher. 
 
 We have chosen the year 2021 as it is the year where public expenditure started to recede. This allows us to observe a potential resurge of youth unemployment. Add onto that the high public spending of some countries that year, we will be able to observe their impact on youth unemployment according to sex and level of education.
+
 ####a) general observations
 ```{r}
 dep_chomage |> filter(time==2021) |>
@@ -435,14 +436,14 @@ This general observation allows us to take into account the impact of public spe
 DESCRIPTION PLUS DESCRIPTION OF LINE EXAMPLE
 
 ```{r}
+mean_public<- mean(dep_chomage$`Public Spending (% of GDP)`, na.rm = TRUE)
+dep_chomage$high_low <-ifelse(dep_chomage$`Public Spending (% of GDP)`> mean_public, "high", "low")
 
-mean_dep<-dep_chomage|>
-  filter(time==2021)|>
-  mutate(dummy=ifelse(dep_chomage$`Public Spending (% of GDP)`>= mean(`Public spending (% of GDP)`), 1, 0))
-
-ggplot(dep_chomage, aes(x = mean_dep,y=`Youth unemployment (%)`,fill = Education)) +
-  geom_bar()
+ggplot(dep_chomage, aes(`Youth unemployment (%)`, fill = high_low)) +
+  geom_histogram(binwidth = 2)+
+  scale_fill_manual(values = c("darkgreen", "red"), name = "High/Low")
 ```
+DESCRIPTION A RAJOUTER
 
 ## II. Public spending and youth unemployment in developed countries
 
