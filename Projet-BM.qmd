@@ -1,7 +1,7 @@
 ---
 title: "Data Management & Programming Project"
 author: "Adrien BOUISSON & Ghina MEZHER"
-format: pdf
+format: html
 warning: false
 echo: false
 message: false
