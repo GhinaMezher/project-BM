@@ -826,8 +826,6 @@ A RAJOUTER DESCRIPTION RAPIDE
 
 ## Add instrumentales variables : stability of countries for example 
 
-We have to add new database to study the impact of stability of countries on public spending on education, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness. 
-
 To further enhance the analysis, we can add additional explanatory variables such as gender and education level to our regression models. We will only do this for the G8 countries.
 
 ### Linear regression with education and sex for G8 countries 
@@ -915,17 +913,8 @@ scatter_plot_g8 <- ggplot(dep_chomage_g8_filtered, aes(x = `Public Spending (% o
 print(scatter_plot_g8)
 ``` 
 
-```{r}
-library(GGally)
-ggpairs(dep_chomage_g8, columns = c("Youth unemployment (%)", "Public Spending (% of GDP)", "Education", "sex"))
-```
-
-
 # Conclusion 
 
-## Add instrumentales variables : stability of countries for example 
-
-We have to add new database to study the impact of stability of countries on public spending on education, thus indirectly on the unemployment rate. We have decided to take this database from World Bank : Government effectiveness. 
 
 
 # Annexe
