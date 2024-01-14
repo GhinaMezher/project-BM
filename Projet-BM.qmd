@@ -419,7 +419,7 @@ dep_chomage |> filter(time==2021) |>
 ```
 We can therefore see a small disparity in the distribution of points between the subplots of each of these two graphs. When it comes to the genders, women tend to have a higher youth unemployment rate than men for the same public spending in % of GDP. When it comes to level of education, for the same amount of public spending in education, the youth unemployment rate tends to be higher for a level of education stated as "Basic" than "Advanced". We would like to conduct a more in depth study of the impact of public expenditure on the level of education as higher education levels seem to better benefit from public spending. 
 
-ADD A PHRASE ON COUNTRIES WITH HIGH PUBLIC SPENDING
+Countries with high public spending tend to have overall lower youth unemployment rate might it be for the different sexes or level of education. The disparity in youth unemployment between men and women is less prominent for higher public spending. 
 
 The graphs remain quite hard to read as each point represents one country for one age range, it is therefore interesting to take on the analysis of one representative country for each of our later sections to better see how public spending in education impacts men and women differently. 
 
