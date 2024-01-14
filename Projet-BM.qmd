@@ -549,6 +549,8 @@ ggplot(dep_chomage_g8_unemployment, aes(x = time, y = `Youth unemployment (%)`, 
        caption = "Source: ILO") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+This pair of graphs allows us to compare the trends in youth unemployment rates among G8 countries. The United States has the lowest youth unemployment rate.
+
 ### 3) Youth unemployment according to Public spending  for G8 countries 
 
 #### a) general observations according to education level and sex 
@@ -568,6 +570,7 @@ dep_chomage |> filter(time==2021) |>
   facet_grid(~Education)+
   geom_rect(aes(ymin=1.5,ymax=8,xmin=27,xmax=77),color="red",fill=NA)
 ```
+When we examine public spending and the youth unemployment rate by gender for G8 countries, we can observe that, for the G8 countries, any increase in public spending results in a reduction in the unemployment rate, although this result is less evident for women.
 
 #### b) according to education and age range 
 ```{r}
@@ -577,6 +580,7 @@ dep_chomage_g8_filtered|>
   facet_grid(~`Age groups`)+
   geom_vline(xintercept = 6.1, col = "red",alpha=0.4)
 ```
+For the 15-19 age group, we can see that the increase in public spending allocated to education has a more significant effect for a higher level of education.
 
 ### III - Public spending in developping countries - on the African continent
 
