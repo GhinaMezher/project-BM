@@ -42,7 +42,7 @@ Investing in human capital, here in its educational form, is considered fundamen
 
 ## II. The link between education and unemployment
 
-The polarization of the labor market has become a clear and urgent issue. The dreaded phenomenon represents, for the middle class, the end of social mobility or as some might call it "The American/Capitalistic Dream". Polarization of the labor market defines the historical decline of the rate of jobs that lie in the middle of the distribution of qualification (France Stratégie 2020). The prosperity of machinery and innovation has led to the decrease of basic qualification demanding jobs in favor of highly qualified jobs or low qualified jobs. This phenomenon has revealed itself particularly challenging for under-qualified youth, whose unemployment rate has increased in the past few years.
+The polarization of the labor market has become a clear and urgent issue. The dreaded phenomenon represents, for the middle class, the end of social mobility. Polarization of the labor market defines the historical decline of the rate of jobs that lie in the middle of the distribution of qualification (France Stratégie 2020). The prosperity of machinery and innovation has led to the decrease of basic qualification demanding jobs in favor of highly qualified jobs or low qualified jobs. This phenomenon has revealed itself particularly challenging for under-qualified youth, whose unemployment rate has increased in the past few years.
 
 In order to form the subject of our study we begun with the same idea as the theory of capital : how can altering the offer of education impacts individuals' status on the labor market.
 
@@ -72,9 +72,9 @@ First, many of the databases provided by the World Bank include time series data
 
 Finally, by analyzing World Bank data on school expenditures, we can merge this database with the youth unemployment rate to study the correlation (or causality) of education spending on the unemployment rate.
 
-It means that we could observe that the higher education spending led to the lower youth unemployment rate, or that the high youth unemployment rate can be explained by lower spending on education.
+It means that we could observe that the higher education spending led to a lower youth unemployment rate, or that the high youth unemployment rate can be explained by lower spending on education.
 
-We have described below the necessary information of our database from the World Bank, which we have summarized in a table:
+### Table 1. Description of our WB database
 
 ```{r echo:false}
 
@@ -89,7 +89,7 @@ dep_pub|>
   knitr::kable()
 ```
 
-### Variable description
+#### Variable description
 
 -   "Country Name"/"Country Code": String value giving us an indicator for each country to classify values
 
@@ -103,9 +103,7 @@ Then, the International Labor Organization (ILO) provides a wealth of data relat
 
 ILO data offers comprehensive insights into the global labor marker, especially unemployment in the world, and youth unemployment (15-29 years old). Like the World Bank, the ILO collects and compiles data on youth unemployment from a wide range of countries, allowing for international comparisons which is perfect for our project. Both sites making international comparisons, it allows for an interesting world level analysis of our subject of study.
 
-We have described below the necessary information of our database from the ILO, which we have summarized in a table:
-
-### A table summary of our ILO database
+### Table 2. Description of our ILO database
 
 ```{r}
 # Our database chomage_jeune contains a huge number of observations with 11 variables, so we'll remove the missing NA values to reduce the number of observations.
@@ -213,7 +211,7 @@ dep_chomage$`Public Spending (% of GDP)`<-as.numeric(dep_chomage$`Public Spendin
 dep_chomage$time<-as.numeric(dep_chomage$time)
 ```
 
-## A table summary of our database
+### Table 3. A summary of our merged and cleaned database
 
 We've merged our 2 databases in order to match them by country (variable "Country") and date (variable "time").
 
@@ -234,7 +232,7 @@ dep_chomage|>
 
 ### 1) Public spending on education since 2014 in the world 
 
-To begin our analysis, we'll be looking at how public spending on education has evolved around the world, using the ggplot function to introduce graphs. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
+To begin our analysis, we'll be looking at how public spending on education has evolved around the world. This will enable us to look at general trends, and to see which countries have the highest and lowest educational expenditure.
 
 ```{r}
 mean_by_date <- dep_chomage |>
@@ -248,7 +246,7 @@ ggplot(mean_by_date,aes(x=time,y =mean_ps)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-Therefore we can see public spending varies through time with a particular low in 1996 and 1997. Over the past few years, the average public spending on education has hovered around 4.8% of GDP with a decline starting 2021 we might imagine a reorientation of public spending to other sectors like health, security and energy following the pandemic and the war in Ukraine. It is therefore interesting to conduct a more in depth examination of public expenditure trends since 2014, in order to define which countries contribute to elevating this average and those that contribute to lowering it.
+Therefore we can see public spending varies through time with a particular low in 1996 and 1997. Over the past few years, the average public spending on education has hovered around 4.8% of GDP with a decline starting 2021; we might imagine a reorientation of public spending to other sectors like health, security and energy following the pandemic and the war in Ukraine. It is therefore interesting to conduct a more in depth examination of public expenditure trends since 2014, in order to define which countries contribute to elevating this average and those that contribute to lowering it.
 
 ```{r}
 dep_pub_14_22<-dep_pub_clean|> filter(time>=2014& time<=2022)
@@ -263,7 +261,7 @@ ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
        y = "Public spending (% of GDP)", 
        caption = "Source: World Bank")
 ```
-Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in this time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Africa (for the case of Namibia) would be a compelling study taking into account that the MDGs and SDGs on education focused on development projects in the region.
+Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in the 2014-2022 time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Africa (for the case of Namibia) would be a compelling study taking into account that the MDGs and SDGs on education focused on development projects in the region.
 
 ### a) The largest share of GDP for public spending in education 
 ```{r}
@@ -305,13 +303,11 @@ ggplot(country_smallest_spending_filter, aes(x = time, y = `Public Spending (% o
        caption = "Source: World Bank") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-Countries that devote a large share of their GDP to education spending are : Africa Eastern and Southern (AFE), Central African Republic (CAF), Zambia (ZMB), South Sudan (SSD), Sudan (SDN), Gambia (GMB), etc.. The majority of countries that spend the least on education are in Africa. 
+Countries that devote a large share of their GDP to education spending are : Africa Eastern and Southern (AFE), Central African Republic (CAF), Zambia (ZMB), South Sudan (SSD), Sudan (SDN), Gambia (GMB), etc.. The majority of countries that spend the least on education are in Africa, this only highlights the need to understand the efficiency of public expenditure in the region in order to orientate public policy and spending towards the education field. 
 
 ### 2) Youth unemployment in the world 
 
-In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. We therefore proceed in the same way as above, taking the most developed countries on the one hand, and developing countries on the other. Here, we analyze only the major trends.
-
-Employment is a means of accessing the wealth produced through work, but not all work is employment. It is a source of income. While work designates the activity.
+In this section, we'll take a look at the evolution of the global youth unemployment rate over the period 2014-2022. Taking the same period as public spending will allow us to account for a potential correlation (or even causality) between public spending and the unemployment rate in a second part. Here, we analyze only the major trends to begin our study.
 
 Unemployment refers to the deprivation of a job. An unemployed person is not deprived of work, but of employment. For the person who holds it, employment is a source of income through participation in the economic distribution of the wealth produced.
 
@@ -323,7 +319,7 @@ The difference lies in the denominator: only the young workforce - those working
 
 So, if we look at 200 young people, 100 of whom are students and 50 employed, the unemployment rate is 50 percent, while the ratio is 25 percent.
 
-Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce. In the case of ILO database we have a unemployment rate which which already provides an overview of our research project. 
+Applying a ratio can be useful for comparing levels of youth unemployment between countries, because there are significant differences in the way countries count youth participation in the workforce. In the case of ILO database we have a unemployment rate which enables us to compare countries in our database. 
 
 ```{r}
 mean_by_date_unemployment <- dep_chomage %>%
@@ -335,7 +331,8 @@ ggplot(mean_by_date_unemployment, aes(x = time, y = mean_unemployment)) +
   labs(x = "Date", y = "World mean Youth Unemployment (%)", title = "Figure 5 : Mean Youth Unemployment Over Time", caption = "Source: ILO") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-We can see that the global youth unemployment rate has been rising for several decades. At the same time, we have seen a decrease in the number of young people unemployed.  
+We can see that the global youth unemployment rate has been rising for several decades with a decrease since 2020, focusing on that time frame allows us to understand if this decrease is led by an increase in public spending in education.
+
 ```{r}
 dep_chom_14_22 <- chomage_jeune_clean %>% 
   filter(time >= 2014 & time <= 2022, `sex` == "Total")
@@ -398,9 +395,9 @@ We can see from this graph that the place where youth unemployment is highest is
 
 In order to have a more in depth analysis of general trends and understand the different impact of public expenditure on sexes, age groups and level of education we must select one  year to study out of our panel data. The code becomes quite simple to alter in order to study another date by replacing the year 2021 that we have chosen with whichever year is of interest to the researcher. 
 
-We have chosen the year 2021 as it is the year where public expenditure started to recede. This allows us to observe a potential resurge of youth unemployment. Add onto that the high public spending of some countries that year, we will be able to observe their impact on youth unemployment according to sex and level of education.
+We have chosen the year 2021 as it is the year where public expenditure and youth unemployment started to recede. As we have only observed world averages it would be interesting to have a more in depth look at some countries to better understand these trends and how they apply to different categories and regions. Add onto that the high public spending of some countries that year, we will be able to observe their impact on youth unemployment according to sex and level of education.
 
-#### a) general observations
+#### a) General observations
 ```{r}
 dep_chomage |> filter(time==2021) |>
   ggplot(aes(x=`Public Spending (% of GDP)`,y=`Youth unemployment (%)`)) +
@@ -417,11 +414,11 @@ dep_chomage |> filter(time==2021) |>
   facet_grid(~Education)+
   geom_rect(aes(ymin=1.5,ymax=8,xmin=27,xmax=77),color="red",fill=NA)
 ```
-We can therefore see a small disparity in the distribution of points between the subplots of each of these two graphs. When it comes to the genders, women tend to have a higher youth unemployment rate than men for the same public spending in % of GDP. When it comes to level of education, for the same amount of public spending in education, the youth unemployment rate tends to be higher for a level of education stated as "Basic" than "Advanced". We would like to conduct a more in depth study of the impact of public expenditure on the level of education as higher education levels seem to better benefit from public spending. 
+We can therefore see a small disparity in the distribution of points between the subplots of each of these two graphs. When it comes to the genders, women tend to have a higher youth unemployment rate than men for the same public spending in % of GDP. When it comes to level of education, for the same amount of public spending in education, the youth unemployment rate tends to be higher for a level of education stated as "Basic" than "Advanced". More education seems to be a good way to reduce unemployment. Public spending can therefore be a useful tool to push students to achieve an advanced level of education, reducing the unemployment rate the year they enter the labor market. 
 
-Countries with high public spending tend to have overall lower youth unemployment rate might it be for the different sexes or level of education. The disparity in youth unemployment between men and women and different levels of education is less prominent for countries with higher public spending. 
+Take for example countries with high public spending. They tend to have an overall lower youth unemployment rate (especially for an advanced level of education) might it be for the different sexes or level of education. The disparity in youth unemployment between men and women and different levels of education is less prominent for countries with higher public spending. 
 
-The graphs remain quite hard to read as each point represents one country for one age range, it is therefore interesting to take on the analysis of one representative country for each of our later sections to better see how public spending in education impacts men and women differently. 
+The graphs remain quite hard to read as each point represents one country for one age range, it is therefore interesting to take on the analysis of certain representative countries for each of our later sections to better see how public spending in education impacts men and women differently. 
 
 #### b) impact of public spending on education level
 ```{r}
@@ -433,9 +430,11 @@ dep_chomage|> filter(time==2021)|>
 ```
 This general observation allows us to take into account the impact of public spending on education by Age groups and by level of education, for the year 2021. 
 
-In order to read this graph we could take a look at a specific value of PUblic Spending, for example 7.8% of GDP. This is considered a high public spending in education. We can therefore see which levels of education are benefiting from this public expenditure. We can see that for such a public spending and for the different age ranges, advanced level of education tends to have a lower youth unemployment rate. For lower public spending we are startled to see an "Advanced" red dot with a 100% youth unemployment rate, this could be a specific case of a developing country where unemployment is hardly defined. 
+Generally, a higher public spending rate allows for lower youth unemployment on all age ranges. For a relatively high public spending (around 7%) we can see an "Advanced" red dot with a 100% youth unemployment rate. This could be due to the use of the ratio of youth unemployment counting students as unemployed. For this specific case, the 100% unemployment ratio might be led by a large part of 15-19 years pursuing higher education thanks to good public expenditure. 
 
-Public spending therefore impacts individuals differently and according to their level of education. An individual that has an intermediate level at 15-19 and gets on the labor market will not benefit from the public expenditure. This is why for countries with higher publix spending we can see the points tend to stay lower as public expenditure promotes and helps individul stay in the school system. 
+In order to read this graph we could take a look at a specific value of Public Spending, for example 7.8% of GDP. This is considered a high public spending in education. We can therefore see which levels of education are benefiting from this public expenditure. We can see that for such a public spending and for the different age ranges, advanced level of education tends to have a lower youth unemployment rate. 
+
+Public spending therefore impacts individuals differently and according to their level of education. An individual that has an intermediate level at 15-19 and gets on the labor market will not benefit from the public expenditure. This is why for countries with higher public spending we can see the points tend to stay lower as public expenditure promotes and helps individuals stay in the school system. 
 
 
 ```{r}
@@ -666,6 +665,8 @@ ggplot(dep_chomage_afr_unemployment_1, aes(x = time, y = `Youth unemployment (%)
 ```
 
 ### 3) Impact of public spending on education level on African countries
+
+
 
 #### a) general observations
 
