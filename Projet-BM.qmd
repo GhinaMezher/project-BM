@@ -230,7 +230,7 @@ dep_chomage|>
 
 # Data Analysis
 
-## I. Public spending and youth unemployment since 2014'
+## I. Public spending and youth unemployment in the world
 
 ### 1) Public spending on education since 2014 in the world 
 
@@ -265,7 +265,7 @@ ggplot(dep_pub_14_22, aes(x=time,y=`Public Spending (% of GDP)`))+
 ```
 Thanks to this graph, we have the evolution of public spending on education over the period 2014-2022. The dots represent the countries, we can therefore see that the average public expenditure in 2021 is elevated by Kiribati and the Marshall Islands' public spending on education. These two countries have also relatively high education spending in this time span, also adding to that list Namibia and the Federated States of Micronesia. Therefore examining the influence of public spending on the youth unemployment rate in countries  situated in Africa (for the case of Namibia) would be a compelling study taking into account that the MDGs and SDGs on education focused on development projects in the region.
 
-### The largest share of GDP for public spending in education 
+### a) The largest share of GDP for public spending in education 
 ```{r}
 country_highest_spending <- dep_chomage |>
   group_by(time) |>
@@ -286,7 +286,7 @@ ggplot(country_highest_spending_filter, aes(x = time, y = `Public Spending (% of
 ```
 Countries that devote a large share of their GDP to education spending are : Samoa américaines (ASM), Cuba (CUB), Micronésie, Etats fédérés (FSM), Kiribati (KIR), Lesotho (LS0), Marshall's Islands (MHL), Namibie (NAM). 
 
-### The smallest share of GDP for public spending 
+### b) The smallest share of GDP for public spending 
 
 ```{r}
 country_smallest_spending <- dep_chomage |>
@@ -351,7 +351,7 @@ ggplot(dep_chom_14_22, aes(x = time, y = `Youth unemployment (%)`)) +
 ```
 Through this graph we can see countries with highest youth unemployment rate at the top of the line. They are Kosovo, South Africa, Uruguay,Tuvalu and Greece. They do not appear as countries who spend the lowest % of GDP on education, it is therefore interesting to conduct a study on African countries in order to understand the potential causality or non-causality between public expenditure and youth unemployment.
 
-### The highest youth unemployment rate - 15-19 & 20-24 years old 
+### a) The highest youth unemployment rate - 15-19 & 20-24 years old 
 
 Having seen which countries devote the most or least of their GDP to education spending, we're now going to look at which countries have the highest and lowest unemployment rates among young people, in this case 15-24 year-old. 
 
@@ -373,7 +373,7 @@ ggplot(youth_unemployment_highest, aes(x = time, y = `Youth unemployment (%)`, f
 ```
 Countries with the highest youth unemployment rates are : Angola (AGO), Bosnia and Herzegovina (BIH), Djibouti (DJI), Spain (ESP), Saint Lucia (LCA), North Macedonia (MKD), South Africa (ZAF). 
 
-### The lowest youth unemployment rate - 15-19 & 20-24 years old 
+### b) The lowest youth unemployment rate - 15-19 & 20-24 years old 
 
 ```{r}
 youth_unemployment_lowest <- dep_chomage %>%
@@ -400,7 +400,7 @@ In order to have a more in depth analysis of general trends and understand the d
 
 We have chosen the year 2021 as it is the year where public expenditure started to recede. This allows us to observe a potential resurge of youth unemployment. Add onto that the high public spending of some countries that year, we will be able to observe their impact on youth unemployment according to sex and level of education.
 
-####a) general observations
+#### a) general observations
 ```{r}
 dep_chomage |> filter(time==2021) |>
   ggplot(aes(x=`Public Spending (% of GDP)`,y=`Youth unemployment (%)`)) +
@@ -419,11 +419,11 @@ dep_chomage |> filter(time==2021) |>
 ```
 We can therefore see a small disparity in the distribution of points between the subplots of each of these two graphs. When it comes to the genders, women tend to have a higher youth unemployment rate than men for the same public spending in % of GDP. When it comes to level of education, for the same amount of public spending in education, the youth unemployment rate tends to be higher for a level of education stated as "Basic" than "Advanced". We would like to conduct a more in depth study of the impact of public expenditure on the level of education as higher education levels seem to better benefit from public spending. 
 
-Countries with high public spending tend to have overall lower youth unemployment rate might it be for the different sexes or level of education. The disparity in youth unemployment between men and women is less prominent for higher public spending. 
+Countries with high public spending tend to have overall lower youth unemployment rate might it be for the different sexes or level of education. The disparity in youth unemployment between men and women and different levels of education is less prominent for countries with higher public spending. 
 
 The graphs remain quite hard to read as each point represents one country for one age range, it is therefore interesting to take on the analysis of one representative country for each of our later sections to better see how public spending in education impacts men and women differently. 
 
-####b) impact of public spending on education level
+#### b) impact of public spending on education level
 ```{r}
 dep_chomage|> filter(time==2021)|>
   ggplot(aes(x=`Public Spending (% of GDP)`,y=`Youth unemployment (%)`,color=Education)) +
@@ -433,23 +433,28 @@ dep_chomage|> filter(time==2021)|>
 ```
 This general observation allows us to take into account the impact of public spending on education by Age groups and by level of education, for the year 2021. 
 
-DESCRIPTION PLUS DESCRIPTION OF LINE EXAMPLE
+In order to read this graph we could take a look at a specific value of PUblic Spending, for example 7.8% of GDP. This is considered a high public spending in education. We can therefore see which levels of education are benefiting from this public expenditure. We can see that for such a public spending and for the different age ranges, advanced level of education tends to have a lower youth unemployment rate. For lower public spending we are startled to see an "Advanced" red dot with a 100% youth unemployment rate, this could be a specific case of a developing country where unemployment is hardly defined. 
+
+Public spending therefore impacts individuals differently and according to their level of education. An individual that has an intermediate level at 15-19 and gets on the labor market will not benefit from the public expenditure. This is why for countries with higher publix spending we can see the points tend to stay lower as public expenditure promotes and helps individul stay in the school system. 
+
 
 ```{r}
 mean_public<- mean(dep_chomage$`Public Spending (% of GDP)`, na.rm = TRUE)
-dep_chomage$high_low <-ifelse(dep_chomage$`Public Spending (% of GDP)`> mean_public, "high", "low")
+dep_chomage$high_low <-ifelse(dep_chomage$`Public Spending (% of GDP)`> mean_public, "High", "Low")
 
 ggplot(dep_chomage, aes(`Youth unemployment (%)`, fill = high_low)) +
   geom_histogram(binwidth = 2)+
   scale_fill_manual(values = c("darkgreen", "red"), name = "High/Low")
 ```
-DESCRIPTION A RAJOUTER
+Here we divided our observations into 2 sections thanks to the creation of a High/Low dummy variable. Countries with "High" public spending in education have a % of GDP dedicated to education superior to the mean of our database. Here we can see that as youth unemployment rises, the count of countries with a high public spending decreases becoming smaller than the red bars that represent "Low" spending in education. 
 
 ## II. Public spending and youth unemployment in developed countries
 
 Counter-intuitively, developed countries do not allocate the highest % of GDP to public spending on education. 
 
 We'll be looking at public spending trends in developed countries such as the United States, France, Germany, Japan, Canada, the United Kingdom, Russia and Italy.
+
+### 1) PUblic spending in education in developed countries: G8 countries 
 
 ```{r}
 dep_chomage$time<-as.numeric(dep_chomage$time)
@@ -492,7 +497,7 @@ ggplot(dep_chomage_g8_filtered, aes(x = time, y = `Public Spending (% of GDP)`, 
 ```
 Focusing solely on the G8 countries, we have assigned a color to each country, showing that the United States (pink), France (yellow) and Great Britain (green) are the countries that spend the most on education. We can see that USA's public spending remains around 5,5% of the GDP compared to Italy with 4,1 of GDP. So, if we take the general trend into account, we can see that for the selected countries we have a drop in public spending on education. Moreover, we don't have any information about public spending on education in Russia for 2021 and 2022. 
 
-### Unemployement rate in the developped countries : G8 countries
+### 2) Unemployement rate in the developped countries : G8 countries
 
 ```{r}
 dep_chomage$time<-as.numeric(dep_chomage$time)
@@ -544,11 +549,9 @@ ggplot(dep_chomage_g8_unemployment, aes(x = time, y = `Youth unemployment (%)`, 
        caption = "Source: ILO") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-### 3) dep vs unemployment for G8 countries 
+### 3) Youth unemployment according to Public spending  for G8 countries 
 
-###  impact of public spending on education level on G8 countries
-
-####a) general observations
+#### a) general observations according to education level and sex 
 ```{r}
 dep_chomage_g8 |> filter(time==2021) |>
   ggplot(aes(x=`Public Spending (% of GDP)`,y=`Youth unemployment (%)`)) +
@@ -566,7 +569,7 @@ dep_chomage |> filter(time==2021) |>
   geom_rect(aes(ymin=1.5,ymax=8,xmin=27,xmax=77),color="red",fill=NA)
 ```
 
-#### b) according to education
+#### b) according to education and age range 
 ```{r}
 dep_chomage_g8_filtered|>
   ggplot(aes(x=`Public Spending (% of GDP)`,y=`Youth unemployment (%)`,color=Education)) +
@@ -575,9 +578,11 @@ dep_chomage_g8_filtered|>
   geom_vline(xintercept = 6.1, col = "red",alpha=0.4)
 ```
 
-### Public spending in developping countries - on the African continent
+### III - Public spending in developping countries - on the African continent
 
 We'll be looking at public spending trends in Africa such as : Africa Eastern and Southern (AFE), Burundi (BDI), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Congo - Democratic Republic of Congo (COD), etc..
+
+#### a) General trends in public spending on education (% of GDP)
 
 ```{r}
 dep_chomage_afr <- dep_chomage %>%
@@ -597,7 +602,8 @@ ggplot(dep_chomage_africa_filtered, aes(x = time, y = `Public Spending (% of GDP
   theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
 ```
 In comparison with the graph showing the evolution of the share of public expenditure in GDP for the G8 countries (Figure 10), we could see disparities between countries but this disparity is even more pronounced for African countries going up to 'at 'nearly 8 percentage points difference (Namibia vs Madagascar). 
-### Unemployement rate in the developping countries : African countries
+
+### 2) General trends in unemployement rate
 
 ```{r}
 # We keep African countries which have complete data 
@@ -657,7 +663,7 @@ ggplot(dep_chomage_afr_unemployment_1, aes(x = time, y = `Youth unemployment (%)
 
 ### 3) Impact of public spending on education level on African countries
 
-####a) general observations
+#### a) general observations
 
 ```{r}
 dep_chomage_afr_unemployment_1 |> filter(time==2021) |>
@@ -695,17 +701,17 @@ To deepen our analysis, we will use instrumental variables, which are variables 
 
 For the purposes of this project, we can therefore use the following instrumental variables: total government expenditure, number of schools per capita and population growth rate. This allows us to see whether these variables are not correlated directly with the youth unemployment rate, but are correlated directly with education spending.
 
-## Correlation test for the world 
+## I) Correlation test for the world 
 
 To understand the relationship between public spending on education and the youth unemployment rate, we will perform a correlation analysis.
 
-### Correlation
+### 1) Correlation
 
 ```{r}
 correlation_result <- cor.test(dep_chomage$`Public Spending (% of GDP)`, dep_chomage$`Youth unemployment (%)`)
 print(correlation_result) 
 ```
-### Linear Regression 
+### 2) Linear Regression 
 
 ```{r}
 linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)`, data = dep_chomage)
@@ -747,7 +753,7 @@ print(regression_line_plot)
 ```
 When we take the global data, the regression line is almost straight, or slightly decreasing, this may suggest that for every increase (decrease) in education spending, the youth unemployment rate decreases (or increases) by constant manner. Furthermore, this may also suggest an absence of causal link between the two variables.
 
-### Chi deux test 
+### 3) Chi deux test 
 
 ```{r}
 chi_square_result <- chisq.test(table(dep_chomage$`Youth unemployment (%)`, dep_chomage$`sex`))
@@ -755,15 +761,15 @@ print(chi_square_result)
 ```
 The p-value of 0.03145 is less than the common significance level of 0.05. With a p-value below 0.05, we must reject the null hypothesis. In the context of a chi-square test for independence, this result suggests that there is evidence of an association between the variables Youth unemployment (%) and gender. The association is considered statistically significant.
 
-## Statistical test - G8 countries 
+## II) Statistical test - G8 countries 
 
-### Correlation test
+### 1) Correlation test
 
 ```{r}
 correlation_g8 <- cor.test(dep_chomage_g8_filtered$`Public Spending (% of GDP)`, dep_chomage_g8_filtered$`Youth unemployment (%)`)
 print(correlation_g8)
 ``` 
-### Linear regression - G8 countries
+### 2) Linear regression - G8 countries
 
 ```{r}
 linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)`, data = dep_chomage_g8)
@@ -791,15 +797,15 @@ The scatter plot with a fitted line visually represents the correlation between 
 
 The correlation test and visualization help us understand if there is a significant correlation between public spending on education and the youth unemployment rate. The correlation coefficient close to 1 or -1 indicates a strong relationship, while a p-value less than 0.05 suggests statistical significance.
 
-## Statistical test - African countries 
+## III) Statistical test - African countries 
 
-### Correlation test 
+### 1) Correlation test 
 
 ```{r}
 correlation_afr <- cor.test(dep_chomage_africa_filtered$`Public Spending (% of GDP)`, dep_chomage_africa_filtered$`Youth unemployment (%)`)
 print(correlation_g8)
 ```
-### Linear regression - African countries 
+### 2) Linear regression - African countries 
 
 ```{r}
 linear_model <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)`, data = dep_chomage_afr_unemployment)
@@ -824,13 +830,13 @@ When we take all African countries together, we can see a different correlation 
 
 A RAJOUTER DESCRIPTION RAPIDE
 
-## Add instrumentales variables : stability of countries for example 
+## IV) Add instrumentales variables : stability of countries for example 
 
 To further enhance the analysis, we can add additional explanatory variables such as gender and education level to our regression models. We will only do this for the G8 countries.
 
-### Linear regression with education and sex for G8 countries 
+### 1) Linear regression with education and sex for G8 countries 
 
-#### Education
+#### a) Education
 
 ```{r}
 linear_model_g8 <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)` + Education, data = dep_chomage_g8_filtered)
@@ -852,7 +858,7 @@ scatter_plot_g8 <- ggplot(dep_chomage_g8_filtered, aes(x = `Public Spending (% o
 
 print(scatter_plot_g8)
 ```
-#### By sex 
+#### b) By sex 
 ```{r}
 linear_model_g8_sex <- lm(`Youth unemployment (%)` ~ `Public Spending (% of GDP)` + sex, data = dep_chomage_g8_filtered)
 
@@ -874,7 +880,7 @@ scatter_plot_g8_sex <- ggplot(dep_chomage_g8_filtered, aes(x = `Public Spending 
 print(scatter_plot_g8_sex)
 ```
 
-#### Education and sex 
+#### c) Education and sex 
 
 #### Regression Model for G8 countries 
 
