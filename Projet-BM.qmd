@@ -926,6 +926,7 @@ scatter_plot_g8 <- ggplot(dep_chomage_g8_filtered, aes(x = `Public Spending (% o
 
 print(scatter_plot_g8)
 ``` 
+After adding the Education and sex control variables we can see public spending still has a negative impact on youth unemployment. Education is therefore not the only factor of unemployment and public expenditure has a direct impact on youth unemployment on the labor market. 
 
 # Conclusion 
 
@@ -935,7 +936,7 @@ When it comes to the G8 countries, public spending has a negative impact on yout
 For different age groups and level of education, young people with low education levels tend to have a high unemployment ratio as they may still be in school. However, unemployment strongly decreases in higher age ranges and for higher education levels. Public spending in education can therefore tackle unemployment issues by allowing students to pursue higher degrees allowing them to easily find jobs on the labor market. 
 
 When it comes to the African countries, public spending has a chocking positive impact on youth unemployment highlighting. This perfectly represents the lack of efficiency of public spending when it isn't coupled with sufficient public policies and control. For the same amount of public spending youth unemployment is higher for women.Contrary to G8 countries, this difference does not decrease with the increase of public spending. There are still discrimination issues to be tackled on the labor market through other policy tools.
-Unemployment is till quite high even for advanced level of education and older age ranges, even for high pubic spending, this only accentuates the inefficiency of publc spending when it is not well implemented. 
+Unemployment is till quite high even for advanced level of education and older age ranges, even for high pubic spending, this only accentuates the inefficiency of public spending when it is not well implemented. 
 
 
 In conclusion, our study underscores the strong disparities in the impact of public spending in education on youth unemployment between G8 countries and African nations, emphasizing the critical need for tailored policy interventions to address these global differences. Our analysis therefore advocates for a nuanced understanding of the relationship between public spending and youth unemployment, urging policymakers to elaborate targeted approaches to optimize the impact of public funds on labor market dynamics.
