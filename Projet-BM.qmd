@@ -836,7 +836,7 @@ ggplot(dep_chomage_africa_filtered, aes(x = `Public Spending (% of GDP)`, y = `Y
 ```
 When we take all African countries together, we can see a different correlation to the one previously calculated. In fact, it's positive, suggesting that the higher the public spending, the higher the youth unemployment rate. 
 
-A RAJOUTER DESCRIPTION RAPIDE
+This clearly validates our previous observation concerning African countries, and might be due to corruption or inefficient policies (typically dealing with lack of efficiency as a demand problem instead of a supply/quality problem). 
 
 ## IV) Add instrumentales variables : stability of countries for example 
 
@@ -929,7 +929,16 @@ print(scatter_plot_g8)
 
 # Conclusion 
 
+Throughout our study we have observed general and more particular trends in public spending in education and youth unemployment around the world. By focusing on the G8 countries and African countries, and conduction linear regressions and correlations trends we were able to understand the various impacts of public spending on unemployment. 
 
+When it comes to the G8 countries, public spending has a negative impact on youth unemployment highlighting the need to tackle issues on the labor market through an educational approach. For the same amount of public spending youth unemployment is higher for women. However the difference between men and women decreases for higher public spending making it a good approach to reducing inequalities on the labor market. 
+For different age groups and level of education, young people with low education levels tend to have a high unemployment ratio as they may still be in school. However, unemployment strongly decreases in higher age ranges and for higher education levels. Public spending in education can therefore tackle unemployment issues by allowing students to pursue higher degrees allowing them to easily find jobs on the labor market. 
+
+When it comes to the African countries, public spending has a chocking positive impact on youth unemployment highlighting. This perfectly represents the lack of efficiency of public spending when it isn't coupled with sufficient public policies and control. For the same amount of public spending youth unemployment is higher for women.Contrary to G8 countries, this difference does not decrease with the increase of public spending. There are still discrimination issues to be tackled on the labor market through other policy tools.
+Unemployment is till quite high even for advanced level of education and older age ranges, even for high pubic spending, this only accentuates the inefficiency of publc spending when it is not well implemented. 
+
+
+In conclusion, our study underscores the strong disparities in the impact of public spending in education on youth unemployment between G8 countries and African nations, emphasizing the critical need for tailored policy interventions to address these global differences. Our analysis therefore advocates for a nuanced understanding of the relationship between public spending and youth unemployment, urging policymakers to elaborate targeted approaches to optimize the impact of public funds on labor market dynamics.
 
 # Annexe
 
