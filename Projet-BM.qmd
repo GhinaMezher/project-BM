@@ -583,6 +583,8 @@ For the 15-19 age group, we can see that the increase in public spending allocat
 
 ### III - Public spending in developping countries - on the African continent
 
+We have previously observed how African countries have the highest youth unemployment ratios whilst not having the lowest public spending in education. It is therefore necessary to have a look at trends and causality between public expenditure and unemployment in the region.
+
 We'll be looking at public spending trends in Africa such as : Africa Eastern and Southern (AFE), Burundi (BDI), Burkina Faso (BFA), Belize (BLZ), Central African Republic (CAF), Congo - Democratic Republic of Congo (COD), etc..
 
 #### a) General trends in public spending on education (% of GDP)
@@ -604,7 +606,7 @@ ggplot(dep_chomage_africa_filtered, aes(x = time, y = `Public Spending (% of GDP
        caption = "Source: World Bank") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
 ```
-In comparison with the graph showing the evolution of the share of public expenditure in GDP for the G8 countries (Figure 10), we could see disparities between countries but this disparity is even more pronounced for African countries going up to 'at 'nearly 8 percentage points difference (Namibia vs Madagascar). 
+In comparison with the graph showing the evolution of the share of public expenditure in GDP for the G8 countries (Figure 10), we still observe disparities between countries, that are even more pronounced for African countries going up to nearly 8 percentage points difference (Namibia vs Madagascar). The disparity is even more pronounced with Namibia's higher than 8% of GDP public spending in education.
 
 ### 2) General trends in unemployement rate
 
@@ -629,7 +631,7 @@ ggplot(mean_afr_unemployment,aes(x=time,y=mean_youth_unemployment_afr))+
        caption = "Source: ILO") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-Youth unemployment in Africa is higher than in the rest of the world. But some African countries have a higher unemployment rate, so we will see the evolution of the youth unemployment rate by separating the countries. 
+Youth unemployment in Africa is higher than in the rest of the world, with a notable resurge since 2020. That may be caused by the current dept problems African countries have faced that have only worsened with the COVID-19 crisis. Dept problems allow for budget constraints as the government is focused on reducing their dept. This may lead to a reduction of public spending in education (not very observable in the previous graph because of missing values) and lead to higher unemployment. This will be latered studied though regression tests.
 ```{r}
 dep_chomage_afr_unemployment_1 <- dep_chomage |>
   filter(Country %in% c("BLZ", "MDG", "MLI", "MWI", "RWA", "LBR", "SEN", "EGY", "GMB", "KEN", "LBR", "NAM", "NGA", "SLE", "ZAF", "TGO", "TUN", "YEM", "ZWE")) |>
@@ -648,7 +650,7 @@ ggplot(dep_chomage_afr_unemployment_1, aes(x = time, y = `Youth unemployment (%)
 ```
 ```{r}
 dep_chomage_afr_unemployment_1 <- dep_chomage |>
-  filter(Country %in% c("BLZ", "MLI", "MWI", "RWA", "EGY", "ZAF")) |>
+  filter(Country %in% c("BLZ", "MLI", "MWI", "RWA", "EGY", "ZAF", "NAM")) |>
   filter(!is.na(`Youth unemployment (%)`)) |>
   filter(time >= 2014 & time <= 2022)
 
@@ -663,10 +665,9 @@ ggplot(dep_chomage_afr_unemployment_1, aes(x = time, y = `Youth unemployment (%)
        caption = "Source: ILO") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
 ```
+Once again, we observe a great disparity in youth unemployment between the countries we have observed. We can see that Malawi has a very low unemployment rates, without having a particularly high public expenditure (cf. figure 13). Public spending therefore impacts these countries very differently depending on the institutions and policies established.
 
 ### 3) Impact of public spending on education level on African countries
-
-
 
 #### a) general observations
 
@@ -676,7 +677,7 @@ dep_chomage_afr_unemployment_1 |> filter(time==2021) |>
   geom_hex()+
   xlim(0,17)+
   facet_grid(~sex)+
-  geom_rect(aes(xmin=1.5,xmax=3.5,ymin=27,ymax=75),color="red",fill=NA)
+  geom_rect(aes(xmin=4,xmax=8,ymin=15,ymax=70),color="red",fill=NA)
 
 dep_chomage_afr_unemployment_1$time<-as.numeric(dep_chomage_afr_unemployment_1$time)
 dep_chomage |> filter(time==2021) |>
@@ -686,6 +687,7 @@ dep_chomage |> filter(time==2021) |>
   facet_grid(~Education)+
   geom_rect(aes(ymin=1.5,ymax=8,xmin=27,xmax=77),color="red",fill=NA)
 ```
+Once again, women tend to have higher unemployment rates, the disparity is however lower than the g8 countries. But the g8 countries still have lower youth unemployment rates than the African countries for both sexes. 
 
 #### b) according to education
 ```{r}
@@ -695,6 +697,7 @@ dep_chomage_africa_filtered|>
   facet_grid(~`Age groups`)+
   geom_vline(xintercept = 3.8, col = "red",alpha=0.4)
 ```
+In this graph we can see that, in the case of African countries, advanced level of education still lead to high unemployment rate even when public spending in education hovers around 6-7% of GDP. This is still true for higher age ranges such as 25-29. This matter worsens in the case of low public expenditure. We have taken for example a public spendinf og 7.8% of GDP (red vertical line) where we can observe high unemployment rates for teh 20-24 and 24-29 age ranges. This might be understood by an inefficiency of public spending that we will test with a linear regression.
 
 # Statistical test, linear regression, instrumental variables
 
